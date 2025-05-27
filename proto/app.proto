@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package app;
+
+
+option go_package = "/proto/app;app";
+
+
+message RegisterAppRequest {
+    string name = 1;
+    string description = 2;
+}
+
+
+message App {
+    string name = 1;
+    string description = 2;
+    string id=5;
+}
+
+
+message GetAppsRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetAppsResponse {
+    repeated App app = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+message EditAppRequest {
+    string name = 1;
+    string description = 2;
+    string id=5;
+}
+
+
+
+message RegisterAppVersionRequest {
+    string app_id = 1;
+    string version_number = 2;
+    string build_number =3;
+    string release_notes =4;
+    bytes apk =5;
+}
+
+
+message AppVersion {
+    string app_id = 1;
+    string version_number = 2;
+    string build_number =3;
+    string release_notes =4;
+    string file_path =5;
+    string file_size_bytes = 6;
+    string checksum = 7;
+    bool is_active =8;
+    string is_latest_stable =9;
+    string released_at =10;
+    string version_id =11;
+
+}
+
+
+message GetAppVersionsRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetAppVersionsResponse {
+    repeated AppVersion app_version = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+message EditAppVersionRequest {
+    string app_id = 1;
+    string version_number = 2;
+    string build_number =3;
+    string release_notes =4;
+    bytes apk =5;
+    bool is_active =6;
+    string is_latest_stable =9;
+    string version_id =10;
+}
+

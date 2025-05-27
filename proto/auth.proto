@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package auth;
+
+
+option go_package = "/proto/auth;auth";
+
+
+message RegisterRequest {
+    string fullname = 1;
+    string email = 2;
+    string password = 3;
+    string role = 4;
+}
+
+
+message ResetPasswordRequest {
+    string email = 1;
+    string password = 2;
+    string confirm_password = 3;
+    bool logged_in =4;
+    string user_id =5;
+}
+
+
+
+message User {
+    string fullname = 1;
+    string email = 2;
+    string password = 3;
+    string role = 4;
+    string id=5;
+}
+
+
+message GetUsersRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetUsersResponse {
+    repeated User user = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+message EditUserRequest {
+     string fullname = 1;
+    string email = 2;
+    string password = 3;
+    string role = 4;
+    string id=5;
+
+}
+
+
+
+//option go_package = "job-portal-apis/proto;auth";
+
+message LoginRequest{
+    string email =1;
+    string password = 2;
+}
+
+message AuthResponse {
+    bool success = 1;
+    string message = 2;
+    string token = 3;
+    string status = 4;
+    string role = 5;
+    string id = 6;
+    repeated string permissions = 7; // List of permissions granted to the user
+    string isFirstTimeLogin =8;
+    string tokenExpiry =9;
+    
+}

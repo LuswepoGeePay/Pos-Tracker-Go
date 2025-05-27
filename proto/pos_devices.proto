@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package posdevices;
+
+
+option go_package = "/proto/posdevices;posdevices";
+
+
+message RegisterPosDeviceRequest {
+    string app_id = 1;
+    string serial_number = 2;
+    string name = 3;
+    string current_app_version = 4;
+    string last_known_latitude = 5;
+    string last_known_longitude = 6;
+    string status = 7;
+    string device_model = 8;
+    string operating_system = 9;
+}
+
+
+message PosDevice {
+    string app_id = 1;
+    string serial_number = 2;
+    string name = 3;
+    string current_app_version = 4;
+    string last_known_latitude = 5;
+    string last_known_longitude = 6;
+    string status = 7;
+    string device_model = 8;
+    string operating_system = 9;
+    string id=10;
+    string location_last_updated=11;
+}
+
+
+message GetPosDevicesRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetPosDevicesResponse {
+    repeated PosDevice posdevices = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+message EditPosDeviceRequest {
+    string app_id = 1;
+    string serial_number = 2;
+    string name = 3;
+    string current_app_version = 4;
+    string last_known_latitude = 5;
+    string last_known_longitude = 6;
+    string status = 7;
+    string device_model = 8;
+    string operating_system = 9;
+    string id=10;
+}
+
+
+
+message RegisterLocationHistoryRequest {
+    string posdevice_id = 1;
+    string longitude = 2;
+    string latitude =3;
+    string accuracy =4;
+    string timestamp =5;
+}
+
+
+message LocationHistory {
+    string posdevice_id = 1;
+    string longitude = 2;
+    string latitude =3;
+    string accuracy =4;
+    string timestamp =5;
+    string id =6;
+}
+
+
+message GetLocationHistorysRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetLocationHistorysResponse {
+    repeated LocationHistory location_history = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+message EditLocationHistoryRequest {
+    string posdevice_id = 1;
+    string longitude = 2;
+    string latitude =3;
+    string accuracy =4;
+    string timestamp =5;
+    string id =6;
+}
+
