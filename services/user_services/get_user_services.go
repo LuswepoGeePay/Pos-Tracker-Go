@@ -1,0 +1,55 @@
+package userservices
+
+import (
+	"pos-master/config"
+	"pos-master/models"
+	pb "pos-master/proto/auth"
+	"pos-master/utils"
+)
+
+func GetUsers(req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
+
+	var users []models.User
+
+	tx := config.DB.Begin()
+	query := tx.Model(&models.User{})
+
+	var totalUsers int64
+	err := query.Count(&totalUsers).Error
+
+	if err != nil {
+		return nil, utils.CapitalizeError("failed to count users")
+	}
+
+	totalPages := int32((totalUsers + int64(req.PageSize) - 1) / int64(req.PageSize))
+	// Calculate offset for pagination
+	offset := (req.Page - 1) * req.PageSize
+
+	// Execute the final query with pagination and preloading
+	err = query.Limit(int(req.PageSize)).
+		Offset(int(offset)).
+		Find(&users).Error
+
+	if err != nil {
+		return nil, utils.CapitalizeError("failed to retrieve users")
+	}
+
+	pbUsers := make([]*pb.User, len(users))
+
+	for i, user := range users {
+
+		pbUsers[i] = &pb.User{
+			Id:       user.ID.String(),
+			Fullname: user.FullName,
+			Email:    user.Email,
+			Role:     user.Role.Name,
+		}
+	}
+
+	return &pb.GetUsersResponse{
+		User:        pbUsers,
+		TotalPages:  totalPages,
+		CurrentPage: req.Page,
+		HasMore:     req.Page < totalPages,
+	}, nil
+}
