@@ -330,7 +330,6 @@ type RegisterAppVersionRequest struct {
 	Apk            []byte                 `protobuf:"bytes,5,opt,name=apk,proto3" json:"apk,omitempty"`
 	FileSizeBytes  string                 `protobuf:"bytes,6,opt,name=file_size_bytes,json=fileSizeBytes,proto3" json:"file_size_bytes,omitempty"`
 	IsLatestStable bool                   `protobuf:"varint,7,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
-	VersionId      string                 `protobuf:"bytes,8,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -414,13 +413,6 @@ func (x *RegisterAppVersionRequest) GetIsLatestStable() bool {
 	return false
 }
 
-func (x *RegisterAppVersionRequest) GetVersionId() string {
-	if x != nil {
-		return x.VersionId
-	}
-	return ""
-}
-
 type AppVersion struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	AppId          string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -431,7 +423,7 @@ type AppVersion struct {
 	FileSizeBytes  string                 `protobuf:"bytes,6,opt,name=file_size_bytes,json=fileSizeBytes,proto3" json:"file_size_bytes,omitempty"`
 	Checksum       string                 `protobuf:"bytes,7,opt,name=checksum,proto3" json:"checksum,omitempty"`
 	IsActive       bool                   `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	IsLatestStable string                 `protobuf:"bytes,9,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
+	IsLatestStable bool                   `protobuf:"varint,9,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
 	ReleasedAt     string                 `protobuf:"bytes,10,opt,name=released_at,json=releasedAt,proto3" json:"released_at,omitempty"`
 	VersionId      string                 `protobuf:"bytes,11,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -524,11 +516,11 @@ func (x *AppVersion) GetIsActive() bool {
 	return false
 }
 
-func (x *AppVersion) GetIsLatestStable() string {
+func (x *AppVersion) GetIsLatestStable() bool {
 	if x != nil {
 		return x.IsLatestStable
 	}
-	return ""
+	return false
 }
 
 func (x *AppVersion) GetReleasedAt() string {
@@ -799,7 +791,7 @@ const file_app_proto_rawDesc = "" +
 	"\x0eEditAppRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\"\xa4\x02\n" +
+	"\x02id\x18\x05 \x01(\tR\x02id\"\x85\x02\n" +
 	"\x19RegisterAppVersionRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +
 	"\x0eversion_number\x18\x02 \x01(\tR\rversionNumber\x12!\n" +
@@ -807,9 +799,7 @@ const file_app_proto_rawDesc = "" +
 	"\rrelease_notes\x18\x04 \x01(\tR\freleaseNotes\x12\x10\n" +
 	"\x03apk\x18\x05 \x01(\fR\x03apk\x12&\n" +
 	"\x0ffile_size_bytes\x18\x06 \x01(\tR\rfileSizeBytes\x12(\n" +
-	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\x12\x1d\n" +
-	"\n" +
-	"version_id\x18\b \x01(\tR\tversionId\"\xfa\x02\n" +
+	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\"\xfa\x02\n" +
 	"\n" +
 	"AppVersion\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +
@@ -820,7 +810,7 @@ const file_app_proto_rawDesc = "" +
 	"\x0ffile_size_bytes\x18\x06 \x01(\tR\rfileSizeBytes\x12\x1a\n" +
 	"\bchecksum\x18\a \x01(\tR\bchecksum\x12\x1b\n" +
 	"\tis_active\x18\b \x01(\bR\bisActive\x12(\n" +
-	"\x10is_latest_stable\x18\t \x01(\tR\x0eisLatestStable\x12\x1f\n" +
+	"\x10is_latest_stable\x18\t \x01(\bR\x0eisLatestStable\x12\x1f\n" +
 	"\vreleased_at\x18\n" +
 	" \x01(\tR\n" +
 	"releasedAt\x12\x1d\n" +

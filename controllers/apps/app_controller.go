@@ -2,6 +2,7 @@ package apps
 
 import (
 	"log/slog"
+	"pos-master/models"
 	appPb "pos-master/proto/app"
 	appservices "pos-master/services/app_services"
 	"pos-master/utils"
@@ -66,5 +67,64 @@ func RegisterNewAppVersionHandler(c *gin.Context) {
 }
 
 func GetAppsHandler(c *gin.Context) {
+
+	var getRequest models.SearchRequest
+
+	if err := c.ShouldBindJSON(&getRequest); err != nil {
+		utils.Log(slog.LevelError, "❌error", "invalid request body")
+		utils.RespondWithError(c, 400, utils.InvReqBody, err.Error())
+		return
+	}
+
+	getRequest.SetDefaults()
+
+	req := &appPb.GetAppsRequest{
+		Page:        int32(getRequest.Page),
+		PageSize:    int32(getRequest.PageSize),
+		SearchQuery: getRequest.SearchQuery,
+	}
+
+	apps, err := appservices.GetApps(req)
+
+	if err != nil {
+		utils.Log(slog.LevelError, "❌error", "unable to retrieve apps", "details", string(err.Error()))
+		utils.RespondWithError(c, 400, utils.FailedToRetrieve("Apps"), err.Error())
+		return
+	}
+
+	utils.RespondWithSuccess(c, utils.SuccessfullyRetrieve("Apps"), gin.H{
+		"apps": apps,
+	})
+
+}
+
+func GetAppVersionsHandler(c *gin.Context) {
+	var getRequest models.SearchRequest
+
+	if err := c.ShouldBindJSON(&getRequest); err != nil {
+		utils.Log(slog.LevelError, "❌error", "invalid request body")
+		utils.RespondWithError(c, 400, utils.InvReqBody, err.Error())
+		return
+	}
+
+	getRequest.SetDefaults()
+
+	req := &appPb.GetAppVersionsRequest{
+		Page:        int32(getRequest.Page),
+		PageSize:    int32(getRequest.PageSize),
+		SearchQuery: getRequest.SearchQuery,
+	}
+
+	apps, err := appservices.GetAppVersions(req)
+
+	if err != nil {
+		utils.Log(slog.LevelError, "❌error", "unable to retrieve app versions ", "details", string(err.Error()))
+		utils.RespondWithError(c, 400, utils.FailedToRetrieve("Apps versions"), err.Error())
+		return
+	}
+
+	utils.RespondWithSuccess(c, utils.SuccessfullyRetrieve("Apps versions"), gin.H{
+		"apps": apps,
+	})
 
 }

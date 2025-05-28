@@ -63,7 +63,7 @@ type PosDevice struct {
 type LocationHistory struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key"`
 	PosDeviceID uuid.UUID `gorm:"not null"`
-	PosDevice   App       `gorm:"foreignKey:PosDeviceID"`
+	PosDevice   PosDevice `gorm:"foreignKey:PosDeviceID"`
 	Longitude   string    `gorm:"default:null"`
 	Latitude    string    `gorm:"default:null"`
 	Accuracy    string    `gorm:"default:null"`

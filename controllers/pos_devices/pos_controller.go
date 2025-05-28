@@ -1,7 +1,10 @@
 package posdevices
 
 import (
+	"log/slog"
+	"pos-master/models"
 	"pos-master/proto/posdevices"
+	historyservices "pos-master/services/history_services"
 	posservices "pos-master/services/pos_services"
 	"pos-master/utils"
 
@@ -23,5 +26,36 @@ func RegisterPosDeviceHandler(c *gin.Context) {
 	}
 
 	utils.RespondWithSuccess(c, "POS Registered successfully")
+
+}
+
+func GetPosDevicesHandler(c *gin.Context) {
+	var getRequest models.SearchRequest
+
+	if err := c.ShouldBindJSON(&getRequest); err != nil {
+		utils.Log(slog.LevelError, "❌error", "invalid request body")
+		utils.RespondWithError(c, 400, utils.InvReqBody, err.Error())
+		return
+	}
+
+	getRequest.SetDefaults()
+
+	req := &posdevices.GetPosDevicesRequest{
+		Page:        int32(getRequest.Page),
+		PageSize:    int32(getRequest.PageSize),
+		SearchQuery: getRequest.SearchQuery,
+	}
+
+	devices, err := historyservices.GetPosDevices(req)
+
+	if err != nil {
+		utils.Log(slog.LevelError, "❌error", "unable to retrieve pos devices ", "details", string(err.Error()))
+		utils.RespondWithError(c, 400, utils.FailedToRetrieve("pos devices"), err.Error())
+		return
+	}
+
+	utils.RespondWithSuccess(c, utils.SuccessfullyRetrieve("pos devices"), gin.H{
+		"devices": devices,
+	})
 
 }

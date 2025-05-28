@@ -60,7 +60,7 @@ message AppVersion {
     string file_size_bytes = 6;
     string checksum = 7;
     bool is_active =8;
-    string is_latest_stable =9;
+    bool is_latest_stable =9;
     string released_at =10;
     string version_id =11;
 

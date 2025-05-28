@@ -20,13 +20,17 @@ func SetupRoutes(r *gin.Engine) {
 
 	//Pos devices
 	r.POST("/v1/pos/register", posdevices.RegisterPosDeviceHandler)
+	auth.POST("/v1/pos/devices/get", posdevices.GetPosDevicesHandler)
 
 	//Apps
 	auth.POST("/app/register", apps.RegisterAppHandler)
+	auth.POST("/apps/get", apps.GetAppsHandler)
 
 	//App versions
 	auth.POST("/app/version/register", apps.RegisterNewAppVersionHandler)
-
+	auth.POST("/app/versions/get", apps.GetAppVersionsHandler)
 	//location history
 	auth.POST("/location/register", locationhistory.RegisterNewLocationHandler)
+	auth.POST("/locations/get", locationhistory.GetLocationsHandler)
+
 }
