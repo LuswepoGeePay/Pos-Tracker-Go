@@ -16,6 +16,7 @@ message RegisterPosDeviceRequest {
     string status = 7;
     string device_model = 8;
     string operating_system = 9;
+    string description =10;
 }
 
 
@@ -31,6 +32,7 @@ message PosDevice {
     string operating_system = 9;
     string id=10;
     string location_last_updated=11;
+    string description =12;
 }
 
 
@@ -58,6 +60,7 @@ message EditPosDeviceRequest {
     string device_model = 8;
     string operating_system = 9;
     string id=10;
+    string description =11;
 }
 
 

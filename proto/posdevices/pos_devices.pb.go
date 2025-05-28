@@ -32,6 +32,7 @@ type RegisterPosDeviceRequest struct {
 	Status             string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
 	DeviceModel        string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
 	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
+	Description        string                 `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -129,6 +130,13 @@ func (x *RegisterPosDeviceRequest) GetOperatingSystem() string {
 	return ""
 }
 
+func (x *RegisterPosDeviceRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
 type PosDevice struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	AppId               string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -142,6 +150,7 @@ type PosDevice struct {
 	OperatingSystem     string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
 	Id                  string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
 	LocationLastUpdated string                 `protobuf:"bytes,11,opt,name=location_last_updated,json=locationLastUpdated,proto3" json:"location_last_updated,omitempty"`
+	Description         string                 `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -249,6 +258,13 @@ func (x *PosDevice) GetId() string {
 func (x *PosDevice) GetLocationLastUpdated() string {
 	if x != nil {
 		return x.LocationLastUpdated
+	}
+	return ""
+}
+
+func (x *PosDevice) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -393,6 +409,7 @@ type EditPosDeviceRequest struct {
 	DeviceModel        string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
 	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
 	Id                 string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
+	Description        string                 `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -493,6 +510,13 @@ func (x *EditPosDeviceRequest) GetOperatingSystem() string {
 func (x *EditPosDeviceRequest) GetId() string {
 	if x != nil {
 		return x.Id
+	}
+	return ""
+}
+
+func (x *EditPosDeviceRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -874,7 +898,7 @@ var File_pos_devices_proto protoreflect.FileDescriptor
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\xe2\x02\n" +
+	"posdevices\"\x84\x03\n" +
 	"\x18RegisterPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -884,7 +908,9 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x14last_known_longitude\x18\x06 \x01(\tR\x12lastKnownLongitude\x12\x16\n" +
 	"\x06status\x18\a \x01(\tR\x06status\x12!\n" +
 	"\fdevice_model\x18\b \x01(\tR\vdeviceModel\x12)\n" +
-	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\"\x97\x03\n" +
+	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\x12 \n" +
+	"\vdescription\x18\n" +
+	" \x01(\tR\vdescription\"\xb9\x03\n" +
 	"\tPosDevice\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -897,7 +923,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\x12\x0e\n" +
 	"\x02id\x18\n" +
 	" \x01(\tR\x02id\x122\n" +
-	"\x15location_last_updated\x18\v \x01(\tR\x13locationLastUpdated\"h\n" +
+	"\x15location_last_updated\x18\v \x01(\tR\x13locationLastUpdated\x12 \n" +
+	"\vdescription\x18\f \x01(\tR\vdescription\"h\n" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -910,7 +937,7 @@ const file_pos_devices_proto_rawDesc = "" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\xee\x02\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\x90\x03\n" +
 	"\x14EditPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -922,7 +949,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\fdevice_model\x18\b \x01(\tR\vdeviceModel\x12)\n" +
 	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\x12\x0e\n" +
 	"\x02id\x18\n" +
-	" \x01(\tR\x02id\"\xb7\x01\n" +
+	" \x01(\tR\x02id\x12 \n" +
+	"\vdescription\x18\v \x01(\tR\vdescription\"\xb7\x01\n" +
 	"\x1eRegisterLocationHistoryRequest\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +
