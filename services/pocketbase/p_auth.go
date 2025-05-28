@@ -1,22 +1,19 @@
 package pocketbase
 
 import (
-	"net/http"
+	"fmt"
 	"pos-master/models"
+	"pos-master/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 )
 
-func HandleAuth(c *gin.Context) {
-	var creds models.PocketBaseCredentials
+func HandlePocketBaseAuth(c *gin.Context) (string, error) {
 
-	if err := c.ShouldBindJSON(&creds); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error":  "invalid input",
-			"detail": err,
-		})
-		return
+	var body = map[string]string{
+		"identity": "luswepo17@gmail.com",
+		"password": "green0147",
 	}
 
 	client := resty.New()
@@ -25,28 +22,18 @@ func HandleAuth(c *gin.Context) {
 
 	resp, err := client.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(creds).
+		SetBody(body).
 		SetResult(&authResp).
 		Post("http://89.250.72.76:8090/api/collections/_superusers/auth-with-password")
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error":  "request failed",
-			"detail": err.Error(),
-		})
-		return
+		return "", utils.CapitalizeError(fmt.Sprintf("Unable to login: %s", err.Error()))
 	}
 
 	if resp.IsError() {
-		c.JSON(resp.StatusCode(), gin.H{
-			"error":  "authentication failed",
-			"detail": resp.String(),
-		})
-		return
+		return "", utils.CapitalizeError("Unable to login")
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"token": authResp.Token,
-	})
+	return authResp.Token, nil
 
 }

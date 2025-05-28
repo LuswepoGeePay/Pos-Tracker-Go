@@ -25,7 +25,7 @@ func SetupRoutes(r *gin.Engine) {
 	auth.POST("/app/register", apps.RegisterAppHandler)
 
 	//App versions
-	// auth.POST("/v1/app/version/register", apps.)
+	auth.POST("/app/version/register", apps.RegisterNewAppVersionHandler)
 
 	//location history
 	auth.POST("/location/register", locationhistory.RegisterNewLocationHandler)

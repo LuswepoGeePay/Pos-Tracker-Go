@@ -15,6 +15,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		if authHeader == "" {
 			utils.RespondWithError(c, 401, "Authorization header is required")
+			c.Abort()
 			return
 		}
 
@@ -23,6 +24,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		claims, err := authservices.ValidateToken(tokenString)
 		if err != nil {
 			utils.RespondWithError(c, 401, "Invalid Token")
+			c.Abort()
 			return
 		}
 

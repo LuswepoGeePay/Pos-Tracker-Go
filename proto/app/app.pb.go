@@ -322,14 +322,17 @@ func (x *EditAppRequest) GetId() string {
 }
 
 type RegisterAppVersionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AppId         string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
-	VersionNumber string                 `protobuf:"bytes,2,opt,name=version_number,json=versionNumber,proto3" json:"version_number,omitempty"`
-	BuildNumber   string                 `protobuf:"bytes,3,opt,name=build_number,json=buildNumber,proto3" json:"build_number,omitempty"`
-	ReleaseNotes  string                 `protobuf:"bytes,4,opt,name=release_notes,json=releaseNotes,proto3" json:"release_notes,omitempty"`
-	Apk           []byte                 `protobuf:"bytes,5,opt,name=apk,proto3" json:"apk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	AppId          string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	VersionNumber  string                 `protobuf:"bytes,2,opt,name=version_number,json=versionNumber,proto3" json:"version_number,omitempty"`
+	BuildNumber    string                 `protobuf:"bytes,3,opt,name=build_number,json=buildNumber,proto3" json:"build_number,omitempty"`
+	ReleaseNotes   string                 `protobuf:"bytes,4,opt,name=release_notes,json=releaseNotes,proto3" json:"release_notes,omitempty"`
+	Apk            []byte                 `protobuf:"bytes,5,opt,name=apk,proto3" json:"apk,omitempty"`
+	FileSizeBytes  string                 `protobuf:"bytes,6,opt,name=file_size_bytes,json=fileSizeBytes,proto3" json:"file_size_bytes,omitempty"`
+	IsLatestStable bool                   `protobuf:"varint,7,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
+	VersionId      string                 `protobuf:"bytes,8,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *RegisterAppVersionRequest) Reset() {
@@ -395,6 +398,27 @@ func (x *RegisterAppVersionRequest) GetApk() []byte {
 		return x.Apk
 	}
 	return nil
+}
+
+func (x *RegisterAppVersionRequest) GetFileSizeBytes() string {
+	if x != nil {
+		return x.FileSizeBytes
+	}
+	return ""
+}
+
+func (x *RegisterAppVersionRequest) GetIsLatestStable() bool {
+	if x != nil {
+		return x.IsLatestStable
+	}
+	return false
+}
+
+func (x *RegisterAppVersionRequest) GetVersionId() string {
+	if x != nil {
+		return x.VersionId
+	}
+	return ""
 }
 
 type AppVersion struct {
@@ -775,13 +799,17 @@ const file_app_proto_rawDesc = "" +
 	"\x0eEditAppRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\"\xb3\x01\n" +
+	"\x02id\x18\x05 \x01(\tR\x02id\"\xa4\x02\n" +
 	"\x19RegisterAppVersionRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +
 	"\x0eversion_number\x18\x02 \x01(\tR\rversionNumber\x12!\n" +
 	"\fbuild_number\x18\x03 \x01(\tR\vbuildNumber\x12#\n" +
 	"\rrelease_notes\x18\x04 \x01(\tR\freleaseNotes\x12\x10\n" +
-	"\x03apk\x18\x05 \x01(\fR\x03apk\"\xfa\x02\n" +
+	"\x03apk\x18\x05 \x01(\fR\x03apk\x12&\n" +
+	"\x0ffile_size_bytes\x18\x06 \x01(\tR\rfileSizeBytes\x12(\n" +
+	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\x12\x1d\n" +
+	"\n" +
+	"version_id\x18\b \x01(\tR\tversionId\"\xfa\x02\n" +
 	"\n" +
 	"AppVersion\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +

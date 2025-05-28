@@ -46,6 +46,8 @@ message RegisterAppVersionRequest {
     string build_number =3;
     string release_notes =4;
     bytes apk =5;
+    string file_size_bytes = 6;
+    bool is_latest_stable =7;
 }
 
 

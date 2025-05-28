@@ -23,7 +23,7 @@ type User struct {
 type App struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key"`
 	Name        string    `gorm:"default:null"`
-	Description string    `gorm:"unique;not null"`
+	Description string    `gorm:"default:null"`
 	gorm.Model
 }
 
