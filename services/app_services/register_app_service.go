@@ -1,8 +1,11 @@
 package appservices
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"pos-master/config"
 	"pos-master/models"
 	appPb "pos-master/proto/app"
@@ -41,20 +44,45 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 	}
 
 	fileURL, err := pocketbase.HandleUpload(c, token)
-
 	if err != nil {
 		utils.Log(slog.LevelError, "error", "unable to upload file to pocketbase", err.Error())
 		return utils.CapitalizeError("unable to upload file to server")
 	}
 
+	// file, err := c.FormFile("file")
+
+	// if err != nil {
+	// 	return utils.CapitalizeError("no file uploaded")
+	// }
+
+	// openedFile, err := file.Open()
+	// if err != nil {
+	// 	utils.Log(slog.LevelError, "error", "unable to open APK for checksum", err.Error())
+	// 	return utils.CapitalizeError("unable to read uploaded APK")
+	// }
+
+	// defer openedFile.Close()
+	res, err := http.Get(fileURL)
+	if err != nil {
+		utils.Log(slog.LevelError, "error", "unable to fetch APK from URL", err.Error())
+		return utils.CapitalizeError("unable to fetch uploaded APK")
+	}
+	defer res.Body.Close()
+
+	hash := sha256.New()
+	// if _, err := io.Copy(hash, openedFile); err != nil {
+	// 	utils.Log(slog.LevelError, "❌error", "unable to hash APK", err.Error())
+	// 	return utils.CapitalizeError("unable to process apk")
+	// }
+
 	appID, err := uuid.Parse(req.AppId)
 
 	if err != nil {
 		utils.Log(slog.LevelError, "error", err.Error())
-		return utils.CapitalizeError("")
+		return utils.CapitalizeError("unable to parse App ID")
 	}
 
-	checkSum := ""
+	checkSum := hex.EncodeToString(hash.Sum(nil))
 
 	appVersion := models.AppVersion{
 		ID:             uuid.New(),

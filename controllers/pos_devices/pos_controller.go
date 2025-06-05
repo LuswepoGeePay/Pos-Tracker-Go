@@ -4,7 +4,6 @@ import (
 	"log/slog"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
-	historyservices "pos-master/services/history_services"
 	posservices "pos-master/services/pos_services"
 	"pos-master/utils"
 
@@ -20,12 +19,14 @@ func RegisterPosDeviceHandler(c *gin.Context) {
 		return
 	}
 
-	err := posservices.RegisterPosDevice(&req)
+	posDeviceID, err := posservices.RegisterPosDevice(&req)
 	if err != nil {
 		utils.RespondWithError(c, 400, err.Error())
 	}
 
-	utils.RespondWithSuccess(c, "POS Registered successfully")
+	utils.RespondWithSuccess(c, "POS Registered successfully", gin.H{
+		"device_id": posDeviceID,
+	})
 
 }
 
@@ -46,7 +47,7 @@ func GetPosDevicesHandler(c *gin.Context) {
 		SearchQuery: getRequest.SearchQuery,
 	}
 
-	devices, err := historyservices.GetPosDevices(req)
+	devices, err := posservices.GetPosDevices(req)
 
 	if err != nil {
 		utils.Log(slog.LevelError, "❌error", "unable to retrieve pos devices ", "details", string(err.Error()))

@@ -3,6 +3,7 @@ package pocketbase
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"pos-master/utils"
 	"strings"
 
@@ -31,20 +32,25 @@ func HandleUpload(c *gin.Context, token string) (string, error) {
 	}
 	defer openedFile.Close()
 
-	collectionName := "pos_files" // Your collection name
-	fileFieldName := "file"       // Your file field name in the collection schema
+	collectionName := "pos_master_files" // Your collection name
+	fileFieldName := "file"              // Your file field name in the collection schema
 
 	client := resty.New()
-	endpoint := fmt.Sprintf("http://89.250.72.76:8090/api/collections/%s/records", collectionName)
+	endpoint := fmt.Sprintf("http://102.23.120.239:8090/api/collections/%s/records", collectionName)
 
 	resp, err := client.R().
 		SetHeader("Authorization", token).
 		SetFileReader(fileFieldName, file.Filename, openedFile).
 		Post(endpoint)
 
-	if err != nil || resp.IsError() {
-		return "", utils.CapitalizeError("Failed to upload file")
+	if err != nil {
+		log.Printf("Upload error (request issue): %v\n", err)
+		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %s", err.Error()))
+	}
 
+	if resp.IsError() {
+		log.Printf("Upload error (response error): %s\n", resp.String()) // Log full response body
+		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %s", resp.String()))
 	}
 
 	var result map[string]interface{}
@@ -55,7 +61,7 @@ func HandleUpload(c *gin.Context, token string) (string, error) {
 	// Construct file URL from response
 	recordID := result["id"].(string)
 	fileName := result[fileFieldName].(string) // file field value in record (filename/path)
-	fileURL := fmt.Sprintf("http://89.250.72.76:8090/api/files/%s/%s/%s", collectionName, recordID, fileName)
+	fileURL := fmt.Sprintf("http://102.23.120.239:8090/api/files/%s/%s/%s", collectionName, recordID, fileName)
 
 	return fileURL, nil
 }

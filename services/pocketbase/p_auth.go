@@ -12,8 +12,8 @@ import (
 func HandlePocketBaseAuth(c *gin.Context) (string, error) {
 
 	var body = map[string]string{
-		"identity": "luswepo17@gmail.com",
-		"password": "green0147",
+		"identity": "luswepo@geepay.co.zm",
+		"password": "0147green",
 	}
 
 	client := resty.New()
@@ -24,7 +24,7 @@ func HandlePocketBaseAuth(c *gin.Context) (string, error) {
 		SetHeader("Content-Type", "application/json").
 		SetBody(body).
 		SetResult(&authResp).
-		Post("http://89.250.72.76:8090/api/collections/_superusers/auth-with-password")
+		Post("http://102.23.120.239:8090/api/collections/_superusers/auth-with-password")
 
 	if err != nil {
 		return "", utils.CapitalizeError(fmt.Sprintf("Unable to login: %s", err.Error()))

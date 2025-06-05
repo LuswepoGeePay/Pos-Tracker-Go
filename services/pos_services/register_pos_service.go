@@ -11,18 +11,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) error {
+func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error) {
 
-	appID, err := uuid.Parse(req.AppId)
-
-	if err != nil {
-		utils.Log(slog.LevelError, "Error", "Unable to parse app-Id")
-		return utils.CapitalizeError("unable to parse app-Id")
-	}
+	posDeviceID := uuid.New()
 
 	pos := models.PosDevice{
-		ID:                    uuid.New(),
-		AppID:                 appID,
+		ID:                    posDeviceID,
 		SerialNumber:          req.SerialNumber,
 		Name:                  req.Name,
 		Description:           req.Description,
@@ -33,15 +27,16 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) error {
 		OperatingSystem:       req.OperatingSystem,
 		Status:                "online",
 		LocationLastUpdatedAt: time.Now(),
+		Email:                 req.Email,
 	}
 
 	result := config.DB.Create(&pos)
 
 	if result.Error != nil {
 		utils.Log(slog.LevelError, "Error", "Unable to register pos device", "Detail", result.Error.Error())
-		return utils.CapitalizeError("Unable to register pos device")
+		return "", utils.CapitalizeError("Unable to register pos device")
 	}
 
-	return nil
+	return posDeviceID.String(), nil
 
 }

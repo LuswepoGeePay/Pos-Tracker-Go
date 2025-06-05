@@ -426,6 +426,7 @@ type AppVersion struct {
 	IsLatestStable bool                   `protobuf:"varint,9,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
 	ReleasedAt     string                 `protobuf:"bytes,10,opt,name=released_at,json=releasedAt,proto3" json:"released_at,omitempty"`
 	VersionId      string                 `protobuf:"bytes,11,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
+	AppName        string                 `protobuf:"bytes,12,opt,name=app_name,json=appName,proto3" json:"app_name,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -533,6 +534,13 @@ func (x *AppVersion) GetReleasedAt() string {
 func (x *AppVersion) GetVersionId() string {
 	if x != nil {
 		return x.VersionId
+	}
+	return ""
+}
+
+func (x *AppVersion) GetAppName() string {
+	if x != nil {
+		return x.AppName
 	}
 	return ""
 }
@@ -799,7 +807,7 @@ const file_app_proto_rawDesc = "" +
 	"\rrelease_notes\x18\x04 \x01(\tR\freleaseNotes\x12\x10\n" +
 	"\x03apk\x18\x05 \x01(\fR\x03apk\x12&\n" +
 	"\x0ffile_size_bytes\x18\x06 \x01(\tR\rfileSizeBytes\x12(\n" +
-	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\"\xfa\x02\n" +
+	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\"\x95\x03\n" +
 	"\n" +
 	"AppVersion\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +
@@ -815,7 +823,8 @@ const file_app_proto_rawDesc = "" +
 	" \x01(\tR\n" +
 	"releasedAt\x12\x1d\n" +
 	"\n" +
-	"version_id\x18\v \x01(\tR\tversionId\"i\n" +
+	"version_id\x18\v \x01(\tR\tversionId\x12\x19\n" +
+	"\bapp_name\x18\f \x01(\tR\aappName\"i\n" +
 	"\x15GetAppVersionsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +

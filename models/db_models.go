@@ -45,8 +45,6 @@ type AppVersion struct {
 
 type PosDevice struct {
 	ID                    uuid.UUID `gorm:"type:uuid;primary_key"`
-	AppID                 uuid.UUID `gorm:"not null"`
-	App                   App       `gorm:"foreignKey:AppID"`
 	SerialNumber          string    `gorm:"default:null"`
 	Name                  string    `gorm:"default:null"`
 	Description           string    `gorm:"default:null"`
@@ -56,6 +54,7 @@ type PosDevice struct {
 	Status                string    `gorm:"default:null"`
 	DeviceModel           string    `gorm:"default:null"`
 	OperatingSystem       string    `gorm:"default:null"`
+	Email                 string    `gorm:"default:null"`
 	LocationLastUpdatedAt time.Time
 	gorm.Model
 }

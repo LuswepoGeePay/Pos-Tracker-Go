@@ -33,6 +33,7 @@ type RegisterPosDeviceRequest struct {
 	DeviceModel        string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
 	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
 	Description        string                 `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
+	Email              string                 `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -133,6 +134,13 @@ func (x *RegisterPosDeviceRequest) GetOperatingSystem() string {
 func (x *RegisterPosDeviceRequest) GetDescription() string {
 	if x != nil {
 		return x.Description
+	}
+	return ""
+}
+
+func (x *RegisterPosDeviceRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
 	}
 	return ""
 }
@@ -331,7 +339,7 @@ func (x *GetPosDevicesRequest) GetSearchQuery() string {
 
 type GetPosDevicesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Posdevices    []*PosDevice           `protobuf:"bytes,1,rep,name=posdevices,proto3" json:"posdevices,omitempty"`    // List of users
+	Posdevice     []*PosDevice           `protobuf:"bytes,1,rep,name=posdevice,proto3" json:"posdevice,omitempty"`      // List of users
 	TotalPages    int32                  `protobuf:"varint,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`   // Total number of pages
 	CurrentPage   int32                  `protobuf:"varint,3,opt,name=currentPage,proto3" json:"currentPage,omitempty"` // Current page
 	HasMore       bool                   `protobuf:"varint,4,opt,name=hasMore,proto3" json:"hasMore,omitempty"`         // Whether there are more pages
@@ -369,9 +377,9 @@ func (*GetPosDevicesResponse) Descriptor() ([]byte, []int) {
 	return file_pos_devices_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetPosDevicesResponse) GetPosdevices() []*PosDevice {
+func (x *GetPosDevicesResponse) GetPosdevice() []*PosDevice {
 	if x != nil {
-		return x.Posdevices
+		return x.Posdevice
 	}
 	return nil
 }
@@ -605,6 +613,8 @@ type LocationHistory struct {
 	Accuracy      string                 `protobuf:"bytes,4,opt,name=accuracy,proto3" json:"accuracy,omitempty"`
 	Timestamp     string                 `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Id            string                 `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
+	DeviceName    string                 `protobuf:"bytes,7,opt,name=device_name,json=deviceName,proto3" json:"device_name,omitempty"`
+	Date          string                 `protobuf:"bytes,8,opt,name=date,proto3" json:"date,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -677,6 +687,20 @@ func (x *LocationHistory) GetTimestamp() string {
 func (x *LocationHistory) GetId() string {
 	if x != nil {
 		return x.Id
+	}
+	return ""
+}
+
+func (x *LocationHistory) GetDeviceName() string {
+	if x != nil {
+		return x.DeviceName
+	}
+	return ""
+}
+
+func (x *LocationHistory) GetDate() string {
+	if x != nil {
+		return x.Date
 	}
 	return ""
 }
@@ -898,7 +922,7 @@ var File_pos_devices_proto protoreflect.FileDescriptor
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\x84\x03\n" +
+	"posdevices\"\x9a\x03\n" +
 	"\x18RegisterPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -910,7 +934,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\fdevice_model\x18\b \x01(\tR\vdeviceModel\x12)\n" +
 	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\x12 \n" +
 	"\vdescription\x18\n" +
-	" \x01(\tR\vdescription\"\xb9\x03\n" +
+	" \x01(\tR\vdescription\x12\x14\n" +
+	"\x05email\x18\v \x01(\tR\x05email\"\xb9\x03\n" +
 	"\tPosDevice\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -928,11 +953,9 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xaa\x01\n" +
-	"\x15GetPosDevicesResponse\x125\n" +
-	"\n" +
-	"posdevices\x18\x01 \x03(\v2\x15.posdevices.PosDeviceR\n" +
-	"posdevices\x12\x1e\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xa8\x01\n" +
+	"\x15GetPosDevicesResponse\x123\n" +
+	"\tposdevice\x18\x01 \x03(\v2\x15.posdevices.PosDeviceR\tposdevice\x12\x1e\n" +
 	"\n" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
@@ -956,14 +979,17 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x03 \x01(\tR\blatitude\x12\x1a\n" +
 	"\baccuracy\x18\x04 \x01(\tR\baccuracy\x12\x1c\n" +
-	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\"\xb8\x01\n" +
+	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\"\xed\x01\n" +
 	"\x0fLocationHistory\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x03 \x01(\tR\blatitude\x12\x1a\n" +
 	"\baccuracy\x18\x04 \x01(\tR\baccuracy\x12\x1c\n" +
 	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\x12\x0e\n" +
-	"\x02id\x18\x06 \x01(\tR\x02id\"n\n" +
+	"\x02id\x18\x06 \x01(\tR\x02id\x12\x1f\n" +
+	"\vdevice_name\x18\a \x01(\tR\n" +
+	"deviceName\x12\x12\n" +
+	"\x04date\x18\b \x01(\tR\x04date\"n\n" +
 	"\x1aGetLocationHistorysRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -1009,7 +1035,7 @@ var file_pos_devices_proto_goTypes = []any{
 	(*EditLocationHistoryRequest)(nil),     // 9: posdevices.EditLocationHistoryRequest
 }
 var file_pos_devices_proto_depIdxs = []int32{
-	1, // 0: posdevices.GetPosDevicesResponse.posdevices:type_name -> posdevices.PosDevice
+	1, // 0: posdevices.GetPosDevicesResponse.posdevice:type_name -> posdevices.PosDevice
 	6, // 1: posdevices.GetLocationHistorysResponse.location_history:type_name -> posdevices.LocationHistory
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type

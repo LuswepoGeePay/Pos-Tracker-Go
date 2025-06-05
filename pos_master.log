@@ -1,3 +1,21 @@
 {"time":"2025-05-28T12:38:30.2382972+02:00","level":"ERROR","msg":"❌error","!BADKEY":"failed to parse form"}
 {"time":"2025-05-28T12:50:38.7658082+02:00","level":"ERROR","msg":"Error","Failed to add new location":"detail"}
 {"time":"2025-05-28T12:52:10.8820084+02:00","level":"ERROR","msg":"Error","Failed to add new location":"detail"}
+{"time":"2025-05-28T14:31:29.6003572+02:00","level":"ERROR","msg":"❌error","!BADKEY":"invalid request body"}
+{"time":"2025-05-28T14:34:43.2422663+02:00","level":"ERROR","msg":"❌error","unable to retrieve location history ":"details","!BADKEY":"Failed to retrieve pos device location history"}
+{"time":"2025-06-05T12:26:42.3859989+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file"}
+{"time":"2025-06-05T12:26:42.3865198+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T12:30:16.5816664+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file"}
+{"time":"2025-06-05T12:30:16.5827112+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T12:31:04.5252795+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file"}
+{"time":"2025-06-05T12:31:04.5252795+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T12:32:02.2855628+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file"}
+{"time":"2025-06-05T12:32:02.2855628+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T12:33:35.7846179+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file"}
+{"time":"2025-06-05T12:33:35.7846179+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T12:36:33.9550466+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file"}
+{"time":"2025-06-05T12:36:33.9550466+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T12:39:49.5582305+02:00","level":"ERROR","msg":"error","unable to upload file to pocketbase":"Failed to upload file: <html>\r\n<head><title>413 Request Entity Too Large</title></head>\r\n<body>\r\n<center><h1>413 Request Entity Too Large</h1></center>\r\n<hr><center>nginx/1.24.0 (Ubuntu)</center>\r\n</body>\r\n</html>"}
+{"time":"2025-06-05T12:39:49.5592554+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
+{"time":"2025-06-05T13:50:56.5618068+02:00","level":"ERROR","msg":"❌error","!BADKEY":"invalid app version data"}
+{"time":"2025-06-05T15:41:12.9338785+02:00","level":"ERROR","msg":"Error","Failed to add new location":"detail"}

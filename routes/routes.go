@@ -20,7 +20,7 @@ func SetupRoutes(r *gin.Engine) {
 
 	//Pos devices
 	r.POST("/v1/pos/register", posdevices.RegisterPosDeviceHandler)
-	auth.POST("/v1/pos/devices/get", posdevices.GetPosDevicesHandler)
+	auth.POST("/pos/devices/get", posdevices.GetPosDevicesHandler)
 
 	//Apps
 	auth.POST("/app/register", apps.RegisterAppHandler)

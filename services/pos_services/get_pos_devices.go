@@ -6,6 +6,7 @@ import (
 	"pos-master/models"
 	posPb "pos-master/proto/posdevices"
 	"pos-master/utils"
+	"time"
 )
 
 func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesResponse, error) {
@@ -20,7 +21,7 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 	err := query.Count(&totalPosDevices).Error
 
 	if err != nil {
-		return nil, utils.CapitalizeError("failed to count pos devices")
+		return nil, utils.CapitalizeError("failed to count pos device pos devices")
 	}
 
 	totalPages := int32((totalPosDevices + int64(req.PageSize) - 1) / int64(req.PageSize))
@@ -33,21 +34,29 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 		Find(&pos_devices).Error
 
 	if err != nil {
-		return nil, utils.CapitalizeError("failed to retrieve pos devices")
+		return nil, utils.CapitalizeError("failed to retrieve pos device pos devices")
 	}
 
 	pbPosDevices := make([]*posPb.PosDevice, len(pos_devices))
 
-	for i, pos_device := range pos_devices {
+	for i, history := range pos_devices {
 		pbPosDevices[i] = &posPb.PosDevice{
-			Id:          pos_device.ID.String(),
-			Name:        pos_device.Name,
-			Description: pos_device.Description,
+			Id:                  history.ID.String(),
+			SerialNumber:        history.SerialNumber,
+			Name:                history.Name,
+			CurrentAppVersion:   history.CurrentAppVersion,
+			LastKnownLatitude:   history.LastKnownLatitude,
+			LastKnownLongitude:  history.LastKnownLongitutude,
+			Status:              history.Status,
+			DeviceModel:         history.DeviceModel,
+			OperatingSystem:     history.OperatingSystem,
+			Description:         history.Description,
+			LocationLastUpdated: history.LocationLastUpdatedAt.Format(time.RFC3339),
 		}
 	}
 
 	return &posPb.GetPosDevicesResponse{
-		Posdevices:  pbPosDevices,
+		Posdevice:   pbPosDevices,
 		TotalPages:  totalPages,
 		CurrentPage: req.Page,
 		HasMore:     req.Page < totalPages,
@@ -69,7 +78,6 @@ func GetPosById(posID string) (*posPb.PosDevice, error) {
 
 	return &posPb.PosDevice{
 		Id:                 posdevice.ID.String(),
-		AppId:              posdevice.AppID.String(),
 		SerialNumber:       posdevice.SerialNumber,
 		Name:               posdevice.Name,
 		Description:        posdevice.Description,

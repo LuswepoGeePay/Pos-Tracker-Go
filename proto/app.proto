@@ -63,6 +63,7 @@ message AppVersion {
     bool is_latest_stable =9;
     string released_at =10;
     string version_id =11;
+    string app_name=12;
 
 }
 

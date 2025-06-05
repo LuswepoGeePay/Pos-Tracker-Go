@@ -60,7 +60,7 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 
 	tx := config.DB.Begin()
 
-	query := tx.Model(&models.AppVersion{})
+	query := tx.Preload("App").Model(&models.AppVersion{})
 
 	var totalApps int64
 	err := query.Count(&totalApps).Error
@@ -97,6 +97,7 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 			IsLatestStable: appv.IsLatestStable,
 			FilePath:       appv.FilePath,
 			FileSizeBytes:  appv.FileSizeBytes,
+			AppName:        appv.App.Name,
 		}
 	}
 
