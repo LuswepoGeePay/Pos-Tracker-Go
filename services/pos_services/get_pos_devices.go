@@ -52,6 +52,7 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 			OperatingSystem:     history.OperatingSystem,
 			Description:         history.Description,
 			LocationLastUpdated: history.LocationLastUpdatedAt.Format(time.RFC3339),
+			BusinessName:        history.Entity,
 		}
 	}
 

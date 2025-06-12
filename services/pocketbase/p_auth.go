@@ -27,7 +27,7 @@ func HandlePocketBaseAuth(c *gin.Context) (string, error) {
 		Post("http://102.23.120.239:8090/api/collections/_superusers/auth-with-password")
 
 	if err != nil {
-		return "", utils.CapitalizeError(fmt.Sprintf("Unable to login: %s", err.Error()))
+		return "", utils.CapitalizeError(fmt.Sprintf("Unable to login: %s", fmt.Sprintf("error: %v", err)))
 	}
 
 	if resp.IsError() {

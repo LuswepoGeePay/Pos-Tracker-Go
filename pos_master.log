@@ -19,3 +19,15 @@
 {"time":"2025-06-05T12:39:49.5592554+02:00","level":"ERROR","msg":"❌error","!BADKEY":"Unable to upload file to server"}
 {"time":"2025-06-05T13:50:56.5618068+02:00","level":"ERROR","msg":"❌error","!BADKEY":"invalid app version data"}
 {"time":"2025-06-05T15:41:12.9338785+02:00","level":"ERROR","msg":"Error","Failed to add new location":"detail"}
+{"time":"2025-06-06T19:55:13.9354192+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-06T19:57:17.1039858+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-06T19:58:15.9063617+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T11:44:47.8843284+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T11:45:21.8784991+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T11:46:34.6679259+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T11:49:26.0151457+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T11:57:38.3847185+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T12:04:23.0999388+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-07T12:08:06.0973856+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
+{"time":"2025-06-12T10:24:59.3503819+02:00","level":"ERROR","msg":"error","!BADKEY":"invalid device ID"}
+{"time":"2025-06-12T13:50:56.044034+02:00","level":"ERROR","msg":"❌ error","!BADKEY":"unable to count registered apps:record not found"}

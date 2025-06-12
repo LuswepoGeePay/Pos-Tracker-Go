@@ -12,7 +12,7 @@ func GetUsers(req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
 	var users []models.User
 
 	tx := config.DB.Begin()
-	query := tx.Model(&models.User{})
+	query := tx.Preload("Role").Model(&models.User{})
 
 	var totalUsers int64
 	err := query.Count(&totalUsers).Error
@@ -43,6 +43,7 @@ func GetUsers(req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
 			Fullname: user.FullName,
 			Email:    user.Email,
 			Role:     user.Role.Name,
+			Status:   user.Status,
 		}
 	}
 

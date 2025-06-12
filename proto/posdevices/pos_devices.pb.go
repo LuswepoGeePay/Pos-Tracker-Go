@@ -34,6 +34,7 @@ type RegisterPosDeviceRequest struct {
 	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
 	Description        string                 `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
 	Email              string                 `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
+	BusinessName       string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -145,6 +146,13 @@ func (x *RegisterPosDeviceRequest) GetEmail() string {
 	return ""
 }
 
+func (x *RegisterPosDeviceRequest) GetBusinessName() string {
+	if x != nil {
+		return x.BusinessName
+	}
+	return ""
+}
+
 type PosDevice struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	AppId               string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -159,6 +167,7 @@ type PosDevice struct {
 	Id                  string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
 	LocationLastUpdated string                 `protobuf:"bytes,11,opt,name=location_last_updated,json=locationLastUpdated,proto3" json:"location_last_updated,omitempty"`
 	Description         string                 `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
+	BusinessName        string                 `protobuf:"bytes,13,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -273,6 +282,13 @@ func (x *PosDevice) GetLocationLastUpdated() string {
 func (x *PosDevice) GetDescription() string {
 	if x != nil {
 		return x.Description
+	}
+	return ""
+}
+
+func (x *PosDevice) GetBusinessName() string {
+	if x != nil {
+		return x.BusinessName
 	}
 	return ""
 }
@@ -418,6 +434,7 @@ type EditPosDeviceRequest struct {
 	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
 	Id                 string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
 	Description        string                 `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
+	BusinessName       string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -529,6 +546,13 @@ func (x *EditPosDeviceRequest) GetDescription() string {
 	return ""
 }
 
+func (x *EditPosDeviceRequest) GetBusinessName() string {
+	if x != nil {
+		return x.BusinessName
+	}
+	return ""
+}
+
 type RegisterLocationHistoryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PosdeviceId   string                 `protobuf:"bytes,1,opt,name=posdevice_id,json=posdeviceId,proto3" json:"posdevice_id,omitempty"`
@@ -536,6 +560,9 @@ type RegisterLocationHistoryRequest struct {
 	Latitude      string                 `protobuf:"bytes,3,opt,name=latitude,proto3" json:"latitude,omitempty"`
 	Accuracy      string                 `protobuf:"bytes,4,opt,name=accuracy,proto3" json:"accuracy,omitempty"`
 	Timestamp     string                 `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Region        string                 `protobuf:"bytes,6,opt,name=region,proto3" json:"region,omitempty"`
+	City          string                 `protobuf:"bytes,7,opt,name=city,proto3" json:"city,omitempty"`
+	IpAddress     string                 `protobuf:"bytes,8,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -605,6 +632,27 @@ func (x *RegisterLocationHistoryRequest) GetTimestamp() string {
 	return ""
 }
 
+func (x *RegisterLocationHistoryRequest) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *RegisterLocationHistoryRequest) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *RegisterLocationHistoryRequest) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
 type LocationHistory struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PosdeviceId   string                 `protobuf:"bytes,1,opt,name=posdevice_id,json=posdeviceId,proto3" json:"posdevice_id,omitempty"`
@@ -615,6 +663,10 @@ type LocationHistory struct {
 	Id            string                 `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
 	DeviceName    string                 `protobuf:"bytes,7,opt,name=device_name,json=deviceName,proto3" json:"device_name,omitempty"`
 	Date          string                 `protobuf:"bytes,8,opt,name=date,proto3" json:"date,omitempty"`
+	Region        string                 `protobuf:"bytes,9,opt,name=region,proto3" json:"region,omitempty"`
+	City          string                 `protobuf:"bytes,10,opt,name=city,proto3" json:"city,omitempty"`
+	IpAddress     string                 `protobuf:"bytes,11,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	BusinessName  string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -701,6 +753,34 @@ func (x *LocationHistory) GetDeviceName() string {
 func (x *LocationHistory) GetDate() string {
 	if x != nil {
 		return x.Date
+	}
+	return ""
+}
+
+func (x *LocationHistory) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *LocationHistory) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *LocationHistory) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *LocationHistory) GetBusinessName() string {
+	if x != nil {
+		return x.BusinessName
 	}
 	return ""
 }
@@ -841,6 +921,9 @@ type EditLocationHistoryRequest struct {
 	Accuracy      string                 `protobuf:"bytes,4,opt,name=accuracy,proto3" json:"accuracy,omitempty"`
 	Timestamp     string                 `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Id            string                 `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
+	Region        string                 `protobuf:"bytes,7,opt,name=region,proto3" json:"region,omitempty"`
+	City          string                 `protobuf:"bytes,8,opt,name=city,proto3" json:"city,omitempty"`
+	IpAddress     string                 `protobuf:"bytes,9,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -917,12 +1000,169 @@ func (x *EditLocationHistoryRequest) GetId() string {
 	return ""
 }
 
+func (x *EditLocationHistoryRequest) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *EditLocationHistoryRequest) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *EditLocationHistoryRequest) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+type CheckUpdateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PosdeviceId   string                 `protobuf:"bytes,1,opt,name=posdevice_id,json=posdeviceId,proto3" json:"posdevice_id,omitempty"`
+	AppVersion    string                 `protobuf:"bytes,2,opt,name=app_version,json=appVersion,proto3" json:"app_version,omitempty"`
+	BuildVersion  string                 `protobuf:"bytes,3,opt,name=build_version,json=buildVersion,proto3" json:"build_version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckUpdateRequest) Reset() {
+	*x = CheckUpdateRequest{}
+	mi := &file_pos_devices_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckUpdateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckUpdateRequest) ProtoMessage() {}
+
+func (x *CheckUpdateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pos_devices_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckUpdateRequest.ProtoReflect.Descriptor instead.
+func (*CheckUpdateRequest) Descriptor() ([]byte, []int) {
+	return file_pos_devices_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CheckUpdateRequest) GetPosdeviceId() string {
+	if x != nil {
+		return x.PosdeviceId
+	}
+	return ""
+}
+
+func (x *CheckUpdateRequest) GetAppVersion() string {
+	if x != nil {
+		return x.AppVersion
+	}
+	return ""
+}
+
+func (x *CheckUpdateRequest) GetBuildVersion() string {
+	if x != nil {
+		return x.BuildVersion
+	}
+	return ""
+}
+
+type CheckUpdateResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	UpdateAvailable bool                   `protobuf:"varint,1,opt,name=update_available,json=updateAvailable,proto3" json:"update_available,omitempty"`
+	LatestVersion   string                 `protobuf:"bytes,2,opt,name=latest_version,json=latestVersion,proto3" json:"latest_version,omitempty"`
+	DownloadUrl     string                 `protobuf:"bytes,3,opt,name=download_url,json=downloadUrl,proto3" json:"download_url,omitempty"`
+	ReleaseNotes    string                 `protobuf:"bytes,4,opt,name=release_notes,json=releaseNotes,proto3" json:"release_notes,omitempty"`
+	Code            int32                  `protobuf:"varint,5,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *CheckUpdateResponse) Reset() {
+	*x = CheckUpdateResponse{}
+	mi := &file_pos_devices_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckUpdateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckUpdateResponse) ProtoMessage() {}
+
+func (x *CheckUpdateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pos_devices_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckUpdateResponse.ProtoReflect.Descriptor instead.
+func (*CheckUpdateResponse) Descriptor() ([]byte, []int) {
+	return file_pos_devices_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CheckUpdateResponse) GetUpdateAvailable() bool {
+	if x != nil {
+		return x.UpdateAvailable
+	}
+	return false
+}
+
+func (x *CheckUpdateResponse) GetLatestVersion() string {
+	if x != nil {
+		return x.LatestVersion
+	}
+	return ""
+}
+
+func (x *CheckUpdateResponse) GetDownloadUrl() string {
+	if x != nil {
+		return x.DownloadUrl
+	}
+	return ""
+}
+
+func (x *CheckUpdateResponse) GetReleaseNotes() string {
+	if x != nil {
+		return x.ReleaseNotes
+	}
+	return ""
+}
+
+func (x *CheckUpdateResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
 var File_pos_devices_proto protoreflect.FileDescriptor
 
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\x9a\x03\n" +
+	"posdevices\"\xbf\x03\n" +
 	"\x18RegisterPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -935,7 +1175,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\x12 \n" +
 	"\vdescription\x18\n" +
 	" \x01(\tR\vdescription\x12\x14\n" +
-	"\x05email\x18\v \x01(\tR\x05email\"\xb9\x03\n" +
+	"\x05email\x18\v \x01(\tR\x05email\x12#\n" +
+	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\"\xde\x03\n" +
 	"\tPosDevice\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -949,7 +1190,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x02id\x18\n" +
 	" \x01(\tR\x02id\x122\n" +
 	"\x15location_last_updated\x18\v \x01(\tR\x13locationLastUpdated\x12 \n" +
-	"\vdescription\x18\f \x01(\tR\vdescription\"h\n" +
+	"\vdescription\x18\f \x01(\tR\vdescription\x12#\n" +
+	"\rbusiness_name\x18\r \x01(\tR\fbusinessName\"h\n" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -960,7 +1202,7 @@ const file_pos_devices_proto_rawDesc = "" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\x90\x03\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\xb5\x03\n" +
 	"\x14EditPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -973,13 +1215,18 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x10operating_system\x18\t \x01(\tR\x0foperatingSystem\x12\x0e\n" +
 	"\x02id\x18\n" +
 	" \x01(\tR\x02id\x12 \n" +
-	"\vdescription\x18\v \x01(\tR\vdescription\"\xb7\x01\n" +
+	"\vdescription\x18\v \x01(\tR\vdescription\x12#\n" +
+	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\"\x82\x02\n" +
 	"\x1eRegisterLocationHistoryRequest\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x03 \x01(\tR\blatitude\x12\x1a\n" +
 	"\baccuracy\x18\x04 \x01(\tR\baccuracy\x12\x1c\n" +
-	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\"\xed\x01\n" +
+	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\x12\x16\n" +
+	"\x06region\x18\x06 \x01(\tR\x06region\x12\x12\n" +
+	"\x04city\x18\a \x01(\tR\x04city\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\b \x01(\tR\tipAddress\"\xdd\x02\n" +
 	"\x0fLocationHistory\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +
@@ -989,7 +1236,13 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x02id\x18\x06 \x01(\tR\x02id\x12\x1f\n" +
 	"\vdevice_name\x18\a \x01(\tR\n" +
 	"deviceName\x12\x12\n" +
-	"\x04date\x18\b \x01(\tR\x04date\"n\n" +
+	"\x04date\x18\b \x01(\tR\x04date\x12\x16\n" +
+	"\x06region\x18\t \x01(\tR\x06region\x12\x12\n" +
+	"\x04city\x18\n" +
+	" \x01(\tR\x04city\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\v \x01(\tR\tipAddress\x12#\n" +
+	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\"n\n" +
 	"\x1aGetLocationHistorysRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -1000,14 +1253,29 @@ const file_pos_devices_proto_rawDesc = "" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\xc3\x01\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\x8e\x02\n" +
 	"\x1aEditLocationHistoryRequest\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x03 \x01(\tR\blatitude\x12\x1a\n" +
 	"\baccuracy\x18\x04 \x01(\tR\baccuracy\x12\x1c\n" +
 	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\x12\x0e\n" +
-	"\x02id\x18\x06 \x01(\tR\x02idB\x1eZ\x1c/proto/posdevices;posdevicesb\x06proto3"
+	"\x02id\x18\x06 \x01(\tR\x02id\x12\x16\n" +
+	"\x06region\x18\a \x01(\tR\x06region\x12\x12\n" +
+	"\x04city\x18\b \x01(\tR\x04city\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\t \x01(\tR\tipAddress\"}\n" +
+	"\x12CheckUpdateRequest\x12!\n" +
+	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1f\n" +
+	"\vapp_version\x18\x02 \x01(\tR\n" +
+	"appVersion\x12#\n" +
+	"\rbuild_version\x18\x03 \x01(\tR\fbuildVersion\"\xc3\x01\n" +
+	"\x13CheckUpdateResponse\x12)\n" +
+	"\x10update_available\x18\x01 \x01(\bR\x0fupdateAvailable\x12%\n" +
+	"\x0elatest_version\x18\x02 \x01(\tR\rlatestVersion\x12!\n" +
+	"\fdownload_url\x18\x03 \x01(\tR\vdownloadUrl\x12#\n" +
+	"\rrelease_notes\x18\x04 \x01(\tR\freleaseNotes\x12\x12\n" +
+	"\x04code\x18\x05 \x01(\x05R\x04codeB\x1eZ\x1c/proto/posdevices;posdevicesb\x06proto3"
 
 var (
 	file_pos_devices_proto_rawDescOnce sync.Once
@@ -1021,7 +1289,7 @@ func file_pos_devices_proto_rawDescGZIP() []byte {
 	return file_pos_devices_proto_rawDescData
 }
 
-var file_pos_devices_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_pos_devices_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_pos_devices_proto_goTypes = []any{
 	(*RegisterPosDeviceRequest)(nil),       // 0: posdevices.RegisterPosDeviceRequest
 	(*PosDevice)(nil),                      // 1: posdevices.PosDevice
@@ -1033,6 +1301,8 @@ var file_pos_devices_proto_goTypes = []any{
 	(*GetLocationHistorysRequest)(nil),     // 7: posdevices.GetLocationHistorysRequest
 	(*GetLocationHistorysResponse)(nil),    // 8: posdevices.GetLocationHistorysResponse
 	(*EditLocationHistoryRequest)(nil),     // 9: posdevices.EditLocationHistoryRequest
+	(*CheckUpdateRequest)(nil),             // 10: posdevices.CheckUpdateRequest
+	(*CheckUpdateResponse)(nil),            // 11: posdevices.CheckUpdateResponse
 }
 var file_pos_devices_proto_depIdxs = []int32{
 	1, // 0: posdevices.GetPosDevicesResponse.posdevice:type_name -> posdevices.PosDevice
@@ -1055,7 +1325,7 @@ func file_pos_devices_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pos_devices_proto_rawDesc), len(file_pos_devices_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

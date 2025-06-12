@@ -681,7 +681,7 @@ type EditAppVersionRequest struct {
 	ReleaseNotes   string                 `protobuf:"bytes,4,opt,name=release_notes,json=releaseNotes,proto3" json:"release_notes,omitempty"`
 	Apk            []byte                 `protobuf:"bytes,5,opt,name=apk,proto3" json:"apk,omitempty"`
 	IsActive       bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	IsLatestStable string                 `protobuf:"bytes,9,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
+	IsLatestStable bool                   `protobuf:"varint,9,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
 	VersionId      string                 `protobuf:"bytes,10,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
@@ -759,11 +759,11 @@ func (x *EditAppVersionRequest) GetIsActive() bool {
 	return false
 }
 
-func (x *EditAppVersionRequest) GetIsLatestStable() string {
+func (x *EditAppVersionRequest) GetIsLatestStable() bool {
 	if x != nil {
 		return x.IsLatestStable
 	}
-	return ""
+	return false
 }
 
 func (x *EditAppVersionRequest) GetVersionId() string {
@@ -844,7 +844,7 @@ const file_app_proto_rawDesc = "" +
 	"\rrelease_notes\x18\x04 \x01(\tR\freleaseNotes\x12\x10\n" +
 	"\x03apk\x18\x05 \x01(\fR\x03apk\x12\x1b\n" +
 	"\tis_active\x18\x06 \x01(\bR\bisActive\x12(\n" +
-	"\x10is_latest_stable\x18\t \x01(\tR\x0eisLatestStable\x12\x1d\n" +
+	"\x10is_latest_stable\x18\t \x01(\bR\x0eisLatestStable\x12\x1d\n" +
 	"\n" +
 	"version_id\x18\n" +
 	" \x01(\tR\tversionIdB\x10Z\x0e/proto/app;appb\x06proto3"

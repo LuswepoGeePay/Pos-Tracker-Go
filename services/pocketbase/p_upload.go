@@ -11,7 +11,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func HandleUpload(c *gin.Context, token string) (string, error) {
+func HandleUpload(c *gin.Context, token string, formKey string) (string, error) {
 
 	if token == "" {
 		return "", utils.CapitalizeError("unauthorization header is required")
@@ -21,7 +21,7 @@ func HandleUpload(c *gin.Context, token string) (string, error) {
 		token = "Bearer " + token
 	}
 
-	file, err := c.FormFile("file")
+	file, err := c.FormFile(formKey)
 	if err != nil {
 		return "", utils.CapitalizeError("no file uploaded")
 	}
@@ -45,7 +45,7 @@ func HandleUpload(c *gin.Context, token string) (string, error) {
 
 	if err != nil {
 		log.Printf("Upload error (request issue): %v\n", err)
-		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %s", err.Error()))
+		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %s", fmt.Sprintf("error: %v", err)))
 	}
 
 	if resp.IsError() {

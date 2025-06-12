@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 	"pos-master/config"
 	"pos-master/models"
@@ -25,7 +26,7 @@ func LoginHandler(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status":  "failure",
-			"message": err.Error(),
+			"message": fmt.Sprintf("error: %v", err),
 		})
 		return
 	}

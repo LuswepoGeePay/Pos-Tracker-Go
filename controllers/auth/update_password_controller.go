@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	pb "pos-master/proto/auth"
 	services "pos-master/services/authservices"
 	"pos-master/utils"
@@ -21,7 +22,7 @@ func UpdatePasswordHandler(c *gin.Context) {
 	err = services.ResetPassword(&req)
 
 	if err != nil {
-		utils.RespondWithError(c, 400, "Failed to reset password.", err.Error())
+		utils.RespondWithError(c, 400, "Failed to reset password.", fmt.Sprintf("error: %v", err))
 		return
 	}
 

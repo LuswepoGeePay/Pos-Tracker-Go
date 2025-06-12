@@ -1,6 +1,7 @@
 package locationhistory
 
 import (
+	"fmt"
 	"log/slog"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
@@ -15,13 +16,13 @@ func RegisterNewLocationHandler(c *gin.Context) {
 	var req posdevices.RegisterLocationHistoryRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		utils.RespondWithError(c, 400, err.Error())
+		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
 		return
 	}
 
 	err := historyservices.RegisterNewLocationHistory(&req)
 	if err != nil {
-		utils.RespondWithError(c, 400, err.Error())
+		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
 		return
 	}
 
@@ -34,7 +35,7 @@ func GetLocationsHandler(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&getRequest); err != nil {
 		utils.Log(slog.LevelError, "❌error", "invalid request body")
-		utils.RespondWithError(c, 400, utils.InvReqBody, err.Error())
+		utils.RespondWithError(c, 400, utils.InvReqBody, fmt.Sprintf("error: %v", err))
 		return
 	}
 
@@ -49,8 +50,8 @@ func GetLocationsHandler(c *gin.Context) {
 	history, err := historyservices.GetLocationHistory(req)
 
 	if err != nil {
-		utils.Log(slog.LevelError, "❌error", "unable to retrieve location history ", "details", string(err.Error()))
-		utils.RespondWithError(c, 400, utils.FailedToRetrieve("location history"), err.Error())
+		utils.Log(slog.LevelError, "❌error", "unable to retrieve location history ", "details", string(fmt.Sprintf("error: %v", err)))
+		utils.RespondWithError(c, 400, utils.FailedToRetrieve("location history"), fmt.Sprintf("error: %v", err))
 		return
 	}
 

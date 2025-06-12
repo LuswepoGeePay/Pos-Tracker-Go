@@ -88,7 +88,7 @@ message EditAppVersionRequest {
     string release_notes =4;
     bytes apk =5;
     bool is_active =6;
-    string is_latest_stable =9;
+    bool is_latest_stable =9;
     string version_id =10;
 }
 

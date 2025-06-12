@@ -16,7 +16,7 @@ func InitDB() {
 	var err error
 
 	dsn := "root@tcp(127.0.0.1:3306)/posmaster?charset=utf8mb4&parseTime=True&loc=Local"
-	//dsn := "root:password@tcp(127.0.0.1:3306)/hof?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:password@tcp(127.0.0.1:3306)/posmaster?charset=utf8mb4&parseTime=True&loc=Local"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect to the database: %v", err)
@@ -30,6 +30,7 @@ func InitDB() {
 		&models.AppVersion{},
 		&models.PosDevice{},
 		&models.LocationHistory{},
+		&models.Event{},
 	)
 	if err != nil {
 		log.Fatalf("failed to migrate database: %v", err)

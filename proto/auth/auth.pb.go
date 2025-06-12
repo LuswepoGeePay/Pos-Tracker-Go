@@ -172,6 +172,7 @@ type User struct {
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	Id            string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
+	Status        bool                   `protobuf:"varint,6,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -239,6 +240,13 @@ func (x *User) GetId() string {
 		return x.Id
 	}
 	return ""
+}
+
+func (x *User) GetStatus() bool {
+	if x != nil {
+		return x.Status
+	}
+	return false
 }
 
 type GetUsersRequest struct {
@@ -621,13 +629,14 @@ const file_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12)\n" +
 	"\x10confirm_password\x18\x03 \x01(\tR\x0fconfirmPassword\x12\x1b\n" +
 	"\tlogged_in\x18\x04 \x01(\bR\bloggedIn\x12\x17\n" +
-	"\auser_id\x18\x05 \x01(\tR\x06userId\"x\n" +
+	"\auser_id\x18\x05 \x01(\tR\x06userId\"\x90\x01\n" +
 	"\x04User\x12\x1a\n" +
 	"\bfullname\x18\x01 \x01(\tR\bfullname\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\"c\n" +
+	"\x02id\x18\x05 \x01(\tR\x02id\x12\x16\n" +
+	"\x06status\x18\x06 \x01(\bR\x06status\"c\n" +
 	"\x0fGetUsersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +

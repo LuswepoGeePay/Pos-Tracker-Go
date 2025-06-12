@@ -1,6 +1,7 @@
 package posservices
 
 import (
+	"log"
 	"log/slog"
 	"pos-master/config"
 	"pos-master/models"
@@ -15,6 +16,9 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 
 	posDeviceID := uuid.New()
 
+	log.Println("Posdevice ID")
+	log.Println(posDeviceID)
+
 	pos := models.PosDevice{
 		ID:                    posDeviceID,
 		SerialNumber:          req.SerialNumber,
@@ -28,6 +32,7 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		Status:                "online",
 		LocationLastUpdatedAt: time.Now(),
 		Email:                 req.Email,
+		Entity:                req.BusinessName,
 	}
 
 	result := config.DB.Create(&pos)

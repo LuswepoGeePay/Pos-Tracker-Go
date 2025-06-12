@@ -40,13 +40,14 @@ func GetLocationHistory(req *posPb.GetLocationHistorysRequest) (*posPb.GetLocati
 
 	for i, history := range pos_location_history {
 		pbLocationHistory[i] = &posPb.LocationHistory{
-			Id:          history.ID.String(),
-			PosdeviceId: history.PosDeviceID.String(),
-			Longitude:   history.Longitude,
-			Latitude:    history.Latitude,
-			Accuracy:    history.Accuracy,
-			Timestamp:   history.TimeStamp.Format(time.RFC3339),
-			DeviceName:  history.PosDevice.Name,
+			Id:           history.ID.String(),
+			PosdeviceId:  history.PosDeviceID.String(),
+			Longitude:    history.Longitude,
+			Latitude:     history.Latitude,
+			Accuracy:     history.Accuracy,
+			Timestamp:    history.TimeStamp.Format(time.RFC3339),
+			DeviceName:   history.PosDevice.Name,
+			BusinessName: history.Entity,
 		}
 	}
 

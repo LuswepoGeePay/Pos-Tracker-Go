@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package dashboard;
+
+
+option go_package = "/proto/dashboard;dashboard";
+
+
+
+
+message Event {
+    string title = 1;
+    string date = 2;
+    string metadata=3;
+    string event_id =4;
+}
+
+
+message Tile {
+    int32 pos_devices  = 1;
+    int32 active_devices = 2;
+    int32 offline_devices=3;
+    int32 apps=4;
+    string app_version=5;
+    int32 locations_tracked=6;
+
+}
+
+
+message GetEventsRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetTileInfoResponse {
+    repeated Tile tile = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+
+message GetEventsResponse {
+    repeated Event event = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+  }
+
+
+message ChartDataPoint {
+  string label = 1;   // e.g., "offline", "v1.2.0"
+  int32 value = 2;    // e.g., device count
+  string color = 3;   // optional: "var(--chart-1)"
+}
+
+// General chart meta info
+message ChartMeta {
+  string title = 1;
+  string description = 2;
+  string type = 3; // e.g., "pie", "bar"
+}
+
+// Pie chart response
+message PieChartResponse {
+  ChartMeta meta = 1;
+  repeated ChartDataPoint data = 2;
+}
+
+// Bar chart response
+message BarChartResponse {
+  ChartMeta meta = 1;
+  repeated ChartDataPoint data = 2;
+}
+
+// Unified chart response if you want polymorphism
+message DashboardChartsResponse {
+  PieChartResponse pie_chart = 1;
+  BarChartResponse bar_chart = 2;
+}

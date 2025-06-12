@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	pb "pos-master/proto/auth"
 	userservices "pos-master/services/user_services"
 
@@ -12,7 +13,7 @@ func RegisterHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
 			"status": "failure",
-			"error":  err.Error(),
+			"error":  fmt.Sprintf("error: %v", err),
 		})
 		return
 	}

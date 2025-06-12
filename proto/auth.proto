@@ -30,6 +30,7 @@ message User {
     string password = 3;
     string role = 4;
     string id=5;
+    bool status = 6;
 }
 
 

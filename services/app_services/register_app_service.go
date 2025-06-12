@@ -39,13 +39,13 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 	token, err := pocketbase.HandlePocketBaseAuth(c)
 
 	if err != nil {
-		utils.Log(slog.LevelError, "error", "unable to get pocketbase token", "detail", err.Error())
+		utils.Log(slog.LevelError, "error", "unable to get pocketbase token", "detail", fmt.Sprintf("error: %v", err))
 		return utils.CapitalizeError("unable to get pocketbase token")
 	}
 
-	fileURL, err := pocketbase.HandleUpload(c, token)
+	fileURL, err := pocketbase.HandleUpload(c, token, "file")
 	if err != nil {
-		utils.Log(slog.LevelError, "error", "unable to upload file to pocketbase", err.Error())
+		utils.Log(slog.LevelError, "error", "unable to upload file to pocketbase", fmt.Sprintf("error: %v", err))
 		return utils.CapitalizeError("unable to upload file to server")
 	}
 
@@ -57,28 +57,28 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 
 	// openedFile, err := file.Open()
 	// if err != nil {
-	// 	utils.Log(slog.LevelError, "error", "unable to open APK for checksum", err.Error())
+	// 	utils.Log(slog.LevelError, "error", "unable to open APK for checksum", fmt.Sprintf("error: %v", err))
 	// 	return utils.CapitalizeError("unable to read uploaded APK")
 	// }
 
 	// defer openedFile.Close()
 	res, err := http.Get(fileURL)
 	if err != nil {
-		utils.Log(slog.LevelError, "error", "unable to fetch APK from URL", err.Error())
+		utils.Log(slog.LevelError, "error", "unable to fetch APK from URL", fmt.Sprintf("error: %v", err))
 		return utils.CapitalizeError("unable to fetch uploaded APK")
 	}
 	defer res.Body.Close()
 
 	hash := sha256.New()
 	// if _, err := io.Copy(hash, openedFile); err != nil {
-	// 	utils.Log(slog.LevelError, "❌error", "unable to hash APK", err.Error())
+	// 	utils.Log(slog.LevelError, "❌error", "unable to hash APK", fmt.Sprintf("error: %v", err))
 	// 	return utils.CapitalizeError("unable to process apk")
 	// }
 
 	appID, err := uuid.Parse(req.AppId)
 
 	if err != nil {
-		utils.Log(slog.LevelError, "error", err.Error())
+		utils.Log(slog.LevelError, "error", fmt.Sprintf("error: %v", err))
 		return utils.CapitalizeError("unable to parse App ID")
 	}
 
@@ -87,10 +87,9 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 	appVersion := models.AppVersion{
 		ID:             uuid.New(),
 		AppID:          appID,
-		BuildNumber:    req.BuildNumber,
 		ReleaseNotes:   req.ReleaseNotes,
 		FilePath:       fileURL,
-		FileSizeBytes:  req.FileSizeBytes,
+		FileSizeMBytes: req.FileSizeBytes,
 		CheckSum:       checkSum,
 		IsActive:       false,
 		IsLatestStable: req.IsLatestStable,

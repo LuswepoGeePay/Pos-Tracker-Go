@@ -88,7 +88,6 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 		pbAppVersions[i] = &appPb.AppVersion{
 			AppId:          appv.AppID.String(),
 			VersionId:      appv.ID.String(),
-			BuildNumber:    appv.BuildNumber,
 			ReleaseNotes:   appv.ReleaseNotes,
 			VersionNumber:  appv.VersionNumber,
 			Checksum:       appv.CheckSum,
@@ -96,7 +95,7 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 			IsActive:       appv.IsActive,
 			IsLatestStable: appv.IsLatestStable,
 			FilePath:       appv.FilePath,
-			FileSizeBytes:  appv.FileSizeBytes,
+			FileSizeBytes:  appv.FileSizeMBytes,
 			AppName:        appv.App.Name,
 		}
 	}
