@@ -51,7 +51,7 @@ type PosDevice struct {
 	Description           string    `gorm:"default:null"`
 	CurrentAppVersion     string    `gorm:"default:null"`
 	LastKnownLatitude     string    `gorm:"default:null"`
-	LastKnownLongitutude  string    `gorm:"default:null"`
+	LastKnownLongitude    string    `gorm:"default:null"`
 	Status                string    `gorm:"default:null"`
 	DeviceModel           string    `gorm:"default:null"`
 	OperatingSystem       string    `gorm:"default:null"`

@@ -11,11 +11,22 @@ func EditUser(req *pb.EditUserRequest) error {
 	updates := map[string]interface{}{}
 
 	if req.Fullname != "" {
-		updates["firstname"] = req.Fullname
+		updates["full_name"] = req.Fullname
 	}
 
 	if req.Email != "" {
 		updates["email"] = req.Email
+	}
+
+	var currentUser models.User
+
+	result := config.DB.Where("id = ?", req.Id).First(&currentUser)
+	if result.Error != nil {
+		return utils.CapitalizeError("unable to find user with that ID")
+	}
+
+	if req.Status != currentUser.Status {
+		updates["status"] = req.Status
 	}
 
 	var role models.Role

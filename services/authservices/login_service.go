@@ -20,6 +20,10 @@ func LoginUser(req *pb.LoginRequest) (*pb.AuthResponse, error) {
 		return nil, utils.CapitalizeError("invalid credentials")
 	}
 
+	if !user.Status {
+		return nil, utils.CapitalizeError("Your account is currently inactive. Contact the administator")
+	}
+
 	// Separate password check to avoid timing attacks
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		return nil, utils.CapitalizeError("invalid credentials")

@@ -192,20 +192,35 @@ func DeleteAppVersionHandler(c *gin.Context) {
 }
 
 func EditAppVersionHandler(c *gin.Context) {
-	var req appPb.RegisterAppRequest
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
+	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
+		utils.Log(slog.LevelError, "❌error", "failed to parse form")
+		utils.RespondWithError(c, 400, "Failed to parse form", fmt.Sprintf("error: %v", err))
 		return
 	}
 
-	err := appservices.RegisterApp(&req)
+	versionData := c.Request.FormValue("version")
+
+	if versionData == "" {
+		utils.Log(slog.LevelError, "❌error", "invalid app version data")
+		utils.RespondWithError(c, 400, "App version Data is missing")
+		return
+	}
+
+	var req appPb.EditAppVersionRequest
+
+	if err := protojson.Unmarshal([]byte(versionData), &req); err != nil {
+		utils.Log(slog.LevelError, "❌error", "unable to marshal app data")
+		utils.RespondWithError(c, 400, "Unable to marshal app data", fmt.Sprintf("error: %v", err))
+		return
+	}
+
+	err := appservices.EditAppVersion(c, &req)
 	if err != nil {
 		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
 		return
 	}
 
-	utils.RespondWithSuccess(c, "App Registered successfully")
+	utils.RespondWithSuccess(c, "App updated successfully")
 
 }
 

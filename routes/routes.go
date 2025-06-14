@@ -24,6 +24,7 @@ func SetupRoutes(r *gin.Engine) {
 	//users
 
 	auth.POST("/users/get", users.GetUsersHandler)
+	auth.POST("/user/update", users.EditUserHandler)
 
 	//reports
 	// auth.POST("/report/devices/generate")
@@ -36,14 +37,14 @@ func SetupRoutes(r *gin.Engine) {
 	//Pos devices
 	r.POST("/v1/pos/register", posdevices.RegisterPosDeviceHandler)
 	auth.POST("/pos/devices/get", posdevices.GetPosDevicesHandler)
-	auth.POST("/pos/device/:id", posdevices.EditDeviceHandler)
+	auth.POST("/pos/device/update", posdevices.EditDeviceHandler)
 	auth.DELETE("/pos/device/:id", posdevices.DeleteDeviceHandler)
 
 	//Apps
 	auth.POST("/app/register", apps.RegisterAppHandler)
 	auth.POST("/apps/get", apps.GetAppsHandler)
 	r.POST("/v1/app/update", apps.CheckAppUpdate)
-	auth.POST("/app/:id", apps.EditAppHandler)
+	auth.POST("/app/info/update", apps.EditAppHandler)
 	auth.DELETE("/app/:id", apps.DeleteAppHandler)
 
 	// auth.DELETE("/app/delete/:id")
@@ -51,7 +52,7 @@ func SetupRoutes(r *gin.Engine) {
 	//App versions
 	auth.POST("/app/version/register", apps.RegisterNewAppVersionHandler)
 	auth.POST("/app/versions/get", apps.GetAppVersionsHandler)
-	auth.POST("/app/version/:id", apps.EditAppVersionHandler)
+	auth.POST("/app/version/update", apps.EditAppVersionHandler)
 	auth.DELETE("/app/version/:id", apps.DeleteAppVersionHandler)
 
 	//location history

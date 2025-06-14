@@ -42,3 +42,23 @@ func GetUsersHandler(c *gin.Context) {
 	})
 
 }
+
+func EditUserHandler(c *gin.Context) {
+	var req auth.EditUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"status":  "failure",
+			"message": "Invalid request format",
+		})
+		return
+	}
+
+	err := userservices.EditUser(&req)
+	if err != nil {
+		utils.RespondWithError(c, 400, utils.FormatError("unable to update user", err))
+		return
+	}
+
+	utils.RespondWithSuccess(c, "User updated successfully")
+
+}

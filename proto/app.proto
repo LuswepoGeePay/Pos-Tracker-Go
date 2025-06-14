@@ -82,13 +82,11 @@ message GetAppVersionsResponse {
   }
 
 message EditAppVersionRequest {
-    string app_id = 1;
-    string version_number = 2;
-    string build_number =3;
-    string release_notes =4;
-    bytes apk =5;
-    bool is_active =6;
-    bool is_latest_stable =9;
-    string version_id =10;
+    string version_number = 1;
+    string release_notes =2;
+    bytes apk =3;
+    bool is_active =4;
+    bool is_latest_stable =5;
+    string version_id =6;
 }
 

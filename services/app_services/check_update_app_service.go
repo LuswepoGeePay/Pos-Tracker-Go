@@ -17,16 +17,20 @@ func CheckAppUpdate(req *posdevices.CheckUpdateRequest) (*posdevices.CheckUpdate
 		return nil, utils.CapitalizeError("could not fetch latest app version")
 	}
 
-	// if latest.VersionNumber == req.AppVersion && latest.BuildNumber == req.BuildVersion {
-	// 	// Already up to date
-	// 	return &posdevices.CheckUpdateResponse{
-	// 		UpdateAvailable: false,
-	// 		LatestVersion:   latest.VersionNumber,
-	// 		ReleaseNotes:    latest.ReleaseNotes,
-	// 		DownloadUrl:     "",
-	// 		Code:            0, // no update
-	// 	}, nil
-	// }
+	var posDevice models.PosDevice
+
+	tx := config.DB
+	err = tx.Where("id = ?", req.PosdeviceId).Find(&posDevice).Error
+
+	if err != nil {
+		return nil, utils.CapitalizeError(utils.FormatError("unable to find pos device with this ID", err))
+	}
+	if posDevice.CurrentAppVersion != latestVersion.VersionNumber {
+		result := tx.Model(&models.PosDevice{}).Where("id = ?", req.PosdeviceId).Update("current_app_version", latestVersion.VersionNumber)
+		if result.Error != nil {
+			return nil, utils.CapitalizeError(utils.FormatError("unable to update pos device app version", result.Error))
+		}
+	}
 
 	if latestVersion.VersionNumber == req.AppVersion {
 		return &posdevices.CheckUpdateResponse{

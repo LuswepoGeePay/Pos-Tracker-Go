@@ -31,3 +31,6 @@
 {"time":"2025-06-07T12:08:06.0973856+02:00","level":"ERROR","msg":"Error","!BADKEY":"Failed to parse POS ID"}
 {"time":"2025-06-12T10:24:59.3503819+02:00","level":"ERROR","msg":"error","!BADKEY":"invalid device ID"}
 {"time":"2025-06-12T13:50:56.044034+02:00","level":"ERROR","msg":"❌ error","!BADKEY":"unable to count registered apps:record not found"}
+{"time":"2025-06-14T12:19:44.179634+02:00","level":"ERROR","msg":"❌error","!BADKEY":"unable to marshal app data"}
+{"time":"2025-06-14T12:22:39.8285131+02:00","level":"ERROR","msg":"❌error","!BADKEY":"unable to marshal app data"}
+{"time":"2025-06-14T12:29:10.0678884+02:00","level":"ERROR","msg":"error","!BADKEY":"failed to parse version ID"}

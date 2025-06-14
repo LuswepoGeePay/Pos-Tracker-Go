@@ -50,7 +50,7 @@ func EditDevice(req *posdevices.EditPosDeviceRequest) error {
 		updates["last_known_latitude"] = req.LastKnownLatitude
 	}
 
-	if req.LastKnownLongitude != currentDevice.LastKnownLongitutude {
+	if req.LastKnownLongitude != currentDevice.LastKnownLongitude {
 		updates["last_known_longitude"] = req.LastKnownLongitude
 	}
 	if req.Status != currentDevice.Status {

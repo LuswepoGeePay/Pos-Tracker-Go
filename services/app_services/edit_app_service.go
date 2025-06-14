@@ -95,7 +95,7 @@ func EditAppVersion(c *gin.Context, req *appPb.EditAppVersionRequest) error {
 
 	tx := config.DB.Begin()
 
-	err = tx.Model(&models.App{}).Where("id = ?", versionID).Updates(updates).Error
+	err = tx.Model(&models.AppVersion{}).Where("id = ?", versionID).Updates(updates).Error
 
 	if err != nil {
 		return utils.CapitalizeError(fmt.Sprintf("failed to update version: %v", fmt.Sprintf("error: %v", err)))

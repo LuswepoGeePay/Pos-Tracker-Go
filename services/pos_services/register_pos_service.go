@@ -26,7 +26,7 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		Description:           req.Description,
 		CurrentAppVersion:     req.CurrentAppVersion,
 		LastKnownLatitude:     req.LastKnownLatitude,
-		LastKnownLongitutude:  req.LastKnownLongitude,
+		LastKnownLongitude:    req.LastKnownLongitude,
 		DeviceModel:           req.DeviceModel,
 		OperatingSystem:       req.OperatingSystem,
 		Status:                "online",
