@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"pos-master/config"
 	"pos-master/models"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 
 	"github.com/google/uuid"
@@ -32,6 +33,11 @@ func DeleteApp(appID string) error {
 		return utils.CapitalizeError(fmt.Sprintf("unable to delete app %v", err))
 
 	}
+
+	eventservices.RegisterEvent("An app has been deleted", map[string]interface{}{
+		"App ID": appID,
+	})
+
 	tx.Commit()
 	return nil
 }
@@ -52,6 +58,9 @@ func DeleteAppVersion(versionID string) error {
 
 	}
 	tx.Commit()
+	eventservices.RegisterEvent("An app version has been deleted", map[string]interface{}{
+		"App version ID": versionID,
+	})
 
 	return nil
 }

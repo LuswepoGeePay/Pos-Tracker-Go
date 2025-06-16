@@ -5,6 +5,7 @@ import (
 	"pos-master/config"
 	"pos-master/models"
 	pb "pos-master/proto/auth"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 	"time"
 
@@ -37,6 +38,10 @@ func LoginUser(req *pb.LoginRequest) (*pb.AuthResponse, error) {
 	for _, permission := range user.Role.Permissions {
 		permissions = append(permissions, permission.Name)
 	}
+
+	eventservices.RegisterEvent("a user has logged in", map[string]interface{}{
+		"email": req.Email,
+	})
 
 	return &pb.AuthResponse{
 		Success:     true,

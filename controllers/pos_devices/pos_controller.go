@@ -24,6 +24,7 @@ func RegisterPosDeviceHandler(c *gin.Context) {
 	posDeviceID, err := posservices.RegisterPosDevice(&req)
 	if err != nil {
 		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
+		return
 	}
 
 	utils.RespondWithSuccess(c, "POS Registered successfully", gin.H{

@@ -15,8 +15,8 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 
-	r.POST("/create-user", auth.RegisterHandler)
-	r.POST("/login", auth.LoginHandler)
+	r.POST("/v1/create-user", auth.RegisterHandler)
+	r.POST("/v1/login", auth.LoginHandler)
 
 	auth := r.Group("/v1")
 	auth.Use(middleware.AuthMiddleware())

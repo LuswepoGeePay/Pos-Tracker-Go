@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"pos-master/config"
 	"pos-master/models"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 
 	"github.com/google/uuid"
@@ -33,6 +34,11 @@ func DeleteDevice(deviceID string) error {
 		return utils.CapitalizeError(fmt.Sprintf("unable to delete device %v", err))
 
 	}
+
+	tx.Commit()
+
+	eventservices.RegisterEvent("POS Device has been deleted", map[string]interface{}{
+		"Pos ID": deviceID})
 
 	return nil
 }

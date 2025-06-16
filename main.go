@@ -39,6 +39,27 @@ func main() {
 
 	routes.SetupRoutes(r)
 
+	// certFile := os.Getenv("CERT_FILE")
+	// keyFile := os.Getenv("KEY_FILE")
+
+	// if certFile != "" && keyFile != "" {
+	// 	// Verify certificate files exist
+	// 	if _, err := os.Stat(certFile); err != nil {
+	// 		log.Printf("Warning: Certificate file not found: %v", err)
+	// 		log.Println("Falling back to HTTP")
+	// 	} else if _, err := os.Stat(keyFile); err != nil {
+	// 		log.Printf("Warning: Key file not found: %v", err)
+	// 		log.Println("Falling back to HTTP")
+	// 	} else {
+	// 		// Start HTTPS server
+	// 		log.Println("Starting HTTPS server on port 7443")
+	// 		if err := r.RunTLS(":7443", certFile, keyFile); err != nil {
+	// 			log.Fatalf("Failed to start HTTPS server: %v", err)
+	// 		}
+	// 		return
+	// 	}
+	// }
+
 	log.Println("Starting server at 8050")
 	if err := r.Run(":8050"); err != nil {
 		log.Fatalf("Failed to start HTTP server: %v", err)

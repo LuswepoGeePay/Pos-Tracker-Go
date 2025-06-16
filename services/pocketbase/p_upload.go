@@ -36,7 +36,7 @@ func HandleUpload(c *gin.Context, token string, formKey string) (string, error) 
 	fileFieldName := "file"              // Your file field name in the collection schema
 
 	client := resty.New()
-	endpoint := fmt.Sprintf("http://102.23.120.239:8090/api/collections/%s/records", collectionName)
+	endpoint := fmt.Sprintf("https://file-server.mygeepay.com/api/collections/%s/records", collectionName)
 
 	resp, err := client.R().
 		SetHeader("Authorization", token).
@@ -61,7 +61,7 @@ func HandleUpload(c *gin.Context, token string, formKey string) (string, error) 
 	// Construct file URL from response
 	recordID := result["id"].(string)
 	fileName := result[fileFieldName].(string) // file field value in record (filename/path)
-	fileURL := fmt.Sprintf("http://102.23.120.239:8090/api/files/%s/%s/%s", collectionName, recordID, fileName)
+	fileURL := fmt.Sprintf("https://file-server.mygeepay.com/api/files/%s/%s/%s", collectionName, recordID, fileName)
 
 	return fileURL, nil
 }

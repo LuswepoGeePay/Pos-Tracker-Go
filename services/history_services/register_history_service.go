@@ -1,12 +1,15 @@
 package historyservices
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"log/slog"
+	"net/http"
 	"pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 	"time"
 
@@ -33,6 +36,13 @@ func RegisterNewLocationHistory(req *posdevices.RegisterLocationHistoryRequest) 
 
 	}
 
+	locationData, err := GetRegion(req.Longitude, req.Latitude)
+
+	if err != nil {
+		utils.Log(slog.LevelError, "Error", "unable to retrieve location information")
+		return utils.CapitalizeError(utils.FormatError("failed to retrieve location information", result.Error))
+
+	}
 	newLocation := models.LocationHistory{
 		ID:          uuid.New(),
 		PosDeviceID: posID,
@@ -40,8 +50,8 @@ func RegisterNewLocationHistory(req *posdevices.RegisterLocationHistoryRequest) 
 		Latitude:    req.Latitude,
 		Accuracy:    req.Accuracy,
 		TimeStamp:   time.Now(),
-		City:        req.City,
-		RegionName:  req.Region,
+		City:        locationData.City,
+		RegionName:  locationData.Region,
 		IpAddress:   req.IpAddress,
 		Entity:      device.Entity,
 	}
@@ -51,5 +61,57 @@ func RegisterNewLocationHistory(req *posdevices.RegisterLocationHistoryRequest) 
 		utils.Log(slog.LevelError, "Error", "Failed to add new location", "detail")
 		return utils.CapitalizeError(fmt.Sprintf("failed to parse ID %s", result.Error.Error()))
 	}
+
+	eventservices.RegisterEvent("A device has pinged", map[string]interface{}{
+		"Pos ID":    req.PosdeviceId,
+		"longitude": req.Longitude,
+		"latitude":  req.Latitude,
+		"city":      locationData.City,
+		"region":    locationData.Region})
 	return nil
+}
+
+type Location struct {
+	Region  string
+	City    string
+	Country string
+}
+
+func GetRegion(longitude, latitude string) (*Location, error) {
+	url := fmt.Sprintf("https://nominatim.openstreetmap.org/reverse?format=json&lat=%s&lon=%s&zoom=10&addressdetails=1", latitude, longitude)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("User-Agent", "POSGOAPP/1.0") // Nominatim requires this
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("OSM returned status: %d", resp.StatusCode)
+	}
+
+	var result struct {
+		Address struct {
+			City    string `json:"city"`
+			State   string `json:"state"`
+			Country string `json:"country"`
+		} `json:"address"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return &Location{
+		City:    result.Address.City,
+		Region:  result.Address.State,
+		Country: result.Address.Country,
+	}, nil
 }

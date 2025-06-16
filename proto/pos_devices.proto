@@ -7,7 +7,7 @@ option go_package = "/proto/posdevices;posdevices";
 
 
 message RegisterPosDeviceRequest {
-    string app_id = 1;
+    // string app_id = 1;
     string serial_number = 2;
     string name = 3;
     string current_app_version = 4;

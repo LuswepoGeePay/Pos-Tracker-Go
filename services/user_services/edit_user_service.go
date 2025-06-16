@@ -4,6 +4,7 @@ import (
 	"pos-master/config"
 	"pos-master/models"
 	pb "pos-master/proto/auth"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 )
 
@@ -47,6 +48,13 @@ func EditUser(req *pb.EditUserRequest) error {
 	if err != nil {
 		return utils.CapitalizeError("failed to update user")
 	}
+	eventservices.RegisterEvent("User edited successfully", map[string]interface{}{
+		"user id":   req.Id,
+		"Full name": req.Fullname,
+		"Email":     req.Email,
+		"Role":      req.Role,
+		"Status":    req.Status,
+	})
 
 	return nil
 }

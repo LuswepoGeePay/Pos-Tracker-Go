@@ -24,7 +24,7 @@ func HandlePocketBaseAuth(c *gin.Context) (string, error) {
 		SetHeader("Content-Type", "application/json").
 		SetBody(body).
 		SetResult(&authResp).
-		Post("http://102.23.120.239:8090/api/collections/_superusers/auth-with-password")
+		Post("https://file-server.mygeepay.com/api/collections/_superusers/auth-with-password")
 
 	if err != nil {
 		return "", utils.CapitalizeError(fmt.Sprintf("Unable to login: %s", fmt.Sprintf("error: %v", err)))

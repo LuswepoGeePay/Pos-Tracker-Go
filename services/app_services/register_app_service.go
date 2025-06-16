@@ -9,6 +9,7 @@ import (
 	"pos-master/config"
 	"pos-master/models"
 	appPb "pos-master/proto/app"
+	eventservices "pos-master/services/event_services"
 	"pos-master/services/pocketbase"
 	"pos-master/utils"
 	"time"
@@ -29,6 +30,11 @@ func RegisterApp(req *appPb.RegisterAppRequest) error {
 	if result.Error != nil {
 		return utils.CapitalizeError(fmt.Sprintf("Unable to register app %s", result.Error.Error()))
 	}
+
+	eventservices.RegisterEvent("New App Registered", map[string]interface{}{
+		"App Name":    req.Name,
+		"Description": req.Description,
+	})
 
 	return nil
 
@@ -99,8 +105,15 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 
 	result := config.DB.Create(&appVersion)
 
-	if result.Error != nil {
+	eventservices.RegisterEvent("New App Version Registered", map[string]interface{}{
+		"App Id":         appID,
+		"Release notes":  req.ReleaseNotes,
+		"Version number": req.VersionNumber,
+		"File path":      fileURL,
+	})
 
+	if result.Error != nil {
+		return utils.CapitalizeError(utils.FormatError("unable to create app", result.Error))
 	}
 
 	return nil

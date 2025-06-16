@@ -6,6 +6,7 @@ import (
 	"pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 
 	"github.com/google/uuid"
@@ -72,6 +73,16 @@ func EditDevice(req *posdevices.EditPosDeviceRequest) error {
 	}
 
 	tx.Commit()
+
+	eventservices.RegisterEvent("POS device edited", map[string]interface{}{
+		"Pos ID":           deviceID,
+		"Serial number":    req.SerialNumber,
+		"Business Name":    req.BusinessName,
+		"Description":      req.Description,
+		"Device Model":     req.DeviceModel,
+		"Status":           deviceID,
+		"Operating system": req.OperatingSystem,
+	})
 
 	return nil
 }

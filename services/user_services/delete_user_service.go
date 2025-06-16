@@ -3,6 +3,7 @@ package userservices
 import (
 	"pos-master/config"
 	"pos-master/models"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 
 	"github.com/google/uuid"
@@ -22,5 +23,8 @@ func DeleteUser(userId string) error {
 	}
 
 	tx.Commit()
+	eventservices.RegisterEvent("User deleted successfully", map[string]interface{}{
+		"User ID": userId,
+	})
 	return nil
 }

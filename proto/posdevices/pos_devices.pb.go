@@ -22,19 +22,19 @@ const (
 )
 
 type RegisterPosDeviceRequest struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	AppId              string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
-	SerialNumber       string                 `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
-	Name               string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	CurrentAppVersion  string                 `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
-	LastKnownLatitude  string                 `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
-	LastKnownLongitude string                 `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
-	Status             string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	DeviceModel        string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
-	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
-	Description        string                 `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
-	Email              string                 `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
-	BusinessName       string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// string app_id = 1;
+	SerialNumber       string `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
+	Name               string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	CurrentAppVersion  string `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
+	LastKnownLatitude  string `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
+	LastKnownLongitude string `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
+	Status             string `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
+	DeviceModel        string `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
+	OperatingSystem    string `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
+	Description        string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
+	Email              string `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
+	BusinessName       string `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -67,13 +67,6 @@ func (x *RegisterPosDeviceRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use RegisterPosDeviceRequest.ProtoReflect.Descriptor instead.
 func (*RegisterPosDeviceRequest) Descriptor() ([]byte, []int) {
 	return file_pos_devices_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *RegisterPosDeviceRequest) GetAppId() string {
-	if x != nil {
-		return x.AppId
-	}
-	return ""
 }
 
 func (x *RegisterPosDeviceRequest) GetSerialNumber() string {
@@ -1162,9 +1155,8 @@ var File_pos_devices_proto protoreflect.FileDescriptor
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\xbf\x03\n" +
-	"\x18RegisterPosDeviceRequest\x12\x15\n" +
-	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
+	"posdevices\"\xa8\x03\n" +
+	"\x18RegisterPosDeviceRequest\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12.\n" +
 	"\x13current_app_version\x18\x04 \x01(\tR\x11currentAppVersion\x12.\n" +

@@ -6,6 +6,7 @@ import (
 	"pos-master/config"
 	"pos-master/models"
 	appPb "pos-master/proto/app"
+	eventservices "pos-master/services/event_services"
 	"pos-master/services/pocketbase"
 	"pos-master/utils"
 
@@ -38,6 +39,12 @@ func EditApp(req *appPb.EditAppRequest) error {
 	}
 
 	tx.Commit()
+
+	eventservices.RegisterEvent("App  edited", map[string]interface{}{
+		"ID":          req.Id,
+		"Name":        req.Name,
+		"Description": req.Description,
+	})
 
 	return nil
 }
@@ -100,6 +107,13 @@ func EditAppVersion(c *gin.Context, req *appPb.EditAppVersionRequest) error {
 	if err != nil {
 		return utils.CapitalizeError(fmt.Sprintf("failed to update version: %v", fmt.Sprintf("error: %v", err)))
 	}
+
+	eventservices.RegisterEvent("App version edited", map[string]interface{}{
+		"Version Id":     req.VersionId,
+		"Version number": req.VersionNumber,
+		"Latest release": req.IsLatestStable,
+		"Active release": req.IsActive,
+	})
 
 	tx.Commit()
 

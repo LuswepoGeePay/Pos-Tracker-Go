@@ -4,6 +4,7 @@ import (
 	"pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
+	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
 )
 
@@ -41,6 +42,11 @@ func CheckAppUpdate(req *posdevices.CheckUpdateRequest) (*posdevices.CheckUpdate
 			Code:            0,
 		}, nil
 	}
+
+	eventservices.RegisterEvent("Pos Device checked for an update", map[string]interface{}{
+		"pos_device_id": req.PosdeviceId,
+		"version":       req.AppVersion,
+	})
 
 	return &posdevices.CheckUpdateResponse{
 		UpdateAvailable: true,
