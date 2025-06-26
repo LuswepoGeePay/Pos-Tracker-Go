@@ -19,6 +19,7 @@ message RegisterPosDeviceRequest {
     string description =10;
     string email =11;
     string business_name =12;
+        string fingerprint =13;
 }
 
 
@@ -36,6 +37,7 @@ message PosDevice {
     string location_last_updated=11;
     string description =12;
     string business_name =13;
+    string fingerprint =14;
 }
 
 

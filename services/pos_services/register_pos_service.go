@@ -34,6 +34,7 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		LocationLastUpdatedAt: time.Now(),
 		Email:                 req.Email,
 		Entity:                req.BusinessName,
+		FingerPrint:           req.Fingerprint,
 	}
 
 	result := config.DB.Create(&pos)

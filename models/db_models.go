@@ -56,7 +56,10 @@ type PosDevice struct {
 	DeviceModel           string    `gorm:"default:null"`
 	OperatingSystem       string    `gorm:"default:null"`
 	Email                 string    `gorm:"default:null"`
+	FingerPrint           string    `gorm:"default:null"`
+	Product               string    `gorm:"default:null"`
 	LocationLastUpdatedAt time.Time
+
 	gorm.Model
 }
 

@@ -35,6 +35,7 @@ type RegisterPosDeviceRequest struct {
 	Description        string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
 	Email              string `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
 	BusinessName       string `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	Fingerprint        string `protobuf:"bytes,13,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -146,6 +147,13 @@ func (x *RegisterPosDeviceRequest) GetBusinessName() string {
 	return ""
 }
 
+func (x *RegisterPosDeviceRequest) GetFingerprint() string {
+	if x != nil {
+		return x.Fingerprint
+	}
+	return ""
+}
+
 type PosDevice struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	AppId               string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -161,6 +169,7 @@ type PosDevice struct {
 	LocationLastUpdated string                 `protobuf:"bytes,11,opt,name=location_last_updated,json=locationLastUpdated,proto3" json:"location_last_updated,omitempty"`
 	Description         string                 `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
 	BusinessName        string                 `protobuf:"bytes,13,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	Fingerprint         string                 `protobuf:"bytes,14,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -282,6 +291,13 @@ func (x *PosDevice) GetDescription() string {
 func (x *PosDevice) GetBusinessName() string {
 	if x != nil {
 		return x.BusinessName
+	}
+	return ""
+}
+
+func (x *PosDevice) GetFingerprint() string {
+	if x != nil {
+		return x.Fingerprint
 	}
 	return ""
 }
@@ -1155,7 +1171,7 @@ var File_pos_devices_proto protoreflect.FileDescriptor
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\xa8\x03\n" +
+	"posdevices\"\xca\x03\n" +
 	"\x18RegisterPosDeviceRequest\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12.\n" +
@@ -1168,7 +1184,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\vdescription\x18\n" +
 	" \x01(\tR\vdescription\x12\x14\n" +
 	"\x05email\x18\v \x01(\tR\x05email\x12#\n" +
-	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\"\xde\x03\n" +
+	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\x12 \n" +
+	"\vfingerprint\x18\r \x01(\tR\vfingerprint\"\x80\x04\n" +
 	"\tPosDevice\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -1183,7 +1200,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	" \x01(\tR\x02id\x122\n" +
 	"\x15location_last_updated\x18\v \x01(\tR\x13locationLastUpdated\x12 \n" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12#\n" +
-	"\rbusiness_name\x18\r \x01(\tR\fbusinessName\"h\n" +
+	"\rbusiness_name\x18\r \x01(\tR\fbusinessName\x12 \n" +
+	"\vfingerprint\x18\x0e \x01(\tR\vfingerprint\"h\n" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
