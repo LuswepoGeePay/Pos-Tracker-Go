@@ -104,3 +104,20 @@ func DeleteDeviceHandler(c *gin.Context) {
 func GetDeviceByID(c *gin.Context) {
 
 }
+
+func HeartBeatHandler(c *gin.Context) {
+
+	var req models.HeartBeatRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.RespondWithError(c, 400, "error: invalid payload")
+		return
+	}
+
+	err := posservices.RegisterHeartBeat(&req)
+	if err != nil {
+		utils.RespondWithError(c, 400, "error", utils.FormatError("detail", err))
+		return
+	}
+
+	utils.RespondWithSuccess(c, "heartbeat recieved")
+}

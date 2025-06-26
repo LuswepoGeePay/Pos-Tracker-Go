@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type PocketBaseAuthResponse struct {
 	Token  string                 `json:"token"`
 	Record map[string]interface{} `json:"record"`
@@ -23,4 +25,9 @@ func (p *GetRequest) SetDefaults() {
 type SearchRequest struct {
 	GetRequest
 	SearchQuery string `json:"searchQuery,omitempty"`
+}
+
+type HeartBeatRequest struct {
+	DeviceID  string    `json:"device_id"`
+	Timestamp time.Time `json:"timestamp"`
 }

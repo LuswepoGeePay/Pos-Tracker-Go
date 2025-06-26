@@ -39,6 +39,7 @@ func SetupRoutes(r *gin.Engine) {
 	auth.POST("/pos/devices/get", posdevices.GetPosDevicesHandler)
 	auth.POST("/pos/device/update", posdevices.EditDeviceHandler)
 	auth.DELETE("/pos/device/:id", posdevices.DeleteDeviceHandler)
+	r.POST("/v1/pos/device/heartbeat", posdevices.HeartBeatHandler)
 
 	//Apps
 	auth.POST("/app/register", apps.RegisterAppHandler)
