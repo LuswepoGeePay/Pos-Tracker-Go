@@ -62,3 +62,20 @@ func EditUserHandler(c *gin.Context) {
 	utils.RespondWithSuccess(c, "User updated successfully")
 
 }
+
+func GetUserHandler(c *gin.Context) {
+
+	userid := c.Param("user_id")
+
+	user, err := userservices.GetUser(userid)
+
+	if err != nil {
+		utils.RespondWithError(c, 400, utils.FormatError("unable to get user info", err))
+		return
+	}
+
+	utils.RespondWithSuccess(c, "✅ user info retrieved", gin.H{
+		"data": user,
+	})
+
+}

@@ -36,3 +36,5 @@
 {"time":"2025-06-14T12:29:10.0678884+02:00","level":"ERROR","msg":"error","!BADKEY":"failed to parse version ID"}
 {"time":"2025-06-16T12:58:17.9866258+02:00","level":"ERROR","msg":"❌error","unable to delete device":"detail","!BADKEY":"error: Error 1205 (HY000): Lock wait timeout exceeded; try restarting transaction"}
 {"time":"2025-06-16T12:58:19.1269456+02:00","level":"ERROR","msg":"❌error","unable to delete device":"detail","!BADKEY":"error: Error 1205 (HY000): Lock wait timeout exceeded; try restarting transaction"}
+{"time":"2025-06-30T13:00:56.749533+02:00","level":"ERROR","msg":"❌error","!BADKEY":"failed to parse form"}
+{"time":"2025-06-30T13:01:43.398192+02:00","level":"ERROR","msg":"❌error","!BADKEY":"unable to marshal  data"}

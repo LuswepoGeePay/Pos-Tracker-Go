@@ -1,7 +1,6 @@
 package posservices
 
 import (
-	"log"
 	"log/slog"
 	"pos-master/config"
 	"pos-master/models"
@@ -17,8 +16,13 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 
 	posDeviceID := uuid.New()
 
-	log.Println("Posdevice ID")
-	log.Println(posDeviceID)
+	var business models.Business
+
+	err := config.DB.Where("email = ?", req.Email).Find(&business)
+
+	if err != nil {
+		return "", utils.CapitalizeError(utils.FormatError("unable to find that business", err.Error))
+	}
 
 	pos := models.PosDevice{
 		ID:                    posDeviceID,
@@ -33,8 +37,9 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		Status:                "online",
 		LocationLastUpdatedAt: time.Now(),
 		Email:                 req.Email,
-		Entity:                req.BusinessName,
+		Entity:                business.Name,
 		FingerPrint:           req.Fingerprint,
+		BusinessID:            business.ID,
 	}
 
 	result := config.DB.Create(&pos)

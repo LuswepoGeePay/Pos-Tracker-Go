@@ -47,6 +47,8 @@ type PosDevice struct {
 	ID                    uuid.UUID `gorm:"type:uuid;primary_key"`
 	SerialNumber          string    `gorm:"default:null"`
 	Entity                string    `gorm:"default:null"`
+	BusinessID            uuid.UUID `gorm:"not null"`
+	Business              Business  `gorm:"foreignKey:BusinessID"`
 	Name                  string    `gorm:"default:null"`
 	Description           string    `gorm:"default:null"`
 	CurrentAppVersion     string    `gorm:"default:null"`
@@ -59,7 +61,6 @@ type PosDevice struct {
 	FingerPrint           string    `gorm:"default:null"`
 	Product               string    `gorm:"default:null"`
 	LocationLastUpdatedAt time.Time
-
 	gorm.Model
 }
 
@@ -75,6 +76,17 @@ type LocationHistory struct {
 	RegionName  string    `gorm:"default:null"`
 	Entity      string    `gorm:"default:null"`
 	TimeStamp   time.Time
+	gorm.Model
+}
+
+type Business struct {
+	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
+	Name         string    `gorm:"default:null"`
+	Address      string    `gorm:"default:null"`
+	BusinessLogo string    `gorm:"default:null"`
+	Email        string    `gorm:"unique;not null"`
+	Status       bool      `gorm:"default:false"`
+	Phone        string    `gorm:"default:null"`
 	gorm.Model
 }
 

@@ -122,7 +122,6 @@ message EditLocationHistoryRequest {
     string region =7;
     string city =8;
     string ip_address =9;
-
 }
 
 

@@ -31,6 +31,7 @@ func InitDB() {
 		&models.PosDevice{},
 		&models.LocationHistory{},
 		&models.Event{},
+		&models.Business{},
 	)
 	if err != nil {
 		log.Fatalf("failed to migrate database: %v", err)

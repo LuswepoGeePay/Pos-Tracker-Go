@@ -621,6 +621,98 @@ func (x *AuthResponse) GetTokenExpiry() string {
 	return ""
 }
 
+type ChangeEmailOrPasswordRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	OldEmail          string                 `protobuf:"bytes,1,opt,name=old_email,json=oldEmail,proto3" json:"old_email,omitempty"`
+	NewEmail          string                 `protobuf:"bytes,2,opt,name=new_email,json=newEmail,proto3" json:"new_email,omitempty"`
+	ConfirmPassword   string                 `protobuf:"bytes,3,opt,name=confirm_password,json=confirmPassword,proto3" json:"confirm_password,omitempty"`
+	NewPassword       string                 `protobuf:"bytes,4,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	UserId            string                 `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	IsPasswordRequest bool                   `protobuf:"varint,6,opt,name=is_password_request,json=isPasswordRequest,proto3" json:"is_password_request,omitempty"`
+	IsEmailRequest    bool                   `protobuf:"varint,7,opt,name=is_email_request,json=isEmailRequest,proto3" json:"is_email_request,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ChangeEmailOrPasswordRequest) Reset() {
+	*x = ChangeEmailOrPasswordRequest{}
+	mi := &file_auth_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeEmailOrPasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeEmailOrPasswordRequest) ProtoMessage() {}
+
+func (x *ChangeEmailOrPasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeEmailOrPasswordRequest.ProtoReflect.Descriptor instead.
+func (*ChangeEmailOrPasswordRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetOldEmail() string {
+	if x != nil {
+		return x.OldEmail
+	}
+	return ""
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetNewEmail() string {
+	if x != nil {
+		return x.NewEmail
+	}
+	return ""
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetConfirmPassword() string {
+	if x != nil {
+		return x.ConfirmPassword
+	}
+	return ""
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetIsPasswordRequest() bool {
+	if x != nil {
+		return x.IsPasswordRequest
+	}
+	return false
+}
+
+func (x *ChangeEmailOrPasswordRequest) GetIsEmailRequest() bool {
+	if x != nil {
+		return x.IsEmailRequest
+	}
+	return false
+}
+
 var File_auth_proto protoreflect.FileDescriptor
 
 const file_auth_proto_rawDesc = "" +
@@ -676,7 +768,15 @@ const file_auth_proto_rawDesc = "" +
 	"\x02id\x18\x06 \x01(\tR\x02id\x12 \n" +
 	"\vpermissions\x18\a \x03(\tR\vpermissions\x12*\n" +
 	"\x10isFirstTimeLogin\x18\b \x01(\tR\x10isFirstTimeLogin\x12 \n" +
-	"\vtokenExpiry\x18\t \x01(\tR\vtokenExpiryB\x12Z\x10/proto/auth;authb\x06proto3"
+	"\vtokenExpiry\x18\t \x01(\tR\vtokenExpiry\"\x99\x02\n" +
+	"\x1cChangeEmailOrPasswordRequest\x12\x1b\n" +
+	"\told_email\x18\x01 \x01(\tR\boldEmail\x12\x1b\n" +
+	"\tnew_email\x18\x02 \x01(\tR\bnewEmail\x12)\n" +
+	"\x10confirm_password\x18\x03 \x01(\tR\x0fconfirmPassword\x12!\n" +
+	"\fnew_password\x18\x04 \x01(\tR\vnewPassword\x12\x17\n" +
+	"\auser_id\x18\x05 \x01(\tR\x06userId\x12.\n" +
+	"\x13is_password_request\x18\x06 \x01(\bR\x11isPasswordRequest\x12(\n" +
+	"\x10is_email_request\x18\a \x01(\bR\x0eisEmailRequestB\x12Z\x10/proto/auth;authb\x06proto3"
 
 var (
 	file_auth_proto_rawDescOnce sync.Once
@@ -690,16 +790,17 @@ func file_auth_proto_rawDescGZIP() []byte {
 	return file_auth_proto_rawDescData
 }
 
-var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_auth_proto_goTypes = []any{
-	(*RegisterRequest)(nil),      // 0: auth.RegisterRequest
-	(*ResetPasswordRequest)(nil), // 1: auth.ResetPasswordRequest
-	(*User)(nil),                 // 2: auth.User
-	(*GetUsersRequest)(nil),      // 3: auth.GetUsersRequest
-	(*GetUsersResponse)(nil),     // 4: auth.GetUsersResponse
-	(*EditUserRequest)(nil),      // 5: auth.EditUserRequest
-	(*LoginRequest)(nil),         // 6: auth.LoginRequest
-	(*AuthResponse)(nil),         // 7: auth.AuthResponse
+	(*RegisterRequest)(nil),              // 0: auth.RegisterRequest
+	(*ResetPasswordRequest)(nil),         // 1: auth.ResetPasswordRequest
+	(*User)(nil),                         // 2: auth.User
+	(*GetUsersRequest)(nil),              // 3: auth.GetUsersRequest
+	(*GetUsersResponse)(nil),             // 4: auth.GetUsersResponse
+	(*EditUserRequest)(nil),              // 5: auth.EditUserRequest
+	(*LoginRequest)(nil),                 // 6: auth.LoginRequest
+	(*AuthResponse)(nil),                 // 7: auth.AuthResponse
+	(*ChangeEmailOrPasswordRequest)(nil), // 8: auth.ChangeEmailOrPasswordRequest
 }
 var file_auth_proto_depIdxs = []int32{
 	2, // 0: auth.GetUsersResponse.user:type_name -> auth.User
@@ -721,7 +822,7 @@ func file_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_proto_rawDesc), len(file_auth_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

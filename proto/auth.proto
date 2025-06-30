@@ -77,3 +77,14 @@ message AuthResponse {
     string tokenExpiry =9;
     
 }
+
+
+message ChangeEmailOrPasswordRequest {
+    string old_email = 1;
+    string new_email =2;
+    string confirm_password =3;
+    string new_password =4;
+    string user_id =5;
+    bool is_password_request =6;
+    bool is_email_request =7;
+}

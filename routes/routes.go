@@ -3,6 +3,7 @@ package routes
 import (
 	"pos-master/controllers/apps"
 	"pos-master/controllers/auth"
+	"pos-master/controllers/business"
 	"pos-master/controllers/dashboard"
 	"pos-master/controllers/events"
 	locationhistory "pos-master/controllers/location_history"
@@ -25,6 +26,7 @@ func SetupRoutes(r *gin.Engine) {
 
 	auth.POST("/users/get", users.GetUsersHandler)
 	auth.POST("/user/update", users.EditUserHandler)
+	auth.GET("/user/get/:user_id", users.GetUserHandler)
 
 	//reports
 	// auth.POST("/report/devices/generate")
@@ -60,5 +62,12 @@ func SetupRoutes(r *gin.Engine) {
 	r.POST("/v1/location/register", locationhistory.RegisterNewLocationHandler)
 	auth.POST("/locations/get", locationhistory.GetLocationsHandler)
 	// auth.DELETE("/pos/device/id", posdevices.DeleteDeviceHandler)
+
+	//business
+	auth.POST("/business/create", business.CreateBusinessHandler)
+	auth.POST("/businesses/get", business.GetBusinessesHandler)
+	auth.GET("/business/get/:id", business.GetBusinessById)
+	auth.POST("/business/update", business.EditBusinessHandler)
+	auth.DELETE("/business/delete/:id", business.DeleteBusinessHandler)
 
 }

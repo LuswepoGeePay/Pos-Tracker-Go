@@ -48,6 +48,7 @@ func GetLocationHistory(req *posPb.GetLocationHistorysRequest) (*posPb.GetLocati
 			Timestamp:    history.TimeStamp.Format(time.RFC3339),
 			DeviceName:   history.PosDevice.Name,
 			BusinessName: history.Entity,
+			Region:       history.RegionName,
 		}
 	}
 
