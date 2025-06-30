@@ -368,6 +368,7 @@ type GetPosDevicesResponse struct {
 	TotalPages    int32                  `protobuf:"varint,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`   // Total number of pages
 	CurrentPage   int32                  `protobuf:"varint,3,opt,name=currentPage,proto3" json:"currentPage,omitempty"` // Current page
 	HasMore       bool                   `protobuf:"varint,4,opt,name=hasMore,proto3" json:"hasMore,omitempty"`         // Whether there are more pages
+	Count         int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -428,6 +429,13 @@ func (x *GetPosDevicesResponse) GetHasMore() bool {
 		return x.HasMore
 	}
 	return false
+}
+
+func (x *GetPosDevicesResponse) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
 }
 
 type EditPosDeviceRequest struct {
@@ -860,6 +868,7 @@ type GetLocationHistorysResponse struct {
 	TotalPages      int32                  `protobuf:"varint,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`                                 // Total number of pages
 	CurrentPage     int32                  `protobuf:"varint,3,opt,name=currentPage,proto3" json:"currentPage,omitempty"`                               // Current page
 	HasMore         bool                   `protobuf:"varint,4,opt,name=hasMore,proto3" json:"hasMore,omitempty"`                                       // Whether there are more pages
+	Count           int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -920,6 +929,13 @@ func (x *GetLocationHistorysResponse) GetHasMore() bool {
 		return x.HasMore
 	}
 	return false
+}
+
+func (x *GetLocationHistorysResponse) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
 }
 
 type EditLocationHistoryRequest struct {
@@ -1205,14 +1221,15 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xa8\x01\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xbe\x01\n" +
 	"\x15GetPosDevicesResponse\x123\n" +
 	"\tposdevice\x18\x01 \x03(\v2\x15.posdevices.PosDeviceR\tposdevice\x12\x1e\n" +
 	"\n" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\xb5\x03\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\xb5\x03\n" +
 	"\x14EditPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -1256,14 +1273,15 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x1aGetLocationHistorysRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xc1\x01\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xd7\x01\n" +
 	"\x1bGetLocationHistorysResponse\x12F\n" +
 	"\x10location_history\x18\x01 \x03(\v2\x1b.posdevices.LocationHistoryR\x0flocationHistory\x12\x1e\n" +
 	"\n" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\x8e\x02\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\x8e\x02\n" +
 	"\x1aEditLocationHistoryRequest\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +

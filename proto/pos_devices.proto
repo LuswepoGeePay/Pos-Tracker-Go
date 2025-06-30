@@ -19,7 +19,7 @@ message RegisterPosDeviceRequest {
     string description =10;
     string email =11;
     string business_name =12;
-        string fingerprint =13;
+    string fingerprint =13;
 }
 
 
@@ -52,7 +52,8 @@ message GetPosDevicesResponse {
     int32 totalPages = 2;         // Total number of pages
     int32 currentPage = 3;        // Current page
     bool hasMore = 4;             // Whether there are more pages
-  }
+    int32 count= 5;
+}
 
 message EditPosDeviceRequest {
     string app_id = 1;
@@ -110,7 +111,8 @@ message GetLocationHistorysResponse {
     int32 totalPages = 2;         // Total number of pages
     int32 currentPage = 3;        // Current page
     bool hasMore = 4;             // Whether there are more pages
-  }
+   int32 count= 5;
+}
 
 message EditLocationHistoryRequest {
     string posdevice_id = 1;

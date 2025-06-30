@@ -51,6 +51,7 @@ func GetApps(req *appPb.GetAppsRequest) (*appPb.GetAppsResponse, error) {
 		TotalPages:  totalPages,
 		CurrentPage: req.Page,
 		HasMore:     req.Page < totalPages,
+		Count:       int32(totalApps),
 	}, nil
 }
 
@@ -105,5 +106,6 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 		TotalPages:  totalPages,
 		CurrentPage: req.Page,
 		HasMore:     req.Page < totalPages,
+		Count:       int32(totalApps),
 	}, nil
 }

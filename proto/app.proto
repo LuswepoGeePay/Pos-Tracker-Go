@@ -30,7 +30,8 @@ message GetAppsResponse {
     int32 totalPages = 2;         // Total number of pages
     int32 currentPage = 3;        // Current page
     bool hasMore = 4;             // Whether there are more pages
-  }
+    int32 count= 5;
+}
 
 message EditAppRequest {
     string name = 1;
@@ -79,7 +80,8 @@ message GetAppVersionsResponse {
     int32 totalPages = 2;         // Total number of pages
     int32 currentPage = 3;        // Current page
     bool hasMore = 4;             // Whether there are more pages
-  }
+    int32 count= 5;
+}
 
 message EditAppVersionRequest {
     string version_number = 1;

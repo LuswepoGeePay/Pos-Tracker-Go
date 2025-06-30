@@ -61,6 +61,7 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 		TotalPages:  totalPages,
 		CurrentPage: req.Page,
 		HasMore:     req.Page < totalPages,
+		Count:       int32(totalPosDevices),
 	}, nil
 }
 

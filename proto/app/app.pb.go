@@ -199,6 +199,7 @@ type GetAppsResponse struct {
 	TotalPages    int32                  `protobuf:"varint,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`   // Total number of pages
 	CurrentPage   int32                  `protobuf:"varint,3,opt,name=currentPage,proto3" json:"currentPage,omitempty"` // Current page
 	HasMore       bool                   `protobuf:"varint,4,opt,name=hasMore,proto3" json:"hasMore,omitempty"`         // Whether there are more pages
+	Count         int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -259,6 +260,13 @@ func (x *GetAppsResponse) GetHasMore() bool {
 		return x.HasMore
 	}
 	return false
+}
+
+func (x *GetAppsResponse) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
 }
 
 type EditAppRequest struct {
@@ -611,6 +619,7 @@ type GetAppVersionsResponse struct {
 	TotalPages    int32                  `protobuf:"varint,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`                  // Total number of pages
 	CurrentPage   int32                  `protobuf:"varint,3,opt,name=currentPage,proto3" json:"currentPage,omitempty"`                // Current page
 	HasMore       bool                   `protobuf:"varint,4,opt,name=hasMore,proto3" json:"hasMore,omitempty"`                        // Whether there are more pages
+	Count         int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -671,6 +680,13 @@ func (x *GetAppVersionsResponse) GetHasMore() bool {
 		return x.HasMore
 	}
 	return false
+}
+
+func (x *GetAppVersionsResponse) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
 }
 
 type EditAppVersionRequest struct {
@@ -772,14 +788,15 @@ const file_app_proto_rawDesc = "" +
 	"\x0eGetAppsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\x89\x01\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\x9f\x01\n" +
 	"\x0fGetAppsResponse\x12\x1a\n" +
 	"\x03app\x18\x01 \x03(\v2\b.app.AppR\x03app\x12\x1e\n" +
 	"\n" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"V\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"V\n" +
 	"\x0eEditAppRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x0e\n" +
@@ -812,7 +829,7 @@ const file_app_proto_rawDesc = "" +
 	"\x15GetAppVersionsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xa6\x01\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xbc\x01\n" +
 	"\x16GetAppVersionsResponse\x120\n" +
 	"\vapp_version\x18\x01 \x03(\v2\x0f.app.AppVersionR\n" +
 	"appVersion\x12\x1e\n" +
@@ -820,7 +837,8 @@ const file_app_proto_rawDesc = "" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\xdb\x01\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\xdb\x01\n" +
 	"\x15EditAppVersionRequest\x12%\n" +
 	"\x0eversion_number\x18\x01 \x01(\tR\rversionNumber\x12#\n" +
 	"\rrelease_notes\x18\x02 \x01(\tR\freleaseNotes\x12\x10\n" +

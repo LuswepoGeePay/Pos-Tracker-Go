@@ -1,6 +1,7 @@
 package posservices
 
 import (
+	"errors"
 	"log/slog"
 	"pos-master/config"
 	"pos-master/models"
@@ -10,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error) {
@@ -17,13 +19,13 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 	posDeviceID := uuid.New()
 
 	var business models.Business
-
-	err := config.DB.Where("email = ?", req.Email).Find(&business)
-
-	if err != nil {
-		return "", utils.CapitalizeError(utils.FormatError("unable to find that business", err.Error))
+	result := config.DB.Where("email = ?", req.Email).First(&business)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return "", utils.CapitalizeError("Business not found with provided email")
+		}
+		return "", utils.CapitalizeError(utils.FormatError("unable to find business", result.Error))
 	}
-
 	pos := models.PosDevice{
 		ID:                    posDeviceID,
 		SerialNumber:          req.SerialNumber,
@@ -42,7 +44,7 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		BusinessID:            business.ID,
 	}
 
-	result := config.DB.Create(&pos)
+	result = config.DB.Create(&pos)
 
 	if result.Error != nil {
 		utils.Log(slog.LevelError, "Error", "Unable to register pos device", "Detail", result.Error.Error())

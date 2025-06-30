@@ -263,6 +263,7 @@ type GetBusinessesResponse struct {
 	TotalPages    int32                  `protobuf:"varint,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`   // Total number of pages
 	CurrentPage   int32                  `protobuf:"varint,3,opt,name=currentPage,proto3" json:"currentPage,omitempty"` // Current page
 	HasMore       bool                   `protobuf:"varint,4,opt,name=hasMore,proto3" json:"hasMore,omitempty"`         // Whether there are more pages
+	Count         int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -323,6 +324,13 @@ func (x *GetBusinessesResponse) GetHasMore() bool {
 		return x.HasMore
 	}
 	return false
+}
+
+func (x *GetBusinessesResponse) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
 }
 
 type EditBusinessRequest struct {
@@ -588,14 +596,15 @@ const file_business_proto_rawDesc = "" +
 	"\x14GetBusinessesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xa3\x01\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xb9\x01\n" +
 	"\x15GetBusinessesResponse\x12.\n" +
 	"\bbusiness\x18\x01 \x03(\v2\x12.business.BusinessR\bbusiness\x12\x1e\n" +
 	"\n" +
 	"totalPages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
-	"\ahasMore\x18\x04 \x01(\bR\ahasMore\"\xbc\x01\n" +
+	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\xbc\x01\n" +
 	"\x13EditBusinessRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x18\n" +

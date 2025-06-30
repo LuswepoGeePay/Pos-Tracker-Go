@@ -39,7 +39,8 @@ message GetBusinessesResponse {
     int32 totalPages = 2;         // Total number of pages
     int32 currentPage = 3;        // Current page
     bool hasMore = 4;             // Whether there are more pages
-  }
+       int32 count= 5;
+}
 
 message EditBusinessRequest {
     string name = 1;

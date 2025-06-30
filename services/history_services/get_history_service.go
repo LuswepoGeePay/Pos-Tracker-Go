@@ -57,5 +57,6 @@ func GetLocationHistory(req *posPb.GetLocationHistorysRequest) (*posPb.GetLocati
 		TotalPages:      totalPages,
 		CurrentPage:     req.Page,
 		HasMore:         req.Page < totalPages,
+		Count:           int32(totalLocations),
 	}, nil
 }

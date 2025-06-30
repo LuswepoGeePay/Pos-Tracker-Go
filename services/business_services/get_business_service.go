@@ -42,11 +42,12 @@ func GetBusinesses(req *business.GetBusinessesRequest) (*business.GetBusinessesR
 
 	for i, bs := range businesses {
 		pbBusinesss[i] = &business.Business{
-			Id:     bs.ID.String(),
-			Name:   bs.Name,
-			Status: bs.Status,
-			Email:  bs.Email,
-			Phone:  bs.Phone,
+			Id:      bs.ID.String(),
+			Name:    bs.Name,
+			Status:  bs.Status,
+			Email:   bs.Email,
+			Phone:   bs.Phone,
+			Address: bs.Address,
 		}
 	}
 
@@ -54,7 +55,10 @@ func GetBusinesses(req *business.GetBusinessesRequest) (*business.GetBusinessesR
 		Business:    pbBusinesss,
 		TotalPages:  totalPages,
 		CurrentPage: req.Page,
-		HasMore:     req.Page < totalPages}, nil
+		HasMore:     req.Page < totalPages,
+		Count:       int32(totalBusinesss),
+	}, nil
+
 }
 
 func GetBusinessById(businessID string) (*business.Business, error) {
