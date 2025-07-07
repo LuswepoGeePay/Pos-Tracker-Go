@@ -62,6 +62,8 @@ func RegisterNewLocationHistory(req *posdevices.RegisterLocationHistoryRequest) 
 		return utils.CapitalizeError(fmt.Sprintf("failed to parse ID %s", result.Error.Error()))
 	}
 
+	_ = UpdateLocationOnDeviceTable(posID.String(), req.Latitude, req.Longitude)
+
 	eventservices.RegisterEvent("A device has pinged", map[string]interface{}{
 		"Pos ID":    req.PosdeviceId,
 		"longitude": req.Longitude,
@@ -114,4 +116,29 @@ func GetRegion(longitude, latitude string) (*Location, error) {
 		Region:  result.Address.State,
 		Country: result.Address.Country,
 	}, nil
+}
+
+func UpdateLocationOnDeviceTable(posID, latitude, longitude string) error {
+
+	updates := map[string]interface{}{}
+
+	if latitude != "" {
+		updates["last_known_latitude"] = latitude
+	}
+
+	if longitude != "" {
+		updates["last_known_longitude"] = longitude
+	}
+
+	updates["location_last_updated_at"] = time.Now()
+
+	tx := config.DB.Begin()
+
+	if err := tx.Model(&models.PosDevice{}).Where("id = ?", posID).Updates(updates).Error; err != nil {
+		tx.Rollback()
+		return utils.CapitalizeError("unable to update pos location")
+	}
+	tx.Commit()
+	return nil
+
 }

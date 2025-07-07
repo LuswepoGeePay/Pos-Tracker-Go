@@ -28,7 +28,7 @@ func GetLocationHistory(req *posPb.GetLocationHistorysRequest) (*posPb.GetLocati
 	offset := (req.Page - 1) * req.PageSize
 
 	// Execute the final query with pagination and preloading
-	err = query.Limit(int(req.PageSize)).
+	err = query.Order("time_stamp DESC").Limit(int(req.PageSize)).
 		Offset(int(offset)).
 		Find(&pos_location_history).Error
 
@@ -49,6 +49,7 @@ func GetLocationHistory(req *posPb.GetLocationHistorysRequest) (*posPb.GetLocati
 			DeviceName:   history.PosDevice.Name,
 			BusinessName: history.Entity,
 			Region:       history.RegionName,
+			City:         history.City,
 		}
 	}
 

@@ -50,17 +50,56 @@ func RegisterHeartBeat(req *models.HeartBeatRequest) error {
 }
 
 func MarkOfflineDevices() {
-	threshold := time.Now().Add(-3 * time.Hour)
+	threshold := time.Now().Add(-168 * time.Hour)
 
-	result := config.DB.Model(&models.PosDevice{}).Where("location_last_updated_at < ?", threshold).Update("status", "offline")
-	fmt.Printf("[%s] Marked %d devices as offline\n", time.Now().Format(time.RFC3339), result.RowsAffected)
+	query := `
+		UPDATE pos_devices pd
+		JOIN (
+			SELECT lh.pos_device_id, MAX(lh.time_stamp) AS latest_ts
+			FROM location_histories lh
+			GROUP BY lh.pos_device_id
+			HAVING latest_ts < ?
+		) AS old ON pd.id = old.pos_device_id
+		SET pd.status = 'offline'
+		WHERE pd.status != 'offline'
+	`
 
+	result := config.DB.Exec(query, threshold)
+	if result.Error != nil {
+		fmt.Printf("Error during fallback offline update: %v\n", result.Error)
+	}
+	fmt.Printf("[%s] Fallback marked %d devices as offline from LocationHistory\n",
+		time.Now().Format(time.RFC3339), result.RowsAffected)
 }
 
+func MarkOnlineFromLocationHistory() {
+	threshold := time.Now().Add(-24 * time.Hour)
+
+	// Raw SQL can be more efficient here depending on the size of the history table
+	query := `
+		UPDATE pos_devices pd
+		JOIN (
+			SELECT lh.pos_device_id, MAX(lh.time_stamp) AS latest_ts
+			FROM location_histories lh
+			GROUP BY lh.pos_device_id
+			HAVING latest_ts >= ?
+		) AS recent ON pd.id = recent.pos_device_id
+		SET pd.status = 'online'
+		WHERE pd.status != 'online'
+	`
+
+	result := config.DB.Exec(query, threshold)
+	fmt.Printf("[%s] Fallback marked %d devices as online from LocationHistory\n", time.Now().Format(time.RFC3339), result.RowsAffected)
+}
 func StartCronJobs() {
 	c := cron.New()
 	// Runs every 10 minutes. Use cron expression format.
-	_, err := c.AddFunc("*/10 * * * *", MarkOfflineDevices)
+	_, err := c.AddFunc("*/10 * * *  *", MarkOnlineFromLocationHistory)
+	if err != nil {
+		panic(err)
+	}
+	_, err = c.AddFunc("*/10 * * * *", MarkOfflineDevices)
+
 	if err != nil {
 		panic(err)
 	}

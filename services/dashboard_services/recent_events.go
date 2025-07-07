@@ -31,7 +31,7 @@ func GetEvents(req *dashboard.GetEventsRequest) (*dashboard.GetEventsResponse, e
 	offset := (req.Page - 1) * req.PageSize
 
 	// Execute the final query with pagination and preloading
-	err = query.Limit(int(req.PageSize)).
+	err = query.Order("created_at DESC").Limit(int(req.PageSize)).
 		Offset(int(offset)).
 		Find(&events).Error
 

@@ -42,6 +42,8 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		Entity:                business.Name,
 		FingerPrint:           req.Fingerprint,
 		BusinessID:            business.ID,
+		PhoneNumber1:          req.PhoneNumber1,
+		PhoneNumber2:          req.PhoneNumber2,
 	}
 
 	result = config.DB.Create(&pos)

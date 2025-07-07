@@ -36,6 +36,8 @@ type RegisterPosDeviceRequest struct {
 	Email              string `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
 	BusinessName       string `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	Fingerprint        string `protobuf:"bytes,13,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	PhoneNumber1       string `protobuf:"bytes,14,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
+	PhoneNumber2       string `protobuf:"bytes,15,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -154,6 +156,20 @@ func (x *RegisterPosDeviceRequest) GetFingerprint() string {
 	return ""
 }
 
+func (x *RegisterPosDeviceRequest) GetPhoneNumber1() string {
+	if x != nil {
+		return x.PhoneNumber1
+	}
+	return ""
+}
+
+func (x *RegisterPosDeviceRequest) GetPhoneNumber2() string {
+	if x != nil {
+		return x.PhoneNumber2
+	}
+	return ""
+}
+
 type PosDevice struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	AppId               string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -170,6 +186,8 @@ type PosDevice struct {
 	Description         string                 `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
 	BusinessName        string                 `protobuf:"bytes,13,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
 	Fingerprint         string                 `protobuf:"bytes,14,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	PhoneNumber1        string                 `protobuf:"bytes,15,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
+	PhoneNumber2        string                 `protobuf:"bytes,16,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -302,11 +320,28 @@ func (x *PosDevice) GetFingerprint() string {
 	return ""
 }
 
+func (x *PosDevice) GetPhoneNumber1() string {
+	if x != nil {
+		return x.PhoneNumber1
+	}
+	return ""
+}
+
+func (x *PosDevice) GetPhoneNumber2() string {
+	if x != nil {
+		return x.PhoneNumber2
+	}
+	return ""
+}
+
 type GetPosDevicesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
 	SearchQuery   string                 `protobuf:"bytes,3,opt,name=searchQuery,proto3" json:"searchQuery,omitempty"`
+	StartDate     string                 `protobuf:"bytes,4,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       string                 `protobuf:"bytes,5,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	AppVersion    string                 `protobuf:"bytes,6,opt,name=app_version,json=appVersion,proto3" json:"app_version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -358,6 +393,27 @@ func (x *GetPosDevicesRequest) GetPageSize() int32 {
 func (x *GetPosDevicesRequest) GetSearchQuery() string {
 	if x != nil {
 		return x.SearchQuery
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetStartDate() string {
+	if x != nil {
+		return x.StartDate
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetEndDate() string {
+	if x != nil {
+		return x.EndDate
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetAppVersion() string {
+	if x != nil {
+		return x.AppVersion
 	}
 	return ""
 }
@@ -452,6 +508,8 @@ type EditPosDeviceRequest struct {
 	Id                 string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
 	Description        string                 `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
 	BusinessName       string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	PhoneNumber1       string                 `protobuf:"bytes,13,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
+	PhoneNumber2       string                 `protobuf:"bytes,14,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -566,6 +624,20 @@ func (x *EditPosDeviceRequest) GetDescription() string {
 func (x *EditPosDeviceRequest) GetBusinessName() string {
 	if x != nil {
 		return x.BusinessName
+	}
+	return ""
+}
+
+func (x *EditPosDeviceRequest) GetPhoneNumber1() string {
+	if x != nil {
+		return x.PhoneNumber1
+	}
+	return ""
+}
+
+func (x *EditPosDeviceRequest) GetPhoneNumber2() string {
+	if x != nil {
+		return x.PhoneNumber2
 	}
 	return ""
 }
@@ -1187,7 +1259,7 @@ var File_pos_devices_proto protoreflect.FileDescriptor
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\xca\x03\n" +
+	"posdevices\"\x94\x04\n" +
 	"\x18RegisterPosDeviceRequest\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12.\n" +
@@ -1201,7 +1273,9 @@ const file_pos_devices_proto_rawDesc = "" +
 	" \x01(\tR\vdescription\x12\x14\n" +
 	"\x05email\x18\v \x01(\tR\x05email\x12#\n" +
 	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\x12 \n" +
-	"\vfingerprint\x18\r \x01(\tR\vfingerprint\"\x80\x04\n" +
+	"\vfingerprint\x18\r \x01(\tR\vfingerprint\x12#\n" +
+	"\rphone_number1\x18\x0e \x01(\tR\fphoneNumber1\x12#\n" +
+	"\rphone_number2\x18\x0f \x01(\tR\fphoneNumber2\"\xca\x04\n" +
 	"\tPosDevice\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -1217,11 +1291,18 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x15location_last_updated\x18\v \x01(\tR\x13locationLastUpdated\x12 \n" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12#\n" +
 	"\rbusiness_name\x18\r \x01(\tR\fbusinessName\x12 \n" +
-	"\vfingerprint\x18\x0e \x01(\tR\vfingerprint\"h\n" +
+	"\vfingerprint\x18\x0e \x01(\tR\vfingerprint\x12#\n" +
+	"\rphone_number1\x18\x0f \x01(\tR\fphoneNumber1\x12#\n" +
+	"\rphone_number2\x18\x10 \x01(\tR\fphoneNumber2\"\xc3\x01\n" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
-	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\"\xbe\x01\n" +
+	"\vsearchQuery\x18\x03 \x01(\tR\vsearchQuery\x12\x1d\n" +
+	"\n" +
+	"start_date\x18\x04 \x01(\tR\tstartDate\x12\x19\n" +
+	"\bend_date\x18\x05 \x01(\tR\aendDate\x12\x1f\n" +
+	"\vapp_version\x18\x06 \x01(\tR\n" +
+	"appVersion\"\xbe\x01\n" +
 	"\x15GetPosDevicesResponse\x123\n" +
 	"\tposdevice\x18\x01 \x03(\v2\x15.posdevices.PosDeviceR\tposdevice\x12\x1e\n" +
 	"\n" +
@@ -1229,7 +1310,7 @@ const file_pos_devices_proto_rawDesc = "" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
 	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
-	"\x05count\x18\x05 \x01(\x05R\x05count\"\xb5\x03\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\xff\x03\n" +
 	"\x14EditPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -1243,7 +1324,9 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x02id\x18\n" +
 	" \x01(\tR\x02id\x12 \n" +
 	"\vdescription\x18\v \x01(\tR\vdescription\x12#\n" +
-	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\"\x82\x02\n" +
+	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\x12#\n" +
+	"\rphone_number1\x18\r \x01(\tR\fphoneNumber1\x12#\n" +
+	"\rphone_number2\x18\x0e \x01(\tR\fphoneNumber2\"\x82\x02\n" +
 	"\x1eRegisterLocationHistoryRequest\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +

@@ -63,6 +63,12 @@ func EditDevice(req *posdevices.EditPosDeviceRequest) error {
 	if req.OperatingSystem != currentDevice.OperatingSystem {
 		updates["operating_system"] = req.OperatingSystem
 	}
+	if req.PhoneNumber1 != currentDevice.PhoneNumber1 {
+		updates["phone_number1"] = req.PhoneNumber1
+	}
+	if req.PhoneNumber2 != currentDevice.PhoneNumber2 {
+		updates["phone_number2"] = req.PhoneNumber2
+	}
 
 	tx := config.DB.Begin()
 
@@ -82,6 +88,8 @@ func EditDevice(req *posdevices.EditPosDeviceRequest) error {
 		"Device Model":     req.DeviceModel,
 		"Status":           deviceID,
 		"Operating system": req.OperatingSystem,
+		"Phone Number 1":   req.PhoneNumber1,
+		"Phone Number 2":   req.PhoneNumber2,
 	})
 
 	return nil

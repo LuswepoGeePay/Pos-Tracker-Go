@@ -16,7 +16,7 @@ func InitDB() {
 	var err error
 
 	dsn := "root@tcp(127.0.0.1:3306)/posmaster?charset=utf8mb4&parseTime=True&loc=Local"
-	// dsn := "root:password@tcp(127.0.0.1:3306)/posmaster?charset=utf8mb4&parseTime=True&loc=Local"
+	// dsn := "tracker_user:tracker_user@tcp(10.139.40.25:3306)/posmaster?charset=utf8mb4&parseTime=True&loc=Local"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect to the database: %v", err)

@@ -28,8 +28,42 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 	// Calculate offset for pagination
 	offset := (req.Page - 1) * req.PageSize
 
+	if req.StartDate != "" {
+		startDate, err := time.Parse(time.RFC3339, req.StartDate)
+		if err != nil {
+			return nil, utils.CapitalizeError("Invalid start date")
+		}
+		query = query.Where("created_at >= ?", startDate)
+	}
+
+	if req.EndDate != "" {
+		endDate, err := time.Parse(time.RFC3339, req.EndDate)
+		if err != nil {
+			return nil, utils.CapitalizeError("Invalid end date")
+		}
+		query = query.Where("created_at <= ?", endDate)
+	}
+
+	if req.StartDate != "" && req.EndDate != "" {
+		startDate, err := time.Parse(time.RFC3339, req.StartDate)
+		if err != nil {
+			return nil, utils.CapitalizeError("Invalid start date")
+		}
+
+		endDate, err := time.Parse(time.RFC3339, req.EndDate)
+		if err != nil {
+			return nil, utils.CapitalizeError("Invalid end date")
+		}
+
+		query = query.Where("created_at BETWEEN ? AND ?", startDate, endDate)
+	}
+
+	if req.AppVersion != "" {
+		query = query.Where("current_app_version = ?", req.AppVersion)
+	}
+
 	// Execute the final query with pagination and preloading
-	err = query.Limit(int(req.PageSize)).
+	err = query.Order("created_at DESC").Limit(int(req.PageSize)).
 		Offset(int(offset)).
 		Find(&pos_devices).Error
 
@@ -53,6 +87,8 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 			Description:         history.Description,
 			LocationLastUpdated: history.LocationLastUpdatedAt.Format(time.RFC3339),
 			BusinessName:        history.Entity,
+			PhoneNumber1:        history.PhoneNumber1,
+			PhoneNumber2:        history.PhoneNumber2,
 		}
 	}
 

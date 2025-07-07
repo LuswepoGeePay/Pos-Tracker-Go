@@ -20,6 +20,8 @@ message RegisterPosDeviceRequest {
     string email =11;
     string business_name =12;
     string fingerprint =13;
+    string phone_number1=14;
+    string phone_number2=15;
 }
 
 
@@ -38,6 +40,8 @@ message PosDevice {
     string description =12;
     string business_name =13;
     string fingerprint =14;
+    string phone_number1=15;
+    string phone_number2=16;
 }
 
 
@@ -45,6 +49,9 @@ message GetPosDevicesRequest {
     int32 page =1;
     int32 pageSize =2;
     string searchQuery=3;
+    string start_date =4;
+    string end_date =5;
+    string app_version =6;
 }
 
 message GetPosDevicesResponse {
@@ -68,6 +75,8 @@ message EditPosDeviceRequest {
     string id=10;
     string description =11;
     string business_name =12;
+    string phone_number1=13;
+    string phone_number2=14;
 }
 
 
@@ -80,7 +89,7 @@ message RegisterLocationHistoryRequest {
     string timestamp =5;
     string region =6;
     string city =7;
-    string ip_address =8;
+    string ip_address = 8;
 }
 
 
