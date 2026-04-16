@@ -3,7 +3,7 @@ package businessservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/business"
 	eventservices "pos-master/services/event_services"
@@ -24,7 +24,7 @@ func EditBusiness(c *gin.Context, req *business.EditBusinessRequest) error {
 
 	var currentAppVersion models.Business
 
-	result := config.DB.Where("id = ?", businessID).Find(&currentAppVersion)
+	result := database.DB.Where("id = ?", businessID).Find(&currentAppVersion)
 	if result.Error != nil {
 
 	}
@@ -64,7 +64,7 @@ func EditBusiness(c *gin.Context, req *business.EditBusinessRequest) error {
 		updates["phone"] = req.Phone
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	err = tx.Model(&models.AppVersion{}).Where("id = ?", businessID).Updates(updates).Error
 

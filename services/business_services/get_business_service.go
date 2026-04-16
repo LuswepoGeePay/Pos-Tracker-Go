@@ -1,7 +1,7 @@
 package businessservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/business"
 	"pos-master/utils"
@@ -14,7 +14,7 @@ func GetBusinesses(req *business.GetBusinessesRequest) (*business.GetBusinessesR
 
 	var businesses []models.Business
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	query := tx.Model(&models.Business{})
 
@@ -71,7 +71,7 @@ func GetBusinessById(businessID string) (*business.Business, error) {
 
 	var bmodel models.Business
 
-	err = config.DB.Where("id = ?", parsedID).Find(&bmodel).Error
+	err = database.DB.Where("id = ?", parsedID).Find(&bmodel).Error
 
 	if err != nil {
 		return nil, utils.CapitalizeError(utils.FormatError("unable to find business", err))
@@ -79,7 +79,7 @@ func GetBusinessById(businessID string) (*business.Business, error) {
 
 	// Fetch POS devices for this business
 	var deviceModels []models.PosDevice
-	if err := config.DB.Preload("Business").Where("business_id = ?", parsedID).Find(&deviceModels).Error; err != nil {
+	if err := database.DB.Preload("Business").Where("business_id = ?", parsedID).Find(&deviceModels).Error; err != nil {
 		return nil, utils.CapitalizeError(utils.FormatError("unable to fetch pos devices", err))
 	}
 

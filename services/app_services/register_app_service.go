@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	appPb "pos-master/proto/app"
 	eventservices "pos-master/services/event_services"
 	"pos-master/services/pocketbase"
 	"pos-master/utils"
 	"time"
+	"io"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -26,9 +27,22 @@ func RegisterApp(req *appPb.RegisterAppRequest) error {
 		Description: req.Description,
 	}
 
-	result := config.DB.Create(&app)
+	// Start transaction for app registration
+	tx := database.DB.Begin()
+	if tx.Error != nil {
+		return utils.CapitalizeError(fmt.Sprintf("Unable to start transaction: %v", tx.Error))
+	}
+
+	result := tx.Create(&app)
 	if result.Error != nil {
+		tx.Rollback()
 		return utils.CapitalizeError(fmt.Sprintf("Unable to register app %s", result.Error.Error()))
+	}
+
+	// Commit transaction
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return utils.CapitalizeError(fmt.Sprintf("Failed to commit transaction: %v", err))
 	}
 
 	eventservices.RegisterEvent("New App Registered", map[string]interface{}{
@@ -76,16 +90,26 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 	defer res.Body.Close()
 
 	hash := sha256.New()
-	// if _, err := io.Copy(hash, openedFile); err != nil {
-	// 	utils.Log(slog.LevelError, "❌error", "unable to hash APK", fmt.Sprintf("error: %v", err))
-	// 	return utils.CapitalizeError("unable to process apk")
-	// }
+	// Read the body once and hash it. Note: since we only need the hash, we can pipe it.
+	// But we also need to close res.Body.
+	if _, err := io.Copy(hash, res.Body); err != nil {
+		utils.Log(slog.LevelError, "❌error", "unable to hash APK", fmt.Sprintf("error: %v", err))
+		return utils.CapitalizeError("unable to process apk")
+	}
 
 	appID, err := uuid.Parse(req.AppId)
 
 	if err != nil {
 		utils.Log(slog.LevelError, "error", fmt.Sprintf("error: %v", err))
 		return utils.CapitalizeError("unable to parse App ID")
+	}
+
+	var terminalTypeID *uuid.UUID
+	if req.TerminalTypeId != "" {
+		parsedID, err := uuid.Parse(req.TerminalTypeId)
+		if err == nil {
+			terminalTypeID = &parsedID
+		}
 	}
 
 	checkSum := hex.EncodeToString(hash.Sum(nil))
@@ -101,9 +125,26 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 		IsLatestStable: req.IsLatestStable,
 		ReleasedAt:     time.Now(),
 		VersionNumber:  req.VersionNumber,
+		TerminalTypeID: terminalTypeID,
 	}
 
-	result := config.DB.Create(&appVersion)
+	// Start transaction for app version registration
+	tx := database.DB.Begin()
+	if tx.Error != nil {
+		return utils.CapitalizeError(fmt.Sprintf("Unable to start transaction: %v", tx.Error))
+	}
+
+	result := tx.Create(&appVersion)
+	if result.Error != nil {
+		tx.Rollback()
+		return utils.CapitalizeError(utils.FormatError("unable to create app version", result.Error))
+	}
+
+	// Commit transaction
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return utils.CapitalizeError(fmt.Sprintf("Failed to commit transaction: %v", err))
+	}
 
 	eventservices.RegisterEvent("New App Version Registered", map[string]interface{}{
 		"App Id":         appID,
@@ -111,10 +152,6 @@ func RegisterAppVersion(c *gin.Context, req *appPb.RegisterAppVersionRequest) er
 		"Version number": req.VersionNumber,
 		"File path":      fileURL,
 	})
-
-	if result.Error != nil {
-		return utils.CapitalizeError(utils.FormatError("unable to create app", result.Error))
-	}
 
 	return nil
 

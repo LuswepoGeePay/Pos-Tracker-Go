@@ -3,7 +3,7 @@ package businessservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
@@ -20,7 +20,7 @@ func DeleteBusiness(businessID string) error {
 		return utils.CapitalizeError(fmt.Sprintf("unable to parse app id %v", err))
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 	if err := tx.Unscoped().Delete(&models.Business{}, "id = ?", parsedBusinessID).Error; err != nil {
 		tx.Rollback()
 		utils.Log(slog.LevelError, "❌error", "unable to delete business", fmt.Sprintf("error: %v", err))

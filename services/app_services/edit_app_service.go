@@ -3,7 +3,7 @@ package appservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	appPb "pos-master/proto/app"
 	eventservices "pos-master/services/event_services"
@@ -30,7 +30,7 @@ func EditApp(req *appPb.EditAppRequest) error {
 		updates["description"] = req.Description
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	err = tx.Model(&models.App{}).Where("id = ?", appID).Updates(updates).Error
 
@@ -60,7 +60,7 @@ func EditAppVersion(c *gin.Context, req *appPb.EditAppVersionRequest) error {
 
 	var currentAppVersion models.AppVersion
 
-	result := config.DB.Where("id = ?", versionID).Find(&currentAppVersion)
+	result := database.DB.Where("id = ?", versionID).Find(&currentAppVersion)
 	if result.Error != nil {
 
 	}
@@ -100,7 +100,16 @@ func EditAppVersion(c *gin.Context, req *appPb.EditAppVersionRequest) error {
 		updates["is_active"] = req.IsActive
 	}
 
-	tx := config.DB.Begin()
+	if req.TerminalTypeId != "" {
+		parsedID, err := uuid.Parse(req.TerminalTypeId)
+		if err == nil {
+			updates["terminal_type_id"] = &parsedID
+		}
+	}
+
+	// if req.
+
+	tx := database.DB.Begin()
 
 	err = tx.Model(&models.AppVersion{}).Where("id = ?", versionID).Updates(updates).Error
 

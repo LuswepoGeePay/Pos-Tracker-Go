@@ -1,7 +1,7 @@
 package historyservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	posPb "pos-master/proto/posdevices"
 	"pos-master/utils"
@@ -12,7 +12,7 @@ func GetLocationHistory(req *posPb.GetLocationHistorysRequest) (*posPb.GetLocati
 
 	var pos_location_history []models.LocationHistory
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	query := tx.Preload("PosDevice").Model(&models.LocationHistory{})
 

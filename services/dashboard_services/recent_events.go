@@ -1,7 +1,7 @@
 package dashboardservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/dashboard"
 	"pos-master/utils"
@@ -15,7 +15,7 @@ func GetRecentEvents() {
 func GetEvents(req *dashboard.GetEventsRequest) (*dashboard.GetEventsResponse, error) {
 	var events []models.Event
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	query := tx.Model(&models.Event{})
 

@@ -3,7 +3,7 @@ package posservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
@@ -19,7 +19,7 @@ func DeleteDevice(deviceID string) error {
 		return utils.CapitalizeError(fmt.Sprintf("unable to parse pos device ID %v", err))
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	if err := tx.Delete(&models.LocationHistory{}, "pos_device_id = ?", parsedID).Error; err != nil {
 		tx.Rollback()

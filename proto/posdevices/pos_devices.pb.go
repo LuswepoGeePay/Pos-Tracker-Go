@@ -24,22 +24,24 @@ const (
 type RegisterPosDeviceRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// string app_id = 1;
-	SerialNumber       string `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
-	Name               string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	CurrentAppVersion  string `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
-	LastKnownLatitude  string `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
-	LastKnownLongitude string `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
-	Status             string `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	DeviceModel        string `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
-	OperatingSystem    string `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
-	Description        string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
-	Email              string `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
-	BusinessName       string `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
-	Fingerprint        string `protobuf:"bytes,13,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
-	PhoneNumber1       string `protobuf:"bytes,14,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
-	PhoneNumber2       string `protobuf:"bytes,15,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	SerialNumber               string `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
+	Name                       string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	CurrentAppVersion          string `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
+	LastKnownLatitude          string `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
+	LastKnownLongitude         string `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
+	Status                     string `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
+	DeviceModel                string `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
+	OperatingSystem            string `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
+	Description                string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
+	Email                      string `protobuf:"bytes,11,opt,name=email,proto3" json:"email,omitempty"`
+	BusinessName               string `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	Fingerprint                string `protobuf:"bytes,13,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	PrimaryNumber              string `protobuf:"bytes,14,opt,name=primary_number,json=primaryNumber,proto3" json:"primary_number,omitempty"`
+	SecondaryNumber            string `protobuf:"bytes,15,opt,name=secondary_number,json=secondaryNumber,proto3" json:"secondary_number,omitempty"`
+	TerminalTypeId             string `protobuf:"bytes,16,opt,name=terminal_type_id,json=terminalTypeId,proto3" json:"terminal_type_id,omitempty"`
+	DeviceIdentificationNumber string `protobuf:"bytes,17,opt,name=device_identification_number,json=deviceIdentificationNumber,proto3" json:"device_identification_number,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *RegisterPosDeviceRequest) Reset() {
@@ -156,40 +158,56 @@ func (x *RegisterPosDeviceRequest) GetFingerprint() string {
 	return ""
 }
 
-func (x *RegisterPosDeviceRequest) GetPhoneNumber1() string {
+func (x *RegisterPosDeviceRequest) GetPrimaryNumber() string {
 	if x != nil {
-		return x.PhoneNumber1
+		return x.PrimaryNumber
 	}
 	return ""
 }
 
-func (x *RegisterPosDeviceRequest) GetPhoneNumber2() string {
+func (x *RegisterPosDeviceRequest) GetSecondaryNumber() string {
 	if x != nil {
-		return x.PhoneNumber2
+		return x.SecondaryNumber
+	}
+	return ""
+}
+
+func (x *RegisterPosDeviceRequest) GetTerminalTypeId() string {
+	if x != nil {
+		return x.TerminalTypeId
+	}
+	return ""
+}
+
+func (x *RegisterPosDeviceRequest) GetDeviceIdentificationNumber() string {
+	if x != nil {
+		return x.DeviceIdentificationNumber
 	}
 	return ""
 }
 
 type PosDevice struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	AppId               string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
-	SerialNumber        string                 `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
-	Name                string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	CurrentAppVersion   string                 `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
-	LastKnownLatitude   string                 `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
-	LastKnownLongitude  string                 `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
-	Status              string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	DeviceModel         string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
-	OperatingSystem     string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
-	Id                  string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
-	LocationLastUpdated string                 `protobuf:"bytes,11,opt,name=location_last_updated,json=locationLastUpdated,proto3" json:"location_last_updated,omitempty"`
-	Description         string                 `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
-	BusinessName        string                 `protobuf:"bytes,13,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
-	Fingerprint         string                 `protobuf:"bytes,14,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
-	PhoneNumber1        string                 `protobuf:"bytes,15,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
-	PhoneNumber2        string                 `protobuf:"bytes,16,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	AppId                      string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	SerialNumber               string                 `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
+	Name                       string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	CurrentAppVersion          string                 `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
+	LastKnownLatitude          string                 `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
+	LastKnownLongitude         string                 `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
+	Status                     string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
+	DeviceModel                string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
+	OperatingSystem            string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
+	Id                         string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
+	LocationLastUpdated        string                 `protobuf:"bytes,11,opt,name=location_last_updated,json=locationLastUpdated,proto3" json:"location_last_updated,omitempty"`
+	Description                string                 `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
+	BusinessName               string                 `protobuf:"bytes,13,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	Fingerprint                string                 `protobuf:"bytes,14,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	PrimaryNumber              string                 `protobuf:"bytes,15,opt,name=primary_number,json=primaryNumber,proto3" json:"primary_number,omitempty"`
+	SecondaryNumber            string                 `protobuf:"bytes,16,opt,name=secondary_number,json=secondaryNumber,proto3" json:"secondary_number,omitempty"`
+	TerminalTypeName           string                 `protobuf:"bytes,17,opt,name=terminal_type_name,json=terminalTypeName,proto3" json:"terminal_type_name,omitempty"`
+	DeviceIdentificationNumber string                 `protobuf:"bytes,18,opt,name=device_identification_number,json=deviceIdentificationNumber,proto3" json:"device_identification_number,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *PosDevice) Reset() {
@@ -320,30 +338,50 @@ func (x *PosDevice) GetFingerprint() string {
 	return ""
 }
 
-func (x *PosDevice) GetPhoneNumber1() string {
+func (x *PosDevice) GetPrimaryNumber() string {
 	if x != nil {
-		return x.PhoneNumber1
+		return x.PrimaryNumber
 	}
 	return ""
 }
 
-func (x *PosDevice) GetPhoneNumber2() string {
+func (x *PosDevice) GetSecondaryNumber() string {
 	if x != nil {
-		return x.PhoneNumber2
+		return x.SecondaryNumber
+	}
+	return ""
+}
+
+func (x *PosDevice) GetTerminalTypeName() string {
+	if x != nil {
+		return x.TerminalTypeName
+	}
+	return ""
+}
+
+func (x *PosDevice) GetDeviceIdentificationNumber() string {
+	if x != nil {
+		return x.DeviceIdentificationNumber
 	}
 	return ""
 }
 
 type GetPosDevicesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
-	SearchQuery   string                 `protobuf:"bytes,3,opt,name=searchQuery,proto3" json:"searchQuery,omitempty"`
-	StartDate     string                 `protobuf:"bytes,4,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
-	EndDate       string                 `protobuf:"bytes,5,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
-	AppVersion    string                 `protobuf:"bytes,6,opt,name=app_version,json=appVersion,proto3" json:"app_version,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"open.v1"`
+	Page                     int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize                 int32                  `protobuf:"varint,2,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
+	SearchQuery              string                 `protobuf:"bytes,3,opt,name=searchQuery,proto3" json:"searchQuery,omitempty"`
+	StartDate                string                 `protobuf:"bytes,4,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate                  string                 `protobuf:"bytes,5,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	AppVersion               string                 `protobuf:"bytes,6,opt,name=app_version,json=appVersion,proto3" json:"app_version,omitempty"`
+	BusinessId               string                 `protobuf:"bytes,7,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	Status                   string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
+	PhoneNumber              string                 `protobuf:"bytes,9,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	LocationLastUpdatedStart string                 `protobuf:"bytes,10,opt,name=location_last_updated_start,json=locationLastUpdatedStart,proto3" json:"location_last_updated_start,omitempty"`
+	LocationLastUpdatedEnd   string                 `protobuf:"bytes,11,opt,name=location_last_updated_end,json=locationLastUpdatedEnd,proto3" json:"location_last_updated_end,omitempty"`
+	SerialNumber             string                 `protobuf:"bytes,12,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *GetPosDevicesRequest) Reset() {
@@ -414,6 +452,48 @@ func (x *GetPosDevicesRequest) GetEndDate() string {
 func (x *GetPosDevicesRequest) GetAppVersion() string {
 	if x != nil {
 		return x.AppVersion
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetBusinessId() string {
+	if x != nil {
+		return x.BusinessId
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetPhoneNumber() string {
+	if x != nil {
+		return x.PhoneNumber
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetLocationLastUpdatedStart() string {
+	if x != nil {
+		return x.LocationLastUpdatedStart
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetLocationLastUpdatedEnd() string {
+	if x != nil {
+		return x.LocationLastUpdatedEnd
+	}
+	return ""
+}
+
+func (x *GetPosDevicesRequest) GetSerialNumber() string {
+	if x != nil {
+		return x.SerialNumber
 	}
 	return ""
 }
@@ -495,23 +575,24 @@ func (x *GetPosDevicesResponse) GetCount() int32 {
 }
 
 type EditPosDeviceRequest struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	AppId              string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
-	SerialNumber       string                 `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
-	Name               string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	CurrentAppVersion  string                 `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
-	LastKnownLatitude  string                 `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
-	LastKnownLongitude string                 `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
-	Status             string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	DeviceModel        string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
-	OperatingSystem    string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
-	Id                 string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
-	Description        string                 `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
-	BusinessName       string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
-	PhoneNumber1       string                 `protobuf:"bytes,13,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
-	PhoneNumber2       string                 `protobuf:"bytes,14,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	AppId                      string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	SerialNumber               string                 `protobuf:"bytes,2,opt,name=serial_number,json=serialNumber,proto3" json:"serial_number,omitempty"`
+	Name                       string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	CurrentAppVersion          string                 `protobuf:"bytes,4,opt,name=current_app_version,json=currentAppVersion,proto3" json:"current_app_version,omitempty"`
+	LastKnownLatitude          string                 `protobuf:"bytes,5,opt,name=last_known_latitude,json=lastKnownLatitude,proto3" json:"last_known_latitude,omitempty"`
+	LastKnownLongitude         string                 `protobuf:"bytes,6,opt,name=last_known_longitude,json=lastKnownLongitude,proto3" json:"last_known_longitude,omitempty"`
+	Status                     string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
+	DeviceModel                string                 `protobuf:"bytes,8,opt,name=device_model,json=deviceModel,proto3" json:"device_model,omitempty"`
+	OperatingSystem            string                 `protobuf:"bytes,9,opt,name=operating_system,json=operatingSystem,proto3" json:"operating_system,omitempty"`
+	Id                         string                 `protobuf:"bytes,10,opt,name=id,proto3" json:"id,omitempty"`
+	Description                string                 `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
+	BusinessName               string                 `protobuf:"bytes,12,opt,name=business_name,json=businessName,proto3" json:"business_name,omitempty"`
+	PhoneNumber1               string                 `protobuf:"bytes,13,opt,name=phone_number1,json=phoneNumber1,proto3" json:"phone_number1,omitempty"`
+	PhoneNumber2               string                 `protobuf:"bytes,14,opt,name=phone_number2,json=phoneNumber2,proto3" json:"phone_number2,omitempty"`
+	DeviceIdentificationNumber string                 `protobuf:"bytes,15,opt,name=device_identification_number,json=deviceIdentificationNumber,proto3" json:"device_identification_number,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *EditPosDeviceRequest) Reset() {
@@ -638,6 +719,13 @@ func (x *EditPosDeviceRequest) GetPhoneNumber1() string {
 func (x *EditPosDeviceRequest) GetPhoneNumber2() string {
 	if x != nil {
 		return x.PhoneNumber2
+	}
+	return ""
+}
+
+func (x *EditPosDeviceRequest) GetDeviceIdentificationNumber() string {
+	if x != nil {
+		return x.DeviceIdentificationNumber
 	}
 	return ""
 }
@@ -1259,7 +1347,7 @@ var File_pos_devices_proto protoreflect.FileDescriptor
 const file_pos_devices_proto_rawDesc = "" +
 	"\n" +
 	"\x11pos_devices.proto\x12\n" +
-	"posdevices\"\x94\x04\n" +
+	"posdevices\"\x88\x05\n" +
 	"\x18RegisterPosDeviceRequest\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12.\n" +
@@ -1273,9 +1361,11 @@ const file_pos_devices_proto_rawDesc = "" +
 	" \x01(\tR\vdescription\x12\x14\n" +
 	"\x05email\x18\v \x01(\tR\x05email\x12#\n" +
 	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\x12 \n" +
-	"\vfingerprint\x18\r \x01(\tR\vfingerprint\x12#\n" +
-	"\rphone_number1\x18\x0e \x01(\tR\fphoneNumber1\x12#\n" +
-	"\rphone_number2\x18\x0f \x01(\tR\fphoneNumber2\"\xca\x04\n" +
+	"\vfingerprint\x18\r \x01(\tR\vfingerprint\x12%\n" +
+	"\x0eprimary_number\x18\x0e \x01(\tR\rprimaryNumber\x12)\n" +
+	"\x10secondary_number\x18\x0f \x01(\tR\x0fsecondaryNumber\x12(\n" +
+	"\x10terminal_type_id\x18\x10 \x01(\tR\x0eterminalTypeId\x12@\n" +
+	"\x1cdevice_identification_number\x18\x11 \x01(\tR\x1adeviceIdentificationNumber\"\xc2\x05\n" +
 	"\tPosDevice\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -1291,9 +1381,11 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\x15location_last_updated\x18\v \x01(\tR\x13locationLastUpdated\x12 \n" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12#\n" +
 	"\rbusiness_name\x18\r \x01(\tR\fbusinessName\x12 \n" +
-	"\vfingerprint\x18\x0e \x01(\tR\vfingerprint\x12#\n" +
-	"\rphone_number1\x18\x0f \x01(\tR\fphoneNumber1\x12#\n" +
-	"\rphone_number2\x18\x10 \x01(\tR\fphoneNumber2\"\xc3\x01\n" +
+	"\vfingerprint\x18\x0e \x01(\tR\vfingerprint\x12%\n" +
+	"\x0eprimary_number\x18\x0f \x01(\tR\rprimaryNumber\x12)\n" +
+	"\x10secondary_number\x18\x10 \x01(\tR\x0fsecondaryNumber\x12,\n" +
+	"\x12terminal_type_name\x18\x11 \x01(\tR\x10terminalTypeName\x12@\n" +
+	"\x1cdevice_identification_number\x18\x12 \x01(\tR\x1adeviceIdentificationNumber\"\xbe\x03\n" +
 	"\x14GetPosDevicesRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -1302,7 +1394,15 @@ const file_pos_devices_proto_rawDesc = "" +
 	"start_date\x18\x04 \x01(\tR\tstartDate\x12\x19\n" +
 	"\bend_date\x18\x05 \x01(\tR\aendDate\x12\x1f\n" +
 	"\vapp_version\x18\x06 \x01(\tR\n" +
-	"appVersion\"\xbe\x01\n" +
+	"appVersion\x12\x1f\n" +
+	"\vbusiness_id\x18\a \x01(\tR\n" +
+	"businessId\x12\x16\n" +
+	"\x06status\x18\b \x01(\tR\x06status\x12!\n" +
+	"\fphone_number\x18\t \x01(\tR\vphoneNumber\x12=\n" +
+	"\x1blocation_last_updated_start\x18\n" +
+	" \x01(\tR\x18locationLastUpdatedStart\x129\n" +
+	"\x19location_last_updated_end\x18\v \x01(\tR\x16locationLastUpdatedEnd\x12#\n" +
+	"\rserial_number\x18\f \x01(\tR\fserialNumber\"\xbe\x01\n" +
 	"\x15GetPosDevicesResponse\x123\n" +
 	"\tposdevice\x18\x01 \x03(\v2\x15.posdevices.PosDeviceR\tposdevice\x12\x1e\n" +
 	"\n" +
@@ -1310,7 +1410,7 @@ const file_pos_devices_proto_rawDesc = "" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
 	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
-	"\x05count\x18\x05 \x01(\x05R\x05count\"\xff\x03\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\xc1\x04\n" +
 	"\x14EditPosDeviceRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12#\n" +
 	"\rserial_number\x18\x02 \x01(\tR\fserialNumber\x12\x12\n" +
@@ -1326,7 +1426,8 @@ const file_pos_devices_proto_rawDesc = "" +
 	"\vdescription\x18\v \x01(\tR\vdescription\x12#\n" +
 	"\rbusiness_name\x18\f \x01(\tR\fbusinessName\x12#\n" +
 	"\rphone_number1\x18\r \x01(\tR\fphoneNumber1\x12#\n" +
-	"\rphone_number2\x18\x0e \x01(\tR\fphoneNumber2\"\x82\x02\n" +
+	"\rphone_number2\x18\x0e \x01(\tR\fphoneNumber2\x12@\n" +
+	"\x1cdevice_identification_number\x18\x0f \x01(\tR\x1adeviceIdentificationNumber\"\x82\x02\n" +
 	"\x1eRegisterLocationHistoryRequest\x12!\n" +
 	"\fposdevice_id\x18\x01 \x01(\tR\vposdeviceId\x12\x1c\n" +
 	"\tlongitude\x18\x02 \x01(\tR\tlongitude\x12\x1a\n" +

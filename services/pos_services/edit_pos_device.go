@@ -3,7 +3,7 @@ package posservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
 	eventservices "pos-master/services/event_services"
@@ -22,7 +22,7 @@ func EditDevice(req *posdevices.EditPosDeviceRequest) error {
 
 	var currentDevice models.PosDevice
 
-	result := config.DB.Where("id = ?", deviceID).Find(&currentDevice)
+	result := database.DB.Where("id = ?", deviceID).Find(&currentDevice)
 	if result.Error != nil {
 
 	}
@@ -69,8 +69,16 @@ func EditDevice(req *posdevices.EditPosDeviceRequest) error {
 	if req.PhoneNumber2 != currentDevice.PhoneNumber2 {
 		updates["phone_number2"] = req.PhoneNumber2
 	}
+	if req.DeviceIdentificationNumber != currentDevice.DeviceIdentificationNumber {
+		updates["device_identification_number"] = req.DeviceIdentificationNumber
+	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
 
 	err = tx.Model(&models.PosDevice{}).Where("id = ?", deviceID).Updates(updates).Error
 

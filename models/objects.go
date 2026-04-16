@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 type PocketBaseAuthResponse struct {
 	Token  string                 `json:"token"`
 	Record map[string]interface{} `json:"record"`
@@ -28,6 +26,6 @@ type SearchRequest struct {
 }
 
 type HeartBeatRequest struct {
-	DeviceID  string    `json:"device_id"`
-	Timestamp time.Time `json:"timestamp"`
+	DeviceID  string `json:"device_id"`
+	Timestamp string `json:"timestamp"`
 }

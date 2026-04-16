@@ -2,7 +2,7 @@ package authservices
 
 import (
 	"fmt"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	pb "pos-master/proto/auth"
 	eventservices "pos-master/services/event_services"
@@ -16,7 +16,7 @@ func LoginUser(req *pb.LoginRequest) (*pb.AuthResponse, error) {
 	var user models.User
 
 	// First check if user exists
-	result := config.DB.Preload("Role.Permissions").Where("email = ?", req.Email).First(&user)
+	result := database.DB.Preload("Role.Permissions").Where("email = ?", req.Email).First(&user)
 	if result.Error != nil {
 		return nil, utils.CapitalizeError("invalid credentials")
 	}

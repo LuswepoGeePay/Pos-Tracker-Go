@@ -1,7 +1,7 @@
 package userservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	pb "pos-master/proto/auth"
 	"pos-master/utils"
@@ -14,7 +14,7 @@ func GetUsers(req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
 
 	var users []models.User
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 	query := tx.Preload("Role").Model(&models.User{})
 
 	var totalUsers int64
@@ -68,7 +68,7 @@ func GetUser(userID string) (*pb.User, error) {
 		return nil, utils.CapitalizeError(err.Error())
 	}
 
-	err = config.DB.Preload("Role").Where("id = ?", userid).Find(&user).Error
+	err = database.DB.Preload("Role").Where("id = ?", userid).Find(&user).Error
 	if err != nil {
 		return nil, utils.CapitalizeError(err.Error())
 	}
@@ -91,13 +91,13 @@ func ChangeEmailorPassword(req *pb.ChangeEmailOrPasswordRequest) error {
 
 	var user models.User
 
-	err = config.DB.Where("id = ?", userID).Find(&user).Error
+	err = database.DB.Where("id = ?", userID).Find(&user).Error
 
 	if err != nil {
 		return utils.CapitalizeError("unable to find user")
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	if req.IsEmailRequest {
 		if user.Email == req.OldEmail {

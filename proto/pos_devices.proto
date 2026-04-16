@@ -20,8 +20,10 @@ message RegisterPosDeviceRequest {
     string email =11;
     string business_name =12;
     string fingerprint =13;
-    string phone_number1=14;
-    string phone_number2=15;
+    string primary_number=14;
+    string secondary_number=15;
+    string terminal_type_id =16;
+    string device_identification_number =17;
 }
 
 
@@ -40,8 +42,11 @@ message PosDevice {
     string description =12;
     string business_name =13;
     string fingerprint =14;
-    string phone_number1=15;
-    string phone_number2=16;
+    string primary_number=15;
+    string secondary_number=16;
+    string terminal_type_name =17;
+    string device_identification_number =18;
+
 }
 
 
@@ -52,6 +57,12 @@ message GetPosDevicesRequest {
     string start_date =4;
     string end_date =5;
     string app_version =6;
+    string business_id = 7;
+    string status = 8;
+    string phone_number = 9;
+    string location_last_updated_start = 10;
+    string location_last_updated_end = 11;
+    string serial_number = 12;
 }
 
 message GetPosDevicesResponse {
@@ -77,6 +88,7 @@ message EditPosDeviceRequest {
     string business_name =12;
     string phone_number1=13;
     string phone_number2=14;
+    string device_identification_number =15;
 }
 
 

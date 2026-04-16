@@ -3,6 +3,8 @@ package apps
 import (
 	"fmt"
 	"log/slog"
+	"strconv"
+
 	"pos-master/models"
 	appPb "pos-master/proto/app"
 	"pos-master/proto/posdevices"
@@ -71,15 +73,28 @@ func RegisterNewAppVersionHandler(c *gin.Context) {
 
 func GetAppsHandler(c *gin.Context) {
 
-	var getRequest models.SearchRequest
+	// Read pagination and search parameters from query string
+	page := c.DefaultQuery("page", "1")
+	pageSize := c.DefaultQuery("pageSize", "10")
+	searchQuery := c.DefaultQuery("search", "")
 
-	if err := c.ShouldBindJSON(&getRequest); err != nil {
-		utils.Log(slog.LevelError, "❌error", "invalid request body")
-		utils.RespondWithError(c, 400, utils.InvReqBody, fmt.Sprintf("error: %v", err))
-		return
+	// Parse page and pageSize to integers
+	pageNum, err := strconv.Atoi(page)
+	if err != nil {
+		pageNum = 1
+	}
+	pageSizeNum, err := strconv.Atoi(pageSize)
+	if err != nil {
+		pageSizeNum = 10
 	}
 
-	getRequest.SetDefaults()
+	getRequest := models.SearchRequest{
+		GetRequest: models.GetRequest{
+			Page:     pageNum,
+			PageSize: pageSizeNum,
+		},
+		SearchQuery: searchQuery,
+	}
 
 	req := &appPb.GetAppsRequest{
 		Page:        int32(getRequest.Page),
@@ -102,15 +117,28 @@ func GetAppsHandler(c *gin.Context) {
 }
 
 func GetAppVersionsHandler(c *gin.Context) {
-	var getRequest models.SearchRequest
+	// Read pagination and search parameters from query string
+	page := c.DefaultQuery("page", "1")
+	pageSize := c.DefaultQuery("pageSize", "10")
+	searchQuery := c.DefaultQuery("search", "")
 
-	if err := c.ShouldBindJSON(&getRequest); err != nil {
-		utils.Log(slog.LevelError, "❌error", "invalid request body")
-		utils.RespondWithError(c, 400, utils.InvReqBody, fmt.Sprintf("error: %v", err))
-		return
+	// Parse page and pageSize to integers
+	pageNum, err := strconv.Atoi(page)
+	if err != nil {
+		pageNum = 1
+	}
+	pageSizeNum, err := strconv.Atoi(pageSize)
+	if err != nil {
+		pageSizeNum = 10
 	}
 
-	getRequest.SetDefaults()
+	getRequest := models.SearchRequest{
+		GetRequest: models.GetRequest{
+			Page:     pageNum,
+			PageSize: pageSizeNum,
+		},
+		SearchQuery: searchQuery,
+	}
 
 	req := &appPb.GetAppVersionsRequest{
 		Page:        int32(getRequest.Page),
@@ -136,7 +164,10 @@ func CheckAppUpdate(c *gin.Context) {
 
 	var req posdevices.CheckUpdateRequest
 
+	utils.Log(slog.LevelInfo, "✅info", "check app update", "details", string(fmt.Sprintf("request: %v", c.Request)))
+
 	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Log(slog.LevelError, "❌error", "unable to bind request", "details", string(fmt.Sprintf("error: %v", err)))
 		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
 		return
 	}

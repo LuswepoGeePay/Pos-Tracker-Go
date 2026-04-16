@@ -3,6 +3,8 @@ package events
 import (
 	"fmt"
 	"log/slog"
+	"strconv"
+
 	"pos-master/models"
 	"pos-master/proto/dashboard"
 	dashboardservices "pos-master/services/dashboard_services"
@@ -13,15 +15,28 @@ import (
 
 func GetEventsHandler(c *gin.Context) {
 
-	var getRequest models.SearchRequest
+	// Read pagination and search parameters from query string
+	page := c.DefaultQuery("page", "1")
+	pageSize := c.DefaultQuery("pageSize", "10")
+	searchQuery := c.DefaultQuery("search", "")
 
-	if err := c.ShouldBindJSON(&getRequest); err != nil {
-		utils.Log(slog.LevelError, "❌error", "invalid request body")
-		utils.RespondWithError(c, 400, utils.InvReqBody, fmt.Sprintf("error: %v", err))
-		return
+	// Parse page and pageSize to integers
+	pageNum, err := strconv.Atoi(page)
+	if err != nil {
+		pageNum = 1
+	}
+	pageSizeNum, err := strconv.Atoi(pageSize)
+	if err != nil {
+		pageSizeNum = 10
 	}
 
-	getRequest.SetDefaults()
+	getRequest := models.SearchRequest{
+		GetRequest: models.GetRequest{
+			Page:     pageNum,
+			PageSize: pageSizeNum,
+		},
+		SearchQuery: searchQuery,
+	}
 
 	req := &dashboard.GetEventsRequest{
 		Page:        int32(getRequest.Page),

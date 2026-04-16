@@ -1,7 +1,7 @@
 package userservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	pb "pos-master/proto/auth"
 	eventservices "pos-master/services/event_services"
@@ -21,7 +21,7 @@ func EditUser(req *pb.EditUserRequest) error {
 
 	var currentUser models.User
 
-	result := config.DB.Where("id = ?", req.Id).First(&currentUser)
+	result := database.DB.Where("id = ?", req.Id).First(&currentUser)
 	if result.Error != nil {
 		return utils.CapitalizeError("unable to find user with that ID")
 	}
@@ -31,7 +31,7 @@ func EditUser(req *pb.EditUserRequest) error {
 	}
 
 	var role models.Role
-	config.DB.Where("name = ?", req.Role).First(&role)
+	database.DB.Where("name = ?", req.Role).First(&role)
 
 	if req.Role != "" {
 		updates["role_id"] = role.ID
@@ -41,7 +41,7 @@ func EditUser(req *pb.EditUserRequest) error {
 		return utils.CapitalizeError("no changes detected")
 	}
 
-	err := config.DB.Model(&models.User{}).
+	err := database.DB.Model(&models.User{}).
 		Where("id = ?", req.Id).
 		Updates(updates).Error
 

@@ -3,7 +3,7 @@ package dashboardservices
 import (
 	"errors"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/dashboard"
 	"pos-master/utils"
@@ -21,7 +21,7 @@ func GetTileInfo() (*dashboard.Tile, error) {
 	var latestAppVersion string
 	var totalLocationPings int64
 
-	tx := config.DB
+	tx := database.DB
 
 	//pos devices
 	devicesQuery := tx.Model(&models.PosDevice{})

@@ -1,7 +1,7 @@
 package userservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
@@ -15,7 +15,12 @@ func DeleteUser(userId string) error {
 		return utils.CapitalizeError("invalid ID format")
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
 
 	if err := tx.Unscoped().Delete(&models.User{}, "id = ?", parsedID).Error; err != nil {
 		tx.Rollback()

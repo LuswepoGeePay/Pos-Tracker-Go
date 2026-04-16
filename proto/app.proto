@@ -9,13 +9,15 @@ option go_package = "/proto/app;app";
 message RegisterAppRequest {
     string name = 1;
     string description = 2;
+    string terminal_type_id =3;
 }
 
 
 message App {
     string name = 1;
     string description = 2;
-    string id=5;
+    string id=3;
+    string terminal_device_name=4;
 }
 
 
@@ -36,7 +38,9 @@ message GetAppsResponse {
 message EditAppRequest {
     string name = 1;
     string description = 2;
-    string id=5;
+    string id=3;
+    string terminal_type_id =4;
+
 }
 
 
@@ -44,28 +48,29 @@ message EditAppRequest {
 message RegisterAppVersionRequest {
     string app_id = 1;
     string version_number = 2;
-    string build_number =3;
-    string release_notes =4;
-    bytes apk =5;
+    string build_number = 3;
+    string release_notes = 4;
+    bytes apk = 5;
     string file_size_bytes = 6;
-    bool is_latest_stable =7;
+    bool is_latest_stable = 7;
+    string terminal_type_id = 8;
 }
 
 
 message AppVersion {
     string app_id = 1;
     string version_number = 2;
-    string build_number =3;
-    string release_notes =4;
-    string file_path =5;
+    string build_number = 3;
+    string release_notes = 4;
+    string file_path = 5;
     string file_size_bytes = 6;
     string checksum = 7;
-    bool is_active =8;
-    bool is_latest_stable =9;
-    string released_at =10;
-    string version_id =11;
-    string app_name=12;
-
+    bool is_active = 8;
+    bool is_latest_stable = 9;
+    string released_at = 10;
+    string version_id = 11;
+    string app_name = 12;
+    string terminal_type_id = 13;
 }
 
 
@@ -85,10 +90,11 @@ message GetAppVersionsResponse {
 
 message EditAppVersionRequest {
     string version_number = 1;
-    string release_notes =2;
-    bytes apk =3;
-    bool is_active =4;
-    bool is_latest_stable =5;
-    string version_id =6;
+    string release_notes = 2;
+    bytes apk = 3;
+    bool is_active = 4;
+    bool is_latest_stable = 5;
+    string version_id = 6;
+    string terminal_type_id = 7;
 }
 

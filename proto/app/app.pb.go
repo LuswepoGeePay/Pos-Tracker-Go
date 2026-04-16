@@ -22,11 +22,12 @@ const (
 )
 
 type RegisterAppRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description    string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	TerminalTypeId string                 `protobuf:"bytes,3,opt,name=terminal_type_id,json=terminalTypeId,proto3" json:"terminal_type_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *RegisterAppRequest) Reset() {
@@ -73,13 +74,21 @@ func (x *RegisterAppRequest) GetDescription() string {
 	return ""
 }
 
+func (x *RegisterAppRequest) GetTerminalTypeId() string {
+	if x != nil {
+		return x.TerminalTypeId
+	}
+	return ""
+}
+
 type App struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Id            string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Name               string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description        string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Id                 string                 `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
+	TerminalDeviceName string                 `protobuf:"bytes,4,opt,name=terminal_device_name,json=terminalDeviceName,proto3" json:"terminal_device_name,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *App) Reset() {
@@ -129,6 +138,13 @@ func (x *App) GetDescription() string {
 func (x *App) GetId() string {
 	if x != nil {
 		return x.Id
+	}
+	return ""
+}
+
+func (x *App) GetTerminalDeviceName() string {
+	if x != nil {
+		return x.TerminalDeviceName
 	}
 	return ""
 }
@@ -270,12 +286,13 @@ func (x *GetAppsResponse) GetCount() int32 {
 }
 
 type EditAppRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Id            string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description    string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Id             string                 `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
+	TerminalTypeId string                 `protobuf:"bytes,4,opt,name=terminal_type_id,json=terminalTypeId,proto3" json:"terminal_type_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *EditAppRequest) Reset() {
@@ -329,6 +346,13 @@ func (x *EditAppRequest) GetId() string {
 	return ""
 }
 
+func (x *EditAppRequest) GetTerminalTypeId() string {
+	if x != nil {
+		return x.TerminalTypeId
+	}
+	return ""
+}
+
 type RegisterAppVersionRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	AppId          string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -338,6 +362,7 @@ type RegisterAppVersionRequest struct {
 	Apk            []byte                 `protobuf:"bytes,5,opt,name=apk,proto3" json:"apk,omitempty"`
 	FileSizeBytes  string                 `protobuf:"bytes,6,opt,name=file_size_bytes,json=fileSizeBytes,proto3" json:"file_size_bytes,omitempty"`
 	IsLatestStable bool                   `protobuf:"varint,7,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
+	TerminalTypeId string                 `protobuf:"bytes,8,opt,name=terminal_type_id,json=terminalTypeId,proto3" json:"terminal_type_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -421,6 +446,13 @@ func (x *RegisterAppVersionRequest) GetIsLatestStable() bool {
 	return false
 }
 
+func (x *RegisterAppVersionRequest) GetTerminalTypeId() string {
+	if x != nil {
+		return x.TerminalTypeId
+	}
+	return ""
+}
+
 type AppVersion struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	AppId          string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -435,6 +467,7 @@ type AppVersion struct {
 	ReleasedAt     string                 `protobuf:"bytes,10,opt,name=released_at,json=releasedAt,proto3" json:"released_at,omitempty"`
 	VersionId      string                 `protobuf:"bytes,11,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	AppName        string                 `protobuf:"bytes,12,opt,name=app_name,json=appName,proto3" json:"app_name,omitempty"`
+	TerminalTypeId string                 `protobuf:"bytes,13,opt,name=terminal_type_id,json=terminalTypeId,proto3" json:"terminal_type_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -549,6 +582,13 @@ func (x *AppVersion) GetVersionId() string {
 func (x *AppVersion) GetAppName() string {
 	if x != nil {
 		return x.AppName
+	}
+	return ""
+}
+
+func (x *AppVersion) GetTerminalTypeId() string {
+	if x != nil {
+		return x.TerminalTypeId
 	}
 	return ""
 }
@@ -697,6 +737,7 @@ type EditAppVersionRequest struct {
 	IsActive       bool                   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	IsLatestStable bool                   `protobuf:"varint,5,opt,name=is_latest_stable,json=isLatestStable,proto3" json:"is_latest_stable,omitempty"`
 	VersionId      string                 `protobuf:"bytes,6,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
+	TerminalTypeId string                 `protobuf:"bytes,7,opt,name=terminal_type_id,json=terminalTypeId,proto3" json:"terminal_type_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -773,18 +814,27 @@ func (x *EditAppVersionRequest) GetVersionId() string {
 	return ""
 }
 
+func (x *EditAppVersionRequest) GetTerminalTypeId() string {
+	if x != nil {
+		return x.TerminalTypeId
+	}
+	return ""
+}
+
 var File_app_proto protoreflect.FileDescriptor
 
 const file_app_proto_rawDesc = "" +
 	"\n" +
-	"\tapp.proto\x12\x03app\"J\n" +
+	"\tapp.proto\x12\x03app\"t\n" +
 	"\x12RegisterAppRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"K\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12(\n" +
+	"\x10terminal_type_id\x18\x03 \x01(\tR\x0eterminalTypeId\"}\n" +
 	"\x03App\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\"b\n" +
+	"\x02id\x18\x03 \x01(\tR\x02id\x120\n" +
+	"\x14terminal_device_name\x18\x04 \x01(\tR\x12terminalDeviceName\"b\n" +
 	"\x0eGetAppsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -796,11 +846,12 @@ const file_app_proto_rawDesc = "" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
 	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
-	"\x05count\x18\x05 \x01(\x05R\x05count\"V\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\x80\x01\n" +
 	"\x0eEditAppRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\"\x85\x02\n" +
+	"\x02id\x18\x03 \x01(\tR\x02id\x12(\n" +
+	"\x10terminal_type_id\x18\x04 \x01(\tR\x0eterminalTypeId\"\xaf\x02\n" +
 	"\x19RegisterAppVersionRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +
 	"\x0eversion_number\x18\x02 \x01(\tR\rversionNumber\x12!\n" +
@@ -808,7 +859,8 @@ const file_app_proto_rawDesc = "" +
 	"\rrelease_notes\x18\x04 \x01(\tR\freleaseNotes\x12\x10\n" +
 	"\x03apk\x18\x05 \x01(\fR\x03apk\x12&\n" +
 	"\x0ffile_size_bytes\x18\x06 \x01(\tR\rfileSizeBytes\x12(\n" +
-	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\"\x95\x03\n" +
+	"\x10is_latest_stable\x18\a \x01(\bR\x0eisLatestStable\x12(\n" +
+	"\x10terminal_type_id\x18\b \x01(\tR\x0eterminalTypeId\"\xbf\x03\n" +
 	"\n" +
 	"AppVersion\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12%\n" +
@@ -825,7 +877,8 @@ const file_app_proto_rawDesc = "" +
 	"releasedAt\x12\x1d\n" +
 	"\n" +
 	"version_id\x18\v \x01(\tR\tversionId\x12\x19\n" +
-	"\bapp_name\x18\f \x01(\tR\aappName\"i\n" +
+	"\bapp_name\x18\f \x01(\tR\aappName\x12(\n" +
+	"\x10terminal_type_id\x18\r \x01(\tR\x0eterminalTypeId\"i\n" +
 	"\x15GetAppVersionsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -838,7 +891,7 @@ const file_app_proto_rawDesc = "" +
 	"totalPages\x12 \n" +
 	"\vcurrentPage\x18\x03 \x01(\x05R\vcurrentPage\x12\x18\n" +
 	"\ahasMore\x18\x04 \x01(\bR\ahasMore\x12\x14\n" +
-	"\x05count\x18\x05 \x01(\x05R\x05count\"\xdb\x01\n" +
+	"\x05count\x18\x05 \x01(\x05R\x05count\"\x85\x02\n" +
 	"\x15EditAppVersionRequest\x12%\n" +
 	"\x0eversion_number\x18\x01 \x01(\tR\rversionNumber\x12#\n" +
 	"\rrelease_notes\x18\x02 \x01(\tR\freleaseNotes\x12\x10\n" +
@@ -846,7 +899,8 @@ const file_app_proto_rawDesc = "" +
 	"\tis_active\x18\x04 \x01(\bR\bisActive\x12(\n" +
 	"\x10is_latest_stable\x18\x05 \x01(\bR\x0eisLatestStable\x12\x1d\n" +
 	"\n" +
-	"version_id\x18\x06 \x01(\tR\tversionIdB\x10Z\x0e/proto/app;appb\x06proto3"
+	"version_id\x18\x06 \x01(\tR\tversionId\x12(\n" +
+	"\x10terminal_type_id\x18\a \x01(\tR\x0eterminalTypeIdB\x10Z\x0e/proto/app;appb\x06proto3"
 
 var (
 	file_app_proto_rawDescOnce sync.Once

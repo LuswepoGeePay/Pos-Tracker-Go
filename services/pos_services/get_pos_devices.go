@@ -2,7 +2,7 @@ package posservices
 
 import (
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	posPb "pos-master/proto/posdevices"
 	"pos-master/utils"
@@ -13,7 +13,12 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 
 	var pos_devices []models.PosDevice
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
 
 	query := tx.Model(&models.PosDevice{})
 
@@ -27,6 +32,42 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 	totalPages := int32((totalPosDevices + int64(req.PageSize) - 1) / int64(req.PageSize))
 	// Calculate offset for pagination
 	offset := (req.Page - 1) * req.PageSize
+
+	if req.BusinessId != "" {
+		query = query.Where("business_id = ?", req.BusinessId)
+	}
+
+	if req.Status != "" {
+		query = query.Where("status = ?", req.Status)
+	}
+
+	if req.PhoneNumber != "" {
+		query = query.Where("phone_number1 LIKE ? OR phone_number2 LIKE ?", "%"+req.PhoneNumber+"%", "%"+req.PhoneNumber+"%")
+	}
+
+	if req.SerialNumber != "" {
+		query = query.Where("serial_number LIKE ?", "%"+req.SerialNumber+"%")
+	}
+
+	if req.AppVersion != "" {
+		query = query.Where("current_app_version = ?", req.AppVersion)
+	}
+
+	if req.LocationLastUpdatedStart != "" {
+		locationStartDate, err := time.Parse("2006-01-02", req.LocationLastUpdatedStart)
+		if err == nil {
+			query = query.Where("location_last_updated_at >= ?", locationStartDate)
+		}
+	}
+
+	if req.LocationLastUpdatedEnd != "" {
+		locationEndDate, err := time.Parse("2006-01-02", req.LocationLastUpdatedEnd)
+		if err == nil {
+			// Add 1 day to include the entire end date
+			locationEndDate = locationEndDate.AddDate(0, 0, 1)
+			query = query.Where("location_last_updated_at < ?", locationEndDate)
+		}
+	}
 
 	if req.StartDate != "" {
 		startDate, err := time.Parse(time.RFC3339, req.StartDate)
@@ -42,24 +83,6 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 			return nil, utils.CapitalizeError("Invalid end date")
 		}
 		query = query.Where("created_at <= ?", endDate)
-	}
-
-	if req.StartDate != "" && req.EndDate != "" {
-		startDate, err := time.Parse(time.RFC3339, req.StartDate)
-		if err != nil {
-			return nil, utils.CapitalizeError("Invalid start date")
-		}
-
-		endDate, err := time.Parse(time.RFC3339, req.EndDate)
-		if err != nil {
-			return nil, utils.CapitalizeError("Invalid end date")
-		}
-
-		query = query.Where("created_at BETWEEN ? AND ?", startDate, endDate)
-	}
-
-	if req.AppVersion != "" {
-		query = query.Where("current_app_version = ?", req.AppVersion)
 	}
 
 	// Execute the final query with pagination and preloading
@@ -87,8 +110,8 @@ func GetPosDevices(req *posPb.GetPosDevicesRequest) (*posPb.GetPosDevicesRespons
 			Description:         history.Description,
 			LocationLastUpdated: history.LocationLastUpdatedAt.Format(time.RFC3339),
 			BusinessName:        history.Entity,
-			PhoneNumber1:        history.PhoneNumber1,
-			PhoneNumber2:        history.PhoneNumber2,
+			PrimaryNumber:       history.PhoneNumber1,
+			SecondaryNumber:     history.PhoneNumber2,
 		}
 	}
 
@@ -105,7 +128,7 @@ func GetPosById(posID string) (*posPb.PosDevice, error) {
 
 	var posdevice models.PosDevice
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	result := tx.First(&posdevice, "id = ?", posID)
 

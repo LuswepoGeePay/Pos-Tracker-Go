@@ -9,13 +9,15 @@ import (
 )
 
 type User struct {
-	ID       uuid.UUID `gorm:"type:uuid;primary_key"`
-	FullName string    `gorm:"default:null"`
-	Email    string    `gorm:"unique;not null"`
-	Password string    `gorm:"not null"`
-	RoleID   uuid.UUID `gorm:"not null"`
-	Role     Role      `gorm:"foreignKey:RoleID"`
-	Status   bool      `gorm:"default:false"`
+	ID        uuid.UUID `gorm:"type:uuid;primary_key"`
+	FullName  string    `gorm:"default:null"`
+	Email     string    `gorm:"unique;not null"`
+	Password  string    `gorm:"not null"`
+	RoleID    uuid.UUID `gorm:"not null"`
+	Role      Role      `gorm:"foreignKey:RoleID"`
+	Status    bool      `gorm:"default:false"`
+	Code      string    `gorm:"default:null"`
+	Enable2FA bool      `gorm:"default:false"`
 	gorm.Model
 	// UserID          uuid.UUID `gorm:"type:uuid;not null;unique"`
 	// User            User      `gorm:"foreignKey:UserID"`
@@ -40,29 +42,34 @@ type AppVersion struct {
 	IsActive       bool      `gorm:"default:false"`
 	IsLatestStable bool      `gorm:"default:false"`
 	ReleasedAt     time.Time
+	TerminalTypeID *uuid.UUID    `gorm:"default:null"`
+	TerminalType   *TerminalType `gorm:"foreignKey:TerminalTypeID"`
 	gorm.Model
 }
 
 type PosDevice struct {
-	ID                    uuid.UUID `gorm:"type:uuid;primary_key"`
-	SerialNumber          string    `gorm:"default:null"`
-	Entity                string    `gorm:"default:null"`
-	BusinessID            uuid.UUID `gorm:"not null"`
-	Business              Business  `gorm:"foreignKey:BusinessID"`
-	Name                  string    `gorm:"default:null"`
-	Description           string    `gorm:"default:null"`
-	CurrentAppVersion     string    `gorm:"default:null"`
-	LastKnownLatitude     string    `gorm:"default:null"`
-	LastKnownLongitude    string    `gorm:"default:null"`
-	Status                string    `gorm:"default:null"`
-	DeviceModel           string    `gorm:"default:null"`
-	OperatingSystem       string    `gorm:"default:null"`
-	Email                 string    `gorm:"default:null"`
-	FingerPrint           string    `gorm:"default:null"`
-	Product               string    `gorm:"default:null"`
-	LocationLastUpdatedAt time.Time
-	PhoneNumber1          string `gorm:"default:null"`
-	PhoneNumber2          string `gorm:"default:null"`
+	ID                         uuid.UUID `gorm:"type:uuid;primary_key"`
+	SerialNumber               string    `gorm:"default:null"`
+	Entity                     string    `gorm:"default:null"`
+	BusinessID                 uuid.UUID `gorm:"not null"`
+	Business                   Business  `gorm:"foreignKey:BusinessID"`
+	Name                       string    `gorm:"default:null"`
+	Description                string    `gorm:"default:null"`
+	CurrentAppVersion          string    `gorm:"default:null"`
+	LastKnownLatitude          string    `gorm:"default:null"`
+	LastKnownLongitude         string    `gorm:"default:null"`
+	Status                     string    `gorm:"default:null"`
+	DeviceModel                string    `gorm:"default:null"`
+	OperatingSystem            string    `gorm:"default:null"`
+	Email                      string    `gorm:"default:null"`
+	FingerPrint                string    `gorm:"default:null"`
+	Product                    string    `gorm:"default:null"`
+	LocationLastUpdatedAt      time.Time
+	PhoneNumber1               string        `gorm:"default:null"`
+	PhoneNumber2               string        `gorm:"default:null"`
+	TerminalTypeID             *uuid.UUID    `gorm:"default:null"`
+	TerminalType               *TerminalType `gorm:"foreignKey:TerminalTypeID"`
+	DeviceIdentificationNumber string        `gorm:"default:null"`
 	gorm.Model
 }
 
@@ -107,5 +114,12 @@ type Event struct {
 	ID            uuid.UUID      `gorm:"type:uuid;primary_key"`
 	Title         string         `gorm:"default:null"`
 	EventMetaData datatypes.JSON `gorm:"type:json"`
+	gorm.Model
+}
+
+type TerminalType struct {
+	ID            uuid.UUID `gorm:"type:uuid;primary_key"`
+	Name          string    `gorm:"not null;unique"`
+	TerminalModel string    `gorm:"default:null"`
 	gorm.Model
 }

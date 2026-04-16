@@ -1,7 +1,7 @@
 package authservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	pb "pos-master/proto/auth"
 	"pos-master/utils"
@@ -26,7 +26,7 @@ func ResetPassword(req *pb.ResetPasswordRequest) error {
 	var user models.User
 
 	if req.LoggedIn {
-		err = config.DB.Where("id =  ?", req.UserId).First(&user).Error
+		err = database.DB.Where("id =  ?", req.UserId).First(&user).Error
 
 		if err != nil {
 			return utils.CapitalizeError("unable to find user")
@@ -34,7 +34,7 @@ func ResetPassword(req *pb.ResetPasswordRequest) error {
 	}
 
 	if !req.LoggedIn {
-		err = config.DB.Where("email = ?", req.Email).First(&user).Error
+		err = database.DB.Where("email = ?", req.Email).First(&user).Error
 
 		if err != nil {
 			return utils.CapitalizeError("unable to find user")
@@ -45,7 +45,7 @@ func ResetPassword(req *pb.ResetPasswordRequest) error {
 		updates["password"] = hashedPassword
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	if err := tx.Model(&models.User{}).Where("id = ?", user.ID).Updates(updates).Error; err != nil {
 		tx.Rollback()

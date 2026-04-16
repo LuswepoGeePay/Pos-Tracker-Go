@@ -1,7 +1,7 @@
 package appservices
 
 import (
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	appPb "pos-master/proto/app"
 	"pos-master/utils"
@@ -12,7 +12,7 @@ func GetApps(req *appPb.GetAppsRequest) (*appPb.GetAppsResponse, error) {
 
 	var apps []models.App
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	query := tx.Model(&models.App{})
 
@@ -59,7 +59,7 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 
 	var app_versions []models.AppVersion
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	query := tx.Preload("App").Model(&models.AppVersion{})
 

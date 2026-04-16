@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package terminaltype;
+
+
+option go_package = "/proto/terminaltype;terminaltype";
+
+
+message RegisterTerminalTypeRequest {
+    string name = 1;
+    string terminal_model =2;
+}
+
+
+message TerminalType {
+    string name = 1;
+    string terminal_model = 2;
+    string id=3;
+}
+
+
+message GetTerminalTypesRequest {
+    int32 page =1;
+    int32 pageSize =2;
+    string searchQuery=3;
+}
+
+message GetTerminalTypesResponse {
+    repeated TerminalType terminal_types = 1;       // List of users
+    int32 totalPages = 2;         // Total number of pages
+    int32 currentPage = 3;        // Current page
+    bool hasMore = 4;             // Whether there are more pages
+    int32 count= 5;
+}
+
+message EditTerminalTypeRequest {
+    string name = 1;
+    string terminal_model = 2;
+    string id=3;
+
+}
+

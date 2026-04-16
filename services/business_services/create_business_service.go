@@ -3,7 +3,8 @@ package businessservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/business"
 	eventservices "pos-master/services/event_services"
@@ -39,7 +40,23 @@ func CreateBusiness(c *gin.Context, req *business.BusinessRegisterRequest) error
 		BusinessLogo: fileURL,
 	}
 
-	result := config.DB.Create(&newBusiness)
+	// Start transaction for business creation
+	tx := database.DB.Begin()
+	if tx.Error != nil {
+		return utils.CapitalizeError(fmt.Sprintf("Unable to start transaction: %v", tx.Error))
+	}
+
+	result := tx.Create(&newBusiness)
+	if result.Error != nil {
+		tx.Rollback()
+		return utils.CapitalizeError(utils.FormatError("unable to create business", result.Error))
+	}
+
+	// Commit transaction
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return utils.CapitalizeError(fmt.Sprintf("Failed to commit transaction: %v", err))
+	}
 
 	eventservices.RegisterEvent("New business Registered", map[string]interface{}{
 		"name":    req.Name,
@@ -47,10 +64,6 @@ func CreateBusiness(c *gin.Context, req *business.BusinessRegisterRequest) error
 		"email":   req.Email,
 		"phone":   req.Phone,
 	})
-
-	if result.Error != nil {
-		return utils.CapitalizeError(utils.FormatError("unable to create business", result.Error))
-	}
 
 	return nil
 }

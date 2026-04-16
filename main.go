@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"pos-master/config"
+	"os"
+	database "pos-master/config"
 	"pos-master/routes"
 	posservices "pos-master/services/pos_services"
 	"pos-master/utils"
@@ -15,14 +16,16 @@ import (
 )
 
 func main() {
+	// Initialize databaseuration from environment variables
+	database.LoadEnv()
 
-	err := utils.InitLogger("pos_master.log")
+	err := utils.InitLogger("POS_MASTER.LOG")
 
 	if err != nil {
 		panic("Failed to initialize logger:" + fmt.Sprintf("error: %v", err))
 	}
 
-	config.InitDB()
+	database.InitDB()
 
 	posservices.StartCronJobs()
 
@@ -34,17 +37,18 @@ func main() {
 
 	r.Use(sentrygin.New(sentrygin.Options{}))
 
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true                                             // Allow all origins, or specify specific origins
-	config.AllowMethods = []string{"GET", "POST", "DELETE", "PUT", "PATCH"}   // Allow specific HTTP methods
-	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"} // Allow specific headers
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true                                             // Allow all origins, or specify specific origins
+	corsConfig.AllowMethods = []string{"GET", "POST", "DELETE", "PUT", "PATCH"}   // Allow specific HTTP methods
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"} // Allow specific headers
 
-	r.Use(cors.New(config))
+	r.Use(cors.New(corsConfig))
 
 	routes.SetupRoutes(r)
 
-	log.Println("Starting server at 8050")
-	if err := r.Run(":8050"); err != nil {
+	serverAddr := ":" + "8050"
+	log.Printf("Starting server at %s (Environment: %s)", serverAddr, os.Getenv("ENVIRONMENT"))
+	if err := r.Run(serverAddr); err != nil {
 		log.Fatalf("Failed to start HTTP server: %v", err)
 	}
 }

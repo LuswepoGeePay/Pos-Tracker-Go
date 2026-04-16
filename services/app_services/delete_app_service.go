@@ -3,7 +3,7 @@ package appservices
 import (
 	"fmt"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
@@ -20,7 +20,7 @@ func DeleteApp(appID string) error {
 		return utils.CapitalizeError(fmt.Sprintf("unable to parse app id %v", err))
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 	if err := tx.Delete(&models.AppVersion{}, "app_id = ?", parsedAppID).Error; err != nil {
 		tx.Rollback()
 		utils.Log(slog.LevelError, "❌error", "unable to delete app", "detail", fmt.Sprintf("error: %v", err))
@@ -50,7 +50,7 @@ func DeleteAppVersion(versionID string) error {
 		return utils.CapitalizeError(fmt.Sprintf("unable to parse app id %v", err))
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 	if err := tx.Unscoped().Delete(&models.AppVersion{}, "id = ?", parsedVersionID).Error; err != nil {
 		tx.Rollback()
 		utils.Log(slog.LevelError, "❌error", "unable to delete user", fmt.Sprintf("error: %v", err))

@@ -3,7 +3,7 @@ package eventservices
 import (
 	"encoding/json"
 	"log/slog"
-	"pos-master/config"
+	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/utils"
 
@@ -27,7 +27,7 @@ func RegisterEvent(title string, metaData map[string]interface{}) {
 		EventMetaData: datatypes.JSON(metaJson),
 	}
 
-	tx := config.DB.Begin()
+	tx := database.DB.Begin()
 
 	if err := tx.Create(&event).Error; err != nil {
 		tx.Rollback()
