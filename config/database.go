@@ -49,9 +49,9 @@ func InitDB() {
 	// dsn := "root@tcp(127.0.0.1:3306)/bus_ticketing_system?charset=utf8mb4&parseTime=True&loc=Local"
 	// dsn := "sandbox_user:sandbox_password@tcp(10.139.40.25:3306)/pgsandbox?charset=utf8mb4&parseTime=True&loc=Local"
 
-	cfg := GetDBConfig()
-	dsn := GetDSN(cfg)
-	// dsn := os.Getenv("DB_URL")
+	// cfg := GetDBConfig()
+	// dsn := GetDSN(cfg)
+	dsn := os.Getenv("DB_URL")
 
 	gormConfig := &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
