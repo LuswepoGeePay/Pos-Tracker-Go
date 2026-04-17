@@ -85,9 +85,9 @@ func InitDB() {
 		log.Fatalf("failed to seed roles: %v", err)
 	}
 
-	if err := seeders.SeedAdminUser(DB); err != nil {
-		log.Fatalf("failed to seed admin user: %v", err)
-	}
+	// if err := seeders.SeedAdminUser(DB); err != nil {
+	// 	log.Fatalf("failed to seed admin user: %v", err)
+	// }
 
 	if err := seeders.SeedTerminalTypes(DB); err != nil {
 		log.Fatalf("failed to seed terminal types: %v", err)
