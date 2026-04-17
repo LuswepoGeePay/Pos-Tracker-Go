@@ -21,7 +21,7 @@ func LoginUser(req *pb.LoginRequest) (*pb.AuthResponse, error) {
 		return nil, utils.CapitalizeError("invalid credentials")
 	}
 
-	if !user.Status {
+	if user.Status != "active" {
 		return nil, utils.CapitalizeError("Your account is currently inactive. Contact the administator")
 	}
 

@@ -15,7 +15,7 @@ type User struct {
 	Password  string    `gorm:"not null"`
 	RoleID    uuid.UUID `gorm:"not null"`
 	Role      Role      `gorm:"foreignKey:RoleID"`
-	Status    bool      `gorm:"default:false"`
+	Status    string    `gorm:"default:active"`
 	Code      string    `gorm:"default:null"`
 	Enable2FA bool      `gorm:"default:false"`
 	gorm.Model

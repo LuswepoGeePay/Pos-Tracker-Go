@@ -172,7 +172,7 @@ type User struct {
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	Id            string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
-	Status        bool                   `protobuf:"varint,6,opt,name=status,proto3" json:"status,omitempty"`
+	Status        string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -242,11 +242,11 @@ func (x *User) GetId() string {
 	return ""
 }
 
-func (x *User) GetStatus() bool {
+func (x *User) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return false
+	return ""
 }
 
 type GetUsersRequest struct {
@@ -384,7 +384,7 @@ type EditUserRequest struct {
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	Id            string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
-	Status        bool                   `protobuf:"varint,6,opt,name=status,proto3" json:"status,omitempty"`
+	Status        string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -454,11 +454,11 @@ func (x *EditUserRequest) GetId() string {
 	return ""
 }
 
-func (x *EditUserRequest) GetStatus() bool {
+func (x *EditUserRequest) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return false
+	return ""
 }
 
 type LoginRequest struct {
@@ -736,7 +736,7 @@ const file_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\x12\x0e\n" +
 	"\x02id\x18\x05 \x01(\tR\x02id\x12\x16\n" +
-	"\x06status\x18\x06 \x01(\bR\x06status\"c\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status\"c\n" +
 	"\x0fGetUsersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12 \n" +
@@ -755,7 +755,7 @@ const file_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\x12\x0e\n" +
 	"\x02id\x18\x05 \x01(\tR\x02id\x12\x16\n" +
-	"\x06status\x18\x06 \x01(\bR\x06status\"@\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"\x84\x02\n" +
