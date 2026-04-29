@@ -1,13 +1,10 @@
 package appservices
 
 import (
-	"fmt"
-	"log/slog"
 	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
 	eventservices "pos-master/services/event_services"
-	"pos-master/utils"
 )
 
 func CheckAppUpdate(req *posdevices.CheckUpdateRequest) (*posdevices.CheckUpdateResponse, error) {
@@ -18,19 +15,22 @@ func CheckAppUpdate(req *posdevices.CheckUpdateRequest) (*posdevices.CheckUpdate
 	db := database.DB
 
 	// 1. Fetch POS device first to get its terminal type
-	utils.Log(slog.LevelInfo, "✅info", "check app update", "details", fmt.Sprintf("request: %v", req))
-	err := db.Where("id = ?", req.PosdeviceId).First(&posDevice).Error
+	// utils.Log(slog.LevelInfo, "✅info", "check app update", "details", fmt.Sprintf("request: %v", req))
+	// err := db.Where("id = ?", req.PosdeviceId).First(&posDevice).Error
 
-	if err != nil {
-		utils.Log(slog.LevelError, "❌error", "unable to find pos device with this ID", "details", fmt.Sprintf("error: %v", err))
-		return nil, utils.CapitalizeError(utils.FormatError("unable to find pos device with this ID", err))
-	}
+	// if err != nil {
+	// 	utils.Log(slog.LevelError, "❌error", "unable to find pos device with this ID", "details", fmt.Sprintf("error: %v", err))
+	// 	return nil, utils.CapitalizeError(utils.FormatError("unable to find pos device with this ID", err))
+	// }
 
 	// 2. Fetch latest app version specific to this terminal type
 	// This will look for active, latest stable versions matching the device's TerminalTypeID
-	err = db.Where("is_active = ? AND is_latest_stable = ?", true, true).
-		Order("released_at desc").
-		First(&latestVersion).Error
+	// err := db.Where("is_active = ? AND is_latest_stable = ?", true, true).
+	// 	Order("released_at desc").
+	// 	First(&latestVersion).Error
+	// if err != nil {
+
+	// }
 
 	if err := db.
 		Where("is_active = ? AND is_latest_stable = ?", true, true).
