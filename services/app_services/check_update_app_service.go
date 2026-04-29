@@ -47,11 +47,6 @@ func CheckAppUpdate(req *posdevices.CheckUpdateRequest) (*posdevices.CheckUpdate
 	// 		return nil, utils.CapitalizeError(utils.FormatError("unable to update pos device app version", result.Error))
 	// 	}
 	// }
-	if posDevice.CurrentAppVersion != latestVersion.VersionNumber {
-		go db.Model(&models.PosDevice{}).
-			Where("id = ?", req.PosdeviceId).
-			Update("current_app_version", latestVersion.VersionNumber)
-	}
 
 	// 4. Check if the device already has the latest version matching its type
 	if latestVersion.VersionNumber == req.AppVersion {
