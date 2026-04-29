@@ -28,12 +28,12 @@ func CheckAppUpdate(req *posdevices.CheckUpdateRequest) (*posdevices.CheckUpdate
 
 	// 2. Fetch latest app version specific to this terminal type
 	// This will look for active, latest stable versions matching the device's TerminalTypeID
-	err = db.Where("is_active = ? AND is_latest_stable = ? AND terminal_type_id = ?", true, true, posDevice.TerminalTypeID).
+	err = db.Where("is_active = ? AND is_latest_stable = ?", true, true).
 		Order("released_at desc").
 		First(&latestVersion).Error
 
 	if err := db.
-		Where("is_active = ? AND is_latest_stable = ? AND terminal_type_id = ?", true, true, posDevice.TerminalTypeID).
+		Where("is_active = ? AND is_latest_stable = ?", true, true).
 		Order("released_at DESC").
 		First(&latestVersion).Error; err != nil {
 		return nil, err
