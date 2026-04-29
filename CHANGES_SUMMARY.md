@@ -21,7 +21,7 @@ The POS System backend has been refactored to eliminate hardcoded configuration 
   - Added server port and environment variables
   - Added JWT configuration
   - Better organized and documented
-
+ 
 ### 2. Database Configuration
 
 #### Modified Files:
