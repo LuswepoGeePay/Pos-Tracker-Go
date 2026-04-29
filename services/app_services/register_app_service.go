@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
 	database "pos-master/config"
@@ -13,7 +14,6 @@ import (
 	"pos-master/services/pocketbase"
 	"pos-master/utils"
 	"time"
-	"io"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

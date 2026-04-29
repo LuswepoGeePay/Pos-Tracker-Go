@@ -12,9 +12,7 @@ func GetApps(req *appPb.GetAppsRequest) (*appPb.GetAppsResponse, error) {
 
 	var apps []models.App
 
-	tx := database.DB.Begin()
-
-	query := tx.Model(&models.App{})
+	query := database.DB.Model(&models.App{})
 
 	var totalApps int64
 	err := query.Count(&totalApps).Error
@@ -59,9 +57,7 @@ func GetAppVersions(req *appPb.GetAppVersionsRequest) (*appPb.GetAppVersionsResp
 
 	var app_versions []models.AppVersion
 
-	tx := database.DB.Begin()
-
-	query := tx.Preload("App").Model(&models.AppVersion{})
+	query := database.DB.Preload("App").Model(&models.AppVersion{})
 
 	var totalApps int64
 	err := query.Count(&totalApps).Error

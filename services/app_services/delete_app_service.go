@@ -21,24 +21,33 @@ func DeleteApp(appID string) error {
 	}
 
 	tx := database.DB.Begin()
-	if err := tx.Delete(&models.AppVersion{}, "app_id = ?", parsedAppID).Error; err != nil {
+
+	res1 := tx.Unscoped().Delete(&models.AppVersion{}, "app_id = ?", parsedAppID)
+	if err := res1.Error; err != nil {
+		tx.Rollback()
+		utils.Log(slog.LevelError, "❌error", "unable to delete app version", "detail", fmt.Sprintf("error: %v", err))
+		return utils.CapitalizeError(fmt.Sprintf("unable to delete app version %v", err))
+
+	}
+	utils.Log(slog.LevelInfo, "✅info", "deleted app versions", "count", res1.RowsAffected)
+
+	res2 := tx.Unscoped().Delete(&models.App{}, "id = ?", parsedAppID)
+	if err := res2.Error; err != nil {
 		tx.Rollback()
 		utils.Log(slog.LevelError, "❌error", "unable to delete app", "detail", fmt.Sprintf("error: %v", err))
 		return utils.CapitalizeError(fmt.Sprintf("unable to delete app %v", err))
 
 	}
-	if err := tx.Delete(&models.App{}, "id = ?", parsedAppID).Error; err != nil {
-		tx.Rollback()
-		utils.Log(slog.LevelError, "❌error", "unable to delete app", "detail", fmt.Sprintf("error: %v", err))
-		return utils.CapitalizeError(fmt.Sprintf("unable to delete app %v", err))
+	utils.Log(slog.LevelInfo, "✅info", "deleted app", "count", res2.RowsAffected)
 
+	if err := tx.Commit().Error; err != nil {
+		return utils.CapitalizeError(fmt.Sprintf("unable to commit transaction %v", err))
 	}
 
 	eventservices.RegisterEvent("An app has been deleted", map[string]interface{}{
 		"App ID": appID,
 	})
 
-	tx.Commit()
 	return nil
 }
 
@@ -53,11 +62,14 @@ func DeleteAppVersion(versionID string) error {
 	tx := database.DB.Begin()
 	if err := tx.Unscoped().Delete(&models.AppVersion{}, "id = ?", parsedVersionID).Error; err != nil {
 		tx.Rollback()
-		utils.Log(slog.LevelError, "❌error", "unable to delete user", fmt.Sprintf("error: %v", err))
-		return utils.CapitalizeError(fmt.Sprintf("unable to delete user %v", err))
+		utils.Log(slog.LevelError, "❌error", "unable to delete app version", "detail", fmt.Sprintf("error: %v", err))
+		return utils.CapitalizeError(fmt.Sprintf("unable to delete app version %v", err))
 
 	}
-	tx.Commit()
+	if err := tx.Commit().Error; err != nil {
+		return utils.CapitalizeError(fmt.Sprintf("unable to commit transaction %v", err))
+	}
+
 	eventservices.RegisterEvent("An app version has been deleted", map[string]interface{}{
 		"App version ID": versionID,
 	})

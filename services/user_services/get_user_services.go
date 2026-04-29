@@ -14,8 +14,7 @@ func GetUsers(req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
 
 	var users []models.User
 
-	tx := database.DB.Begin()
-	query := tx.Preload("Role").Model(&models.User{})
+	query := database.DB.Preload("Role").Model(&models.User{})
 
 	var totalUsers int64
 	err := query.Count(&totalUsers).Error
@@ -101,12 +100,14 @@ func ChangeEmailorPassword(req *pb.ChangeEmailOrPasswordRequest) error {
 
 	if req.IsEmailRequest {
 		if user.Email == req.OldEmail {
-			result := tx.Model(&models.User{}).Update("email", req.NewEmail)
+			result := tx.Model(&models.User{}).Where("id = ?", userID).Update("email", req.NewEmail)
 			if result.Error != nil {
+				tx.Rollback()
 				return utils.CapitalizeError("unable to update email")
 			}
 
 		} else {
+			tx.Rollback()
 			return utils.CapitalizeError("Old email does not match our records")
 		}
 
@@ -115,20 +116,27 @@ func ChangeEmailorPassword(req *pb.ChangeEmailOrPasswordRequest) error {
 	if req.IsPasswordRequest {
 
 		if req.ConfirmPassword != req.NewPassword {
+			tx.Rollback()
 			return utils.CapitalizeError("your passwords do not match")
 		}
 
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
 
 		if err != nil {
+			tx.Rollback()
 			return utils.CapitalizeError("unable to hash password")
 		}
 
-		result := tx.Model(&models.User{}).Update("password", hashedPassword)
+		result := tx.Model(&models.User{}).Where("id = ?", userID).Update("password", hashedPassword)
 		if result.Error != nil {
+			tx.Rollback()
 			return utils.CapitalizeError("unable to update password")
 		}
 
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return utils.CapitalizeError("failed to commit changes")
 	}
 
 	return nil

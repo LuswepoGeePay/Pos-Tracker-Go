@@ -28,6 +28,7 @@ func RegisterAppHandler(c *gin.Context) {
 	err := appservices.RegisterApp(&req)
 	if err != nil {
 		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
+		return
 	}
 
 	utils.RespondWithSuccess(c, "App Registered successfully")
