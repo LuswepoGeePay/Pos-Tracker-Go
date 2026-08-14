@@ -12,7 +12,7 @@ func EditUser(req *pb.EditUserRequest) error {
 	updates := map[string]interface{}{}
 
 	if req.Fullname != "" {
-		updates["full_name"] = req.Fullname
+		updates["fullname"] = req.Fullname
 	}
 
 	if req.Email != "" {
