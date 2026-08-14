@@ -19,5 +19,15 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	response := userservices.RegisterUser(&req)
+	if !response.Success {
+		c.JSON(400, gin.H{
+			"status":  "failure",
+			"error":   response.Message,
+			"success": false,
+			"message": response.Message,
+		})
+		return
+	}
+
 	c.JSON(200, response)
 }

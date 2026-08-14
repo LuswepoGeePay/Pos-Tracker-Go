@@ -10,7 +10,7 @@ import (
 
 type User struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key"`
-	FullName  string    `gorm:"default:null"`
+	FullName  string    `gorm:"not null"`
 	Email     string    `gorm:"unique;not null"`
 	Password  string    `gorm:"not null"`
 	RoleID    uuid.UUID `gorm:"not null"`

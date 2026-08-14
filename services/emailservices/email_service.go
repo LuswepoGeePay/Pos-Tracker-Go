@@ -1,9 +1,12 @@
 package emailservices
 
 import (
+	"crypto/tls"
 	"fmt"
+	"net"
 	"net/smtp"
 	"os"
+	"strings"
 )
 
 // EmailRequest holds email sending request data
@@ -13,26 +16,108 @@ type EmailRequest struct {
 	Body    string
 }
 
-// SendEmail sends an email with HTML content
+// SendEmail sends an email with HTML content.
+// Port 465 uses implicit TLS; port 587 (default) uses STARTTLS.
 func SendEmail(req *EmailRequest) error {
-	// Setup SMTP authentication
-	auth := smtp.PlainAuth("", os.Getenv("SMTP_USERNAME"), os.Getenv("SMTP_PASSWORD"), os.Getenv("SMTP_HOST"))
+	host := strings.TrimSpace(os.Getenv("SMTP_HOST"))
+	port := strings.TrimSpace(os.Getenv("SMTP_PORT"))
+	username := strings.TrimSpace(os.Getenv("SMTP_USERNAME"))
+	password := strings.ReplaceAll(os.Getenv("SMTP_PASSWORD"), " ", "")
+	fromAddress := strings.TrimSpace(os.Getenv("SMTP_FROM_ADDRESS"))
+	fromName := strings.TrimSpace(os.Getenv("SMTP_FROM_NAME"))
+	tlsMode := strings.ToLower(strings.TrimSpace(os.Getenv("SMTP_TLS_MODE")))
 
-	// Compose email headers
-	from := fmt.Sprintf("%s <%s>", os.Getenv("SMTP_FROM_NAME"), os.Getenv("SMTP_FROM_ADDRESS"))
-	headers := fmt.Sprintf("From: %s\nTo: %s\nSubject: %s\nContent-Type: text/html; charset=\"UTF-8\"\n", from, req.To, req.Subject)
+	if host == "" {
+		return fmt.Errorf("SMTP_HOST is not configured")
+	}
+	if port == "" {
+		port = "587"
+	}
+	if fromAddress == "" {
+		return fmt.Errorf("SMTP_FROM_ADDRESS is not configured")
+	}
 
-	// Complete message with headers
-	message := headers + "\n" + req.Body
+	if tlsMode == "" {
+		if port == "465" {
+			tlsMode = "tls"
+		} else {
+			tlsMode = "starttls"
+		}
+	}
 
-	// Send email
-	addr := fmt.Sprintf("%s:%s", os.Getenv("SMTP_HOST"), os.Getenv("SMTP_PORT"))
-	err := smtp.SendMail(addr, auth, os.Getenv("SMTP_FROM_ADDRESS"), []string{req.To}, []byte(message))
+	from := fmt.Sprintf("%s <%s>", fromName, fromAddress)
+	message := strings.Join([]string{
+		fmt.Sprintf("From: %s", from),
+		fmt.Sprintf("To: %s", req.To),
+		fmt.Sprintf("Subject: %s", req.Subject),
+		`Content-Type: text/html; charset="UTF-8"`,
+		"",
+		req.Body,
+	}, "\r\n")
+
+	addr := net.JoinHostPort(host, port)
+	auth := smtp.PlainAuth("", username, password, host)
+	tlsConfig := &tls.Config{ServerName: host}
+
+	var err error
+	switch tlsMode {
+	case "tls", "ssl":
+		err = sendWithImplicitTLS(addr, auth, fromAddress, req.To, []byte(message), tlsConfig)
+	case "starttls", "none":
+		err = smtp.SendMail(addr, auth, fromAddress, []string{req.To}, []byte(message))
+	default:
+		return fmt.Errorf("unsupported SMTP_TLS_MODE %q (use starttls, tls, or none)", tlsMode)
+	}
 	if err != nil {
 		return fmt.Errorf("failed to send email: %w", err)
 	}
 
 	return nil
+}
+
+func sendWithImplicitTLS(addr string, auth smtp.Auth, from, to string, msg []byte, tlsConfig *tls.Config) error {
+	conn, err := tls.Dial("tcp", addr, tlsConfig)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	host, _, err := net.SplitHostPort(addr)
+	if err != nil {
+		return err
+	}
+
+	client, err := smtp.NewClient(conn, host)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	if auth != nil {
+		if err = client.Auth(auth); err != nil {
+			return err
+		}
+	}
+	if err = client.Mail(from); err != nil {
+		return err
+	}
+	if err = client.Rcpt(to); err != nil {
+		return err
+	}
+
+	writer, err := client.Data()
+	if err != nil {
+		return err
+	}
+	if _, err = writer.Write(msg); err != nil {
+		_ = writer.Close()
+		return err
+	}
+	if err = writer.Close(); err != nil {
+		return err
+	}
+
+	return client.Quit()
 }
 
 // SendWelcomeEmail sends a welcome email to new user
