@@ -2,7 +2,6 @@ package businessservices
 
 import (
 	"fmt"
-	"log/slog"
 	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/business"
@@ -17,17 +16,18 @@ import (
 func EditBusiness(c *gin.Context, req *business.EditBusinessRequest) error {
 	businessID, err := uuid.Parse(req.Id)
 	if err != nil {
-		utils.Log(slog.LevelError, "error", "failed to parse business ID")
-		return utils.CapitalizeError(fmt.Sprintf("failed to parse business ID %v", fmt.Sprintf("error: %v", err)))
+		utils.Error("failed to parse business ID", "id", req.Id, "error", err.Error())
+		return utils.CapitalizeError(fmt.Sprintf("failed to parse business ID %v", err))
 	}
-	updates := map[string]interface{}{}
 
-	var currentAppVersion models.Business
-
-	result := database.DB.Where("id = ?", businessID).Find(&currentAppVersion)
+	var currentBusiness models.Business
+	result := database.DB.Where("id = ?", businessID).First(&currentBusiness)
 	if result.Error != nil {
-
+		utils.Error("unable to find business for edit", "id", req.Id, "error", result.Error.Error())
+		return utils.CapitalizeError("unable to find business with that ID")
 	}
+
+	updates := map[string]interface{}{}
 
 	if req.Name != "" {
 		updates["name"] = req.Name
@@ -37,40 +37,57 @@ func EditBusiness(c *gin.Context, req *business.EditBusinessRequest) error {
 		updates["email"] = req.Email
 	}
 
-	_, err = c.FormFile("file")
+	if req.Address != "" {
+		updates["address"] = req.Address
+	}
 
+	_, err = c.FormFile("file")
 	if err == nil {
-		// File was uploaded, handle upload
 		token, err := pocketbase.HandlePocketBaseAuth(c)
 		if err != nil {
-			utils.Log(slog.LevelError, "error", "unable to get pocketbase token", "detail", err.Error())
+			utils.Error("unable to get pocketbase token", "error", err.Error(), "business_id", req.Id)
 			return utils.CapitalizeError("unable to get pocketbase token")
 		}
 
 		fileUrl, err := pocketbase.HandleUpload(c, token, "file")
 		if err != nil {
-			utils.Log(slog.LevelError, "error", "unable to upload file to pocketbase", err.Error())
+			utils.Error("unable to upload file to pocketbase", "error", err.Error(), "business_id", req.Id)
 			return utils.CapitalizeError("unable to upload file to server")
 		}
 
 		updates["business_logo"] = fileUrl
 	}
 
-	if req.Status != currentAppVersion.Status {
+	if req.Status != currentBusiness.Status {
 		updates["status"] = req.Status
 	}
 
-	if req.Phone != currentAppVersion.Phone {
+	if req.Phone != currentBusiness.Phone {
 		updates["phone"] = req.Phone
 	}
 
-	tx := database.DB.Begin()
-
-	err = tx.Model(&models.AppVersion{}).Where("id = ?", businessID).Updates(updates).Error
-
-	if err != nil {
-		return utils.CapitalizeError(fmt.Sprintf("failed to update business: %v", fmt.Sprintf("error: %v", err)))
+	if len(updates) == 0 {
+		return utils.CapitalizeError("no changes detected")
 	}
+
+	tx := database.DB.Begin()
+	if tx.Error != nil {
+		return utils.CapitalizeError(fmt.Sprintf("Unable to start transaction: %v", tx.Error))
+	}
+
+	err = tx.Model(&models.Business{}).Where("id = ?", businessID).Updates(updates).Error
+	if err != nil {
+		tx.Rollback()
+		utils.Error("failed to update business", "business_id", req.Id, "error", err.Error())
+		return utils.CapitalizeError(fmt.Sprintf("failed to update business: %v", err))
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return utils.CapitalizeError(fmt.Sprintf("Failed to commit transaction: %v", err))
+	}
+
+	utils.Info("business updated", "business_id", req.Id)
 
 	eventservices.RegisterEvent("business edited", map[string]interface{}{
 		"name":    req.Name,
@@ -79,8 +96,5 @@ func EditBusiness(c *gin.Context, req *business.EditBusinessRequest) error {
 		"email":   req.Email,
 	})
 
-	tx.Commit()
-
 	return nil
-
 }

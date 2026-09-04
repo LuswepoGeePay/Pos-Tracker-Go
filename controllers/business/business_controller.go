@@ -17,8 +17,10 @@ import (
 
 func CreateBusinessHandler(c *gin.Context) {
 
+	utils.Info("business create request received")
+
 	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
-		utils.Log(slog.LevelError, "❌error", "failed to parse form")
+		utils.Error("failed to parse business form", "error", err.Error())
 		utils.RespondWithError(c, 400, "Failed to parse form", fmt.Sprintf("error: %v", err))
 		return
 	}
@@ -26,15 +28,15 @@ func CreateBusinessHandler(c *gin.Context) {
 	businessData := c.Request.FormValue("business")
 
 	if businessData == "" {
-		utils.Log(slog.LevelError, "❌error", "invalid business data")
-		utils.RespondWithError(c, 400, " business Data is missing")
+		utils.Error("business data is missing from form")
+		utils.RespondWithError(c, 400, "business Data is missing")
 		return
 	}
 
 	var req business.BusinessRegisterRequest
 
 	if err := protojson.Unmarshal([]byte(businessData), &req); err != nil {
-		utils.Log(slog.LevelError, "❌error", "unable to marshal  data")
+		utils.Error("unable to unmarshal business data", "error", err.Error())
 		utils.RespondWithError(c, 400, "Unable to marshal data", fmt.Sprintf("error: %v", err))
 		return
 	}
@@ -42,8 +44,8 @@ func CreateBusinessHandler(c *gin.Context) {
 	err := businessservices.CreateBusiness(c, &req)
 
 	if err != nil {
-		utils.Log(slog.LevelError, "❌error", fmt.Sprintf("error: %v", err))
-		utils.RespondWithError(c, 400, "Unable to upload new  to business", fmt.Sprintf("error: %v", err))
+		utils.Error("unable to create business", "email", req.Email, "error", err.Error())
+		utils.RespondWithError(c, 400, "Unable to create business", fmt.Sprintf("error: %v", err))
 		return
 
 	}

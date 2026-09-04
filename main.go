@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	database "pos-master/config"
+	"pos-master/middleware"
 	"pos-master/routes"
 	posservices "pos-master/services/pos_services"
 	"pos-master/utils"
@@ -19,10 +20,14 @@ func main() {
 	// Initialize databaseuration from environment variables
 	database.LoadEnv()
 
-	err := utils.InitLogger("POS_MASTER.LOG")
+	logFile := os.Getenv("LOG_FILE")
+	if logFile == "" {
+		logFile = "POS_MASTER.LOG"
+	}
+	err := utils.InitLogger(logFile)
 
 	if err != nil {
-		panic("Failed to initialize logger:" + fmt.Sprintf("error: %v", err))
+		log.Printf("logger file warning: %v", err)
 	}
 
 	database.InitDB()
@@ -36,11 +41,12 @@ func main() {
 	r := gin.Default()
 
 	r.Use(sentrygin.New(sentrygin.Options{}))
+	r.Use(middleware.RequestLogger())
 
 	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true                                             // Allow all origins, or specify specific origins
-	corsConfig.AllowMethods = []string{"GET", "POST", "DELETE", "PUT", "PATCH"}   // Allow specific HTTP methods
-	corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"} // Allow specific headers
+	corsConfig.AllowAllOrigins = true                                                       // Allow all origins, or specify specific origins
+	corsConfig.AllowMethods = []string{"GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"}  // Allow specific HTTP methods
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept"} // Allow specific headers
 
 	r.Use(cors.New(corsConfig))
 

@@ -18,13 +18,30 @@ func RegisterPosDeviceHandler(c *gin.Context) {
 
 	var req posdevices.RegisterPosDeviceRequest
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := utils.BindProtoJSON(c, &req); err != nil {
+		utils.Error("failed to bind pos register request", "error", err.Error())
 		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
 		return
 	}
 
+	utils.Info("pos device register attempt",
+		"email", req.GetEmail(),
+		"primary_number", req.GetPrimaryNumber(),
+		"secondary_number", req.GetSecondaryNumber(),
+		"device_model", req.GetDeviceModel(),
+		"terminal_type_id", req.GetTerminalTypeId(),
+		"serial_number", req.GetSerialNumber(),
+		"fingerprint", req.GetFingerprint(),
+	)
+
 	posDeviceID, err := posservices.RegisterPosDevice(&req)
 	if err != nil {
+		utils.Error("pos device register failed",
+			"email", req.GetEmail(),
+			"device_model", req.GetDeviceModel(),
+			"terminal_type_id", req.GetTerminalTypeId(),
+			"error", err.Error(),
+		)
 		utils.RespondWithError(c, 400, fmt.Sprintf("error: %v", err))
 		return
 	}

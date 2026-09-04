@@ -3,12 +3,12 @@ package posservices
 import (
 	"errors"
 	"fmt"
-	"log/slog"
 	database "pos-master/config"
 	"pos-master/models"
 	"pos-master/proto/posdevices"
 	eventservices "pos-master/services/event_services"
 	"pos-master/utils"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,6 +20,10 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 	posDeviceID := uuid.New()
 
 	tx := database.DB.Begin()
+	if tx.Error != nil {
+		utils.Error("unable to start pos register transaction", "error", tx.Error.Error())
+		return "", utils.CapitalizeError("Unable to start transaction")
+	}
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -30,34 +34,22 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 	var business models.Business
 	result := tx.Where("email = ?", req.Email).First(&business)
 	if result.Error != nil {
+		tx.Rollback()
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			utils.Log(slog.LevelError, "❌error", "unable to find business with provided email", "data", req)
-
+			utils.Error("unable to find business with provided email",
+				"email", req.Email,
+				"device_model", req.DeviceModel,
+			)
 			return "", utils.CapitalizeError("Business not found with provided email")
 		}
-		utils.Log(slog.LevelError, "❌error", "unable to find business", "deatil", result.Error, "data", req)
-
+		utils.Error("unable to find business",
+			"email", req.Email,
+			"error", result.Error.Error(),
+		)
 		return "", utils.CapitalizeError(utils.FormatError("unable to find business", result.Error))
 	}
 
-	terminalTypeID, err := uuid.Parse(req.TerminalTypeId)
-	if err != nil {
-		utils.Log(slog.LevelError, "❌error", "unable to parse terminal type id", "data", req)
-		return "", utils.CapitalizeError("Unable to parse terminal type id")
-	}
-
-	var terminalType models.TerminalType
-	result = database.DB.Where("id = ?", terminalTypeID).First(&terminalType)
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			utils.Log(slog.LevelError, "❌error", "unable to find terminal type with provided id", "data", req)
-
-			return "", utils.CapitalizeError("Terminal type not found with provided id")
-		}
-		utils.Log(slog.LevelError, "❌error", "unable to find terminal type", "deatil", result.Error, "data", req)
-
-		return "", utils.CapitalizeError(utils.FormatError("unable to find terminal type", result.Error))
-	}
+	terminalTypeID := resolveTerminalTypeID(tx, req)
 
 	pos := models.PosDevice{
 		ID:                         posDeviceID,
@@ -77,33 +69,98 @@ func RegisterPosDevice(req *posdevices.RegisterPosDeviceRequest) (string, error)
 		BusinessID:                 business.ID,
 		PhoneNumber1:               req.PrimaryNumber,
 		PhoneNumber2:               req.SecondaryNumber,
-		TerminalTypeID:             &terminalTypeID,
+		TerminalTypeID:             terminalTypeID,
 		DeviceIdentificationNumber: req.DeviceIdentificationNumber,
 	}
 
 	result = tx.Create(&pos)
 	if result.Error != nil {
 		tx.Rollback()
-		utils.Log(slog.LevelError, "Error", "Unable to register pos device", "Detail", result.Error.Error(), "data", req)
+		utils.Error("unable to register pos device",
+			"email", req.Email,
+			"error", result.Error.Error(),
+		)
 		return "", utils.CapitalizeError("Unable to register pos device")
 	}
 
-	// Commit transaction
 	if err := tx.Commit().Error; err != nil {
 		tx.Rollback()
-		utils.Log(slog.LevelError, "Error", "Failed to commit transaction", "Detail", err.Error())
+		utils.Error("failed to commit pos register transaction", "error", err.Error())
 		return "", utils.CapitalizeError(fmt.Sprintf("Failed to commit transaction: %v", err))
 	}
+
+	terminalTypeValue := ""
+	if terminalTypeID != nil {
+		terminalTypeValue = terminalTypeID.String()
+	}
+
+	utils.Info("pos device registered",
+		"device_id", posDeviceID.String(),
+		"email", req.Email,
+		"business_id", business.ID.String(),
+		"device_model", req.DeviceModel,
+		"terminal_type_id", terminalTypeValue,
+	)
+
 	eventservices.RegisterEvent("POS device registered", map[string]interface{}{
-		"Pos ID":           pos,
+		"Pos ID":           posDeviceID.String(),
 		"Serial number":    req.SerialNumber,
-		"Business Name":    req.BusinessName,
+		"Business Name":    business.Name,
 		"Description":      req.Description,
 		"Device Model":     req.DeviceModel,
-		"Status":           req.Status,
+		"Status":           "online",
 		"Operating system": req.OperatingSystem,
+		"Terminal type":    terminalTypeValue,
 	})
 
 	return posDeviceID.String(), nil
+}
 
+func resolveTerminalTypeID(tx *gorm.DB, req *posdevices.RegisterPosDeviceRequest) *uuid.UUID {
+	rawID := strings.TrimSpace(req.GetTerminalTypeId())
+	if rawID != "" {
+		parsed, err := uuid.Parse(rawID)
+		if err == nil {
+			var terminalType models.TerminalType
+			if err := tx.Where("id = ?", parsed).First(&terminalType).Error; err == nil {
+				utils.Info("resolved terminal type from id", "terminal_type_id", parsed.String())
+				return &parsed
+			}
+			utils.Warn("terminal type id not found, trying device model",
+				"terminal_type_id", rawID,
+				"device_model", req.GetDeviceModel(),
+			)
+		} else {
+			utils.Warn("terminal_type_id is not a UUID, trying device model",
+				"terminal_type_id", rawID,
+				"device_model", req.GetDeviceModel(),
+			)
+		}
+	}
+
+	model := strings.TrimSpace(req.GetDeviceModel())
+	if model == "" {
+		utils.Info("no terminal type id or device model provided, storing null terminal type",
+			"email", req.GetEmail(),
+		)
+		return nil
+	}
+
+	var terminalType models.TerminalType
+	err := tx.Where("LOWER(terminal_model) = LOWER(?) OR LOWER(name) = LOWER(?)", model, model).
+		First(&terminalType).Error
+	if err != nil {
+		utils.Warn("could not resolve terminal type from device model, storing null",
+			"device_model", model,
+			"error", err.Error(),
+		)
+		return nil
+	}
+
+	utils.Info("resolved terminal type from device model",
+		"device_model", model,
+		"terminal_type_id", terminalType.ID.String(),
+		"terminal_type_name", terminalType.Name,
+	)
+	return &terminalType.ID
 }

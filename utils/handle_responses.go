@@ -2,7 +2,17 @@ package utils
 
 import "github.com/gin-gonic/gin"
 
+const (
+	ResponseErrorKey       = "response_error"
+	ResponseErrorDetailKey = "response_error_detail"
+)
+
 func RespondWithError(c *gin.Context, statusCode int, errorMessage string, details ...string) {
+	c.Set(ResponseErrorKey, errorMessage)
+	if len(details) > 0 {
+		c.Set(ResponseErrorDetailKey, details[0])
+	}
+
 	response := gin.H{
 		"status": "failure",
 		"error":  errorMessage,

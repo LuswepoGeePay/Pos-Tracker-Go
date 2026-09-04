@@ -69,6 +69,7 @@ func InitDB() {
 		&models.Role{},       // Migrate `Role` first as `User` depends on it
 		&models.Permission{}, // Other independent tables can be migrated here
 		&models.User{},       // Now migrate `User` as `Role` exists
+		&models.TerminalType{},
 		&models.App{},
 		&models.AppVersion{},
 		&models.PosDevice{},
@@ -121,6 +122,7 @@ func ResetDatabaseIfNeeded(db *gorm.DB) {
 		// App & Device Management
 		&models.App{},
 		&models.AppVersion{},
+		&models.TerminalType{},
 		&models.PosDevice{},
 		&models.LocationHistory{},
 		// Event & Business Management

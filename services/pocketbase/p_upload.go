@@ -3,7 +3,7 @@ package pocketbase
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"os"
 	"pos-master/utils"
 	"strings"
 
@@ -32,11 +32,14 @@ func HandleUpload(c *gin.Context, token string, formKey string) (string, error) 
 	}
 	defer openedFile.Close()
 
-	collectionName := "pos_master_files" // Your collection name
-	fileFieldName := "file"              // Your file field name in the collection schema
+	collectionName := os.Getenv("POCKETBASE_COLLECTION")
+	if collectionName == "" {
+		collectionName = "pos_master_files"
+	}
+	fileFieldName := "file"
 
 	client := resty.New()
-	endpoint := fmt.Sprintf("https://file-server.mygeepay.com/api/collections/%s/records", collectionName)
+	endpoint := fmt.Sprintf("%s/api/collections/%s/records", BaseURL(), collectionName)
 
 	resp, err := client.R().
 		SetHeader("Authorization", token).
@@ -44,24 +47,32 @@ func HandleUpload(c *gin.Context, token string, formKey string) (string, error) 
 		Post(endpoint)
 
 	if err != nil {
-		log.Printf("Upload error (request issue): %v\n", err)
-		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %s", fmt.Sprintf("error: %v", err)))
+		utils.Error("pocketbase upload request failed", "error", err.Error(), "endpoint", endpoint)
+		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %v", err))
 	}
 
 	if resp.IsError() {
-		log.Printf("Upload error (response error): %s\n", resp.String()) // Log full response body
+		utils.Error("pocketbase upload rejected",
+			"status", resp.StatusCode(),
+			"body", resp.String(),
+			"filename", file.Filename,
+		)
 		return "", utils.CapitalizeError(fmt.Sprintf("Failed to upload file: %s", resp.String()))
 	}
 
 	var result map[string]interface{}
 	if err := json.Unmarshal(resp.Body(), &result); err != nil {
+		utils.Error("failed to parse pocketbase upload response", "error", err.Error(), "body", resp.String())
 		return "", utils.CapitalizeError("failed to parse response")
 	}
 
-	// Construct file URL from response
-	recordID := result["id"].(string)
-	fileName := result[fileFieldName].(string) // file field value in record (filename/path)
-	fileURL := fmt.Sprintf("https://file-server.mygeepay.com/api/files/%s/%s/%s", collectionName, recordID, fileName)
+	recordID, _ := result["id"].(string)
+	fileName, _ := result[fileFieldName].(string)
+	if recordID == "" || fileName == "" {
+		utils.Error("pocketbase upload response missing file fields", "body", resp.String())
+		return "", utils.CapitalizeError("failed to parse response")
+	}
 
+	fileURL := fmt.Sprintf("%s/api/files/%s/%s/%s", BaseURL(), collectionName, recordID, fileName)
 	return fileURL, nil
 }

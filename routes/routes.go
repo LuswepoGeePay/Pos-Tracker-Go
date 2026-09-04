@@ -17,64 +17,59 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 
-	r.POST("/v1/create-user", auth.RegisterHandler)
 	r.POST("/v1/login", auth.LoginHandler)
 
-	auth := r.Group("/v1")
-	auth.Use(middleware.AuthMiddleware())
+	protected := r.Group("/v1")
+	protected.Use(middleware.AuthMiddleware())
 
 	//users
-
-	auth.GET("/users/get", users.GetUsersHandler)
-	auth.POST("/user/update", users.EditUserHandler)
-	auth.GET("/user/get/:user_id", users.GetUserHandler)
-
-	//reports
-	// auth.POST("/report/devices/generate")
+	protected.POST("/create-user", auth.RegisterHandler)
+	protected.GET("/users/get", users.GetUsersHandler)
+	protected.POST("/user/update", users.EditUserHandler)
+	protected.GET("/user/get/:user_id", users.GetUserHandler)
 
 	//dashboard
-	auth.GET("/dashboard/tiles/get", dashboard.GetTileInfoHandler)
-	auth.GET("/dashboard/pie/get", dashboard.GetPieChartDataHandler)
-	auth.GET("/dashboard/bar/get", dashboard.GetLineChartHandler)
-	auth.GET("/dashboard/events/get", events.GetEventsHandler)
+	protected.GET("/dashboard/tiles/get", dashboard.GetTileInfoHandler)
+	protected.GET("/dashboard/pie/get", dashboard.GetPieChartDataHandler)
+	protected.GET("/dashboard/bar/get", dashboard.GetLineChartHandler)
+	protected.GET("/dashboard/events/get", events.GetEventsHandler)
+
 	//Pos devices
 	r.POST("/v1/pos/register", posdevices.RegisterPosDeviceHandler)
-	auth.GET("/pos/devices/get", posdevices.GetPosDevicesHandler)
-	auth.POST("/pos/device/update", posdevices.EditDeviceHandler)
-	auth.DELETE("/pos/device/:id", posdevices.DeleteDeviceHandler)
+	protected.GET("/pos/devices/get", posdevices.GetPosDevicesHandler)
+	protected.POST("/pos/device/update", posdevices.EditDeviceHandler)
+	protected.DELETE("/pos/device/:id", posdevices.DeleteDeviceHandler)
 	r.POST("/v1/pos/device/heartbeat", posdevices.HeartBeatHandler)
 
 	//Apps
-	auth.POST("/app/register", apps.RegisterAppHandler)
-	auth.GET("/apps/get", apps.GetAppsHandler)
+	protected.POST("/app/register", apps.RegisterAppHandler)
+	protected.GET("/apps/get", apps.GetAppsHandler)
 	r.POST("/v1/app/update", apps.CheckAppUpdate)
-	auth.POST("/app/info/update", apps.EditAppHandler)
-	auth.DELETE("/app/:id", apps.DeleteAppHandler)
-
-	// auth.DELETE("/app/delete/:id")
+	protected.POST("/app/info/update", apps.EditAppHandler)
+	protected.DELETE("/app/:id", apps.DeleteAppHandler)
 
 	//App versions
-	auth.POST("/app/version/register", apps.RegisterNewAppVersionHandler)
-	auth.GET("/app/versions/get", apps.GetAppVersionsHandler)
-	auth.POST("/app/version/update", apps.EditAppVersionHandler)
-	auth.DELETE("/app/version/:id", apps.DeleteAppVersionHandler)
+	protected.POST("/app/version/register", apps.RegisterNewAppVersionHandler)
+	protected.GET("/app/versions/get", apps.GetAppVersionsHandler)
+	protected.POST("/app/version/update", apps.EditAppVersionHandler)
+	protected.DELETE("/app/version/:id", apps.DeleteAppVersionHandler)
 
 	//location history
 	r.POST("/v1/location/register", locationhistory.RegisterNewLocationHandler)
-	auth.GET("/locations/get", locationhistory.GetLocationsHandler)
-	// auth.DELETE("/pos/device/id", posdevices.DeleteDeviceHandler)
+	protected.GET("/locations/get", locationhistory.GetLocationsHandler)
 
 	//business
-	auth.POST("/business/create", business.CreateBusinessHandler)
-	auth.GET("/businesses/get", business.GetBusinessesHandler)
-	auth.GET("/business/get/:id", business.GetBusinessById)
-	auth.POST("/business/update", business.EditBusinessHandler)
-	auth.DELETE("/business/delete/:id", business.DeleteBusinessHandler)
+	protected.POST("/business/create", business.CreateBusinessHandler)
+	protected.GET("/businesses/get", business.GetBusinessesHandler)
+	protected.GET("/business/get/:id", business.GetBusinessById)
+	protected.POST("/business/update", business.EditBusinessHandler)
+	protected.DELETE("/business/delete/:id", business.DeleteBusinessHandler)
+	protected.DELETE("/business/:id", business.DeleteBusinessHandler)
 
 	//Terminal Types
-	auth.POST("/terminal-type/register", terminaltype.CreateTerminalTypeHandler)
+	protected.POST("/terminal-type/register", terminaltype.CreateTerminalTypeHandler)
 	r.GET("/v1/terminal-types/get", terminaltype.GetTerminalTypesHandler)
-	auth.POST("/terminal-type/update", terminaltype.EditTerminalTypeHandler)
-	auth.DELETE("/terminal-type/:id", terminaltype.DeleteTerminalTypeHandler)
+	protected.POST("/terminal-type/update", terminaltype.EditTerminalTypeHandler)
+	protected.DELETE("/terminal-type/:id", terminaltype.DeleteTerminalTypeHandler)
 
 }
